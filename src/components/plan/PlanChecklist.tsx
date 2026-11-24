@@ -8,6 +8,8 @@ type PlanChecklistProps = {
   items: PlanItem[];
   selectedId: string | null;
   onSelect: (id: string) => void;
+  /** Line above the progress bar; defaults to "5 z 6 označeno". */
+  summary?: string;
   className?: string;
 };
 
@@ -16,6 +18,7 @@ export function PlanChecklist({
   items,
   selectedId,
   onSelect,
+  summary,
   className,
 }: PlanChecklistProps) {
   const marked = items.filter((item) => item.area).length;
@@ -24,7 +27,7 @@ export function PlanChecklist({
   return (
     <div className={cn("flex flex-col gap-3", className)}>
       <p className="-mt-2 font-text text-[13px] leading-[1.4] text-fg-3">
-        {marked} z {items.length} označeno
+        {summary ?? `${marked} z ${items.length} označeno`}
       </p>
 
       <div
@@ -70,7 +73,10 @@ export function PlanChecklist({
                 ) : (
                   <CircleIcon
                     weight="fill"
-                    className="size-4 shrink-0 text-[#FFFFFF1F]"
+                    className={cn(
+                      "size-4 shrink-0",
+                      selected ? "text-beige" : "text-[#FFFFFF1F]",
+                    )}
                   />
                 )}
                 <span className="font-text text-sm leading-[1.4] font-semibold text-fg">

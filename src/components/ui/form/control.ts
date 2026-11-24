@@ -7,6 +7,8 @@ type ControlBoxOptions = {
   disabled?: boolean;
   /** Auto height with top-aligned content, for textareas. */
   multiline?: boolean;
+  /** Auto height with wrapping content, for lists of tags. */
+  wrap?: boolean;
 };
 
 /**
@@ -18,14 +20,17 @@ export function controlBox({
   invalid = false,
   disabled = false,
   multiline = false,
+  wrap = false,
 }: ControlBoxOptions = {}) {
   return cn(
     "flex w-full border-[1.5px] transition-[border-color,background-color,box-shadow]",
     multiline ? "items-start" : "items-center",
-    size === "lg"
-      ? "gap-3 rounded-2xl px-[18px] shadow-[inset_0_1px_0_#FFFFFF0F]"
-      : "gap-2.5 rounded-xl px-4",
-    !multiline && (size === "lg" ? "h-14" : "h-12"),
+    wrap
+      ? "min-h-12 flex-wrap gap-2 rounded-xl px-2.5 py-[6.5px]"
+      : size === "lg"
+        ? "gap-3 rounded-2xl px-[18px] shadow-[inset_0_1px_0_#FFFFFF0F]"
+        : "gap-2.5 rounded-xl px-4",
+    !multiline && !wrap && (size === "lg" ? "h-14" : "h-12"),
     invalid
       ? "border-red bg-[#F0524B0D]"
       : "border-[#D2D5C54D] bg-[#F8F6EF08] focus-within:border-beige focus-within:shadow-[0_0_12px_#CAC3B84D] hover:not-focus-within:border-[#D2D5C599] hover:not-focus-within:bg-[#F8F6EF0D]",

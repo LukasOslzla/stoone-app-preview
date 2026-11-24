@@ -6,6 +6,8 @@ type PrevNextProps = {
   nextHref?: string;
   prevLabel: string;
   nextLabel: string;
+  /** Text between the arrows, e.g. "6 z 6". */
+  position?: string;
 };
 
 const itemClass =
@@ -17,6 +19,7 @@ export function PrevNext({
   nextHref,
   prevLabel,
   nextLabel,
+  position,
 }: PrevNextProps) {
   const items = [
     { href: prevHref, label: prevLabel, icon: CaretLeftIcon },
@@ -25,7 +28,15 @@ export function PrevNext({
 
   return (
     <div className="flex shrink-0 items-center gap-1 rounded-full border border-line-soft bg-inset p-[3px]">
-      {items.map(({ href, label, icon: IconComponent }) =>
+      {items.map(({ href, label, icon: IconComponent }, index) => [
+        index === 1 && position && (
+          <span
+            key="position"
+            className="px-0.5 font-text text-xs leading-none font-semibold whitespace-nowrap text-fg-2"
+          >
+            {position}
+          </span>
+        ),
         href ? (
           <Link
             key={label}
@@ -41,7 +52,7 @@ export function PrevNext({
             <IconComponent weight="fill" className="size-3" />
           </span>
         ),
-      )}
+      ])}
     </div>
   );
 }

@@ -41,7 +41,7 @@ function projectSections(slug: string): NavSection[] {
           href: `${base}/buildings`,
           alsoActiveFor: [`${base}/floors`],
         },
-        { label: "Sektory", icon: GridFourIcon },
+        { label: "Sektory", icon: GridFourIcon, href: `${base}/sectors` },
         {
           label: "Konfigurátor standardů",
           icon: SlidersHorizontalIcon,

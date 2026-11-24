@@ -14,6 +14,7 @@
 | Dashboard projektu | `/projects/momentum` |
 | Byty – seznam | `/projects/momentum/units` |
 | Byty – přidat ručně, nahrát z Excelu | `/projects/momentum/units/new`, `/projects/momentum/units/import` |
+| Sektory – seznam, detail (základní údaje, domy na obrázku), nový sektor | `/projects/brique/sectors`, `/projects/brique/sectors/sektor-6`, `/projects/brique/sectors/sektor-6/houses`, `/projects/brique/sectors/new` |
 | Detail bytu (Přehled, Půdorysy a dokumenty, SEO) | `/projects/momentum/units/a-240`, `…/files`, `…/seo` |
 | Detail budovy | `/projects/momentum/buildings/vybaveni` |
 | Detail patra (Základní údaje, Půdorys a dokumenty, Byty na půdorysu) | `/projects/momentum/floors/ab-8`, `…/plan`, `…/units` |
@@ -38,7 +39,7 @@ Všechna data a ukládání jsou v `src/lib` a jsou to jen ukázky:
 - `auth.ts` – přihlášení (projde heslo s 8+ znaky) a obnova hesla
 - `projects.ts`, `user.ts`, `dashboard.ts`, `buildings.ts`, `units.ts`, `units-import.ts`
 
-Ukládání jen chvíli čeká, nahrané soubory zůstávají v prohlížeči, import z Excelu soubor nečte a „Vylepšit s AI“ vrací předpřipravený text. Stránky za loginem nejsou chráněné.
+Ukládání jen chvíli čeká, nahrané soubory zůstávají v prohlížeči, import z Excelu soubor nečte a „Vylepšit s AI“ vrací předpřipravený text. Stránky za loginem nejsou chráněné. Sektory mají stejná data u každého projektu, obrysy domů jsou kromě RD24 jen přibližné a odkaz „Použít ukázkový“ v průvodci Nový sektor je jen pro preview.
 
 ## Spuštění
 
