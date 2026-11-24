@@ -1,26 +1,54 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Design tokens from the Pencil file (v2/* variables). */
+@theme {
+  --color-bg: #151519;
+  --color-card: #1e1e23;
+  --color-inset: #0f0f12;
+  --color-control: #2a2a30;
+  --color-line: #d2d5c533;
+  --color-line-soft: #d2d5c524;
+  --color-fg: #f8f6ef;
+  --color-fg-2: #d2d5c5b3;
+  --color-fg-3: #d2d5c573;
+  --color-green: #6fd13c;
+  --color-yellow: #f2c94c;
+  --color-red: #f0524b;
+  --color-beige: #cac3b8;
+  --color-brick: #8e3c39;
+  --color-copper: #ca9377;
+  --color-copper-deep: #a26d55;
+  --color-ink: #1c1a18;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-title: var(--font-lexend), system-ui, sans-serif;
+  --font-text: var(--font-hanken), system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html,
+  body {
+    height: 100%;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-text);
+  }
+
+  button,
+  a {
+    cursor: pointer;
+  }
+
+  /* Keep browser autofill from repainting the dark inputs. */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--color-fg);
+    caret-color: var(--color-fg);
+    transition: background-color 99999s ease-in-out 0s;
+  }
 }
