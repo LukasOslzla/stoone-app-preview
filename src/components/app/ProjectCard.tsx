@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogoTile } from "@/components/ui/LogoTile";
 import { cn } from "@/lib/cn";
 import { formatBuildings, type Project } from "@/lib/projects";
 
@@ -44,16 +45,7 @@ export function ProjectCard({ project }: { project: Project }) {
       )}
     >
       <div className="flex items-center gap-4">
-        <div
-          className={cn(
-            "flex size-[52px] shrink-0 items-center justify-center overflow-hidden rounded-[14px] border border-line bg-inset",
-            !active && "opacity-50",
-          )}
-        >
-          <span className="font-text text-[7px] leading-none font-extrabold text-fg">
-            {project.logoText}
-          </span>
-        </div>
+        <LogoTile text={project.logoText} muted={!active} />
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <h2
             className={cn(

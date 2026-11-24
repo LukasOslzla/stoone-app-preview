@@ -1,57 +1,75 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Icon } from "@phosphor-icons/react";
 import {
-  BellIcon,
-  BuildingsIcon,
+  ArrowSquareOutIcon,
   CaretRightIcon,
-  GearIcon,
-  HouseIcon,
+  LockIcon,
   SidebarSimpleIcon,
-  UsersIcon,
 } from "@phosphor-icons/react";
 import { ChevronsUpDown } from "lucide-react";
 import { StooneLogo } from "@/components/StooneLogo";
 import { cn } from "@/lib/cn";
 import type { CurrentUser } from "@/lib/user";
 
-type NavItem = {
+export type NavItem = {
   label: string;
   icon: Icon;
   /** Items without `href` are not built yet and render as inert buttons. */
   href?: string;
+  /** Match the path exactly instead of by prefix (for section roots). */
+  exact?: boolean;
+  /** Other path prefixes that should highlight this item. */
+  alsoActiveFor?: string[];
   badge?: { value: number; tone: "neutral" | "alert" };
+  /** Small indicator after the label: opens elsewhere / needs permission. */
+  trailing?: "external" | "locked";
+  /** Slightly smaller label for long names. */
+  smallLabel?: boolean;
 };
 
-const mainNav: NavItem[] = [
-  { label: "Přehled", icon: HouseIcon, href: "/overview" },
-  { label: "Projekty", icon: BuildingsIcon },
-  { label: "Leady", icon: UsersIcon, badge: { value: 24, tone: "neutral" } },
-];
+export type NavSection = {
+  /** Optional group heading, e.g. "Nemovitosti". */
+  title?: string;
+  items: NavItem[];
+};
 
-const bottomNav: NavItem[] = [
-  { label: "Notifikace", icon: BellIcon, badge: { value: 3, tone: "alert" } },
-  { label: "Nastavení", icon: GearIcon },
-];
+type Density = "comfortable" | "compact";
+
+type SidebarProps = {
+  user: CurrentUser;
+  sections: NavSection[];
+  /** Items pinned above the user card (always in the comfortable size). */
+  bottom?: NavItem[];
+  /** `comfortable` = 48px rows (global menu), `compact` = 40px rows (project menu). */
+  density?: Density;
+};
 
 function NavLink({
   item,
   active,
   collapsed,
+  density,
 }: {
   item: NavItem;
   active: boolean;
   collapsed: boolean;
+  density: Density;
 }) {
   const IconComponent = item.icon;
+  const compact = density === "compact" && !collapsed;
 
   const className = cn(
-    "relative flex h-12 shrink-0 items-center rounded-[14px] transition-colors focus-visible:outline-[1.5px] focus-visible:outline-beige",
-    collapsed ? "w-12 justify-center" : "w-full gap-3.5 px-3.5 text-left",
+    "relative flex shrink-0 items-center transition-colors focus-visible:outline-[1.5px] focus-visible:outline-beige",
+    collapsed
+      ? "size-12 justify-center rounded-[14px]"
+      : compact
+        ? "h-10 w-full gap-3 rounded-[10px] px-3 text-left"
+        : "h-12 w-full gap-3.5 rounded-[14px] px-3.5 text-left",
     active
       ? "bg-[#CAC3B826] ring-1 ring-[#CAC3B82E] ring-inset"
       : "hover:bg-white/5",
@@ -63,19 +81,34 @@ function NavLink({
         weight="fill"
         className={cn(
           "shrink-0",
-          collapsed ? "size-[22px]" : "size-5",
+          collapsed ? "size-[22px]" : compact ? "size-[18px]" : "size-5",
           active ? "text-beige" : "text-fg-3",
         )}
       />
       {!collapsed && (
         <span
           className={cn(
-            "min-w-0 flex-1 truncate font-text text-[15px] leading-[1.4] font-semibold",
+            "min-w-0 flex-1 truncate font-text leading-[1.4]",
+            compact
+              ? item.smallLabel
+                ? "text-[13px]"
+                : "text-sm"
+              : "text-[15px]",
+            compact && !active ? "font-medium" : "font-semibold",
             active ? "text-fg" : "text-fg-2",
           )}
         >
           {item.label}
         </span>
+      )}
+      {!collapsed && item.trailing === "external" && (
+        <ArrowSquareOutIcon
+          weight="fill"
+          className="size-[13px] shrink-0 text-fg-3"
+        />
+      )}
+      {!collapsed && item.trailing === "locked" && (
+        <LockIcon weight="fill" className="size-3 shrink-0 text-fg-3" />
       )}
       {item.badge && (
         <span
@@ -95,14 +128,18 @@ function NavLink({
     </>
   );
 
+  const shared = {
+    "aria-label": collapsed ? item.label : undefined,
+    title: collapsed ? item.label : undefined,
+    className,
+  };
+
   if (item.href) {
     return (
       <Link
         href={item.href}
         aria-current={active ? "page" : undefined}
-        aria-label={collapsed ? item.label : undefined}
-        title={collapsed ? item.label : undefined}
-        className={className}
+        {...shared}
       >
         {content}
       </Link>
@@ -110,12 +147,7 @@ function NavLink({
   }
 
   return (
-    <button
-      type="button"
-      aria-label={collapsed ? item.label : undefined}
-      title={collapsed ? item.label : undefined}
-      className={className}
-    >
+    <button type="button" {...shared}>
       {content}
     </button>
   );
@@ -123,11 +155,7 @@ function NavLink({
 
 function Avatar({ user }: { user: CurrentUser }) {
   if (!user.avatarUrl) {
-    return (
-      <span className="flex size-11 items-center justify-center rounded-full border border-line bg-control font-text text-base leading-none font-semibold text-fg">
-        {user.name.charAt(0)}
-      </span>
-    );
+    return <AvatarInitial user={user} />;
   }
 
   return (
@@ -141,12 +169,35 @@ function Avatar({ user }: { user: CurrentUser }) {
   );
 }
 
-export function Sidebar({ user }: { user: CurrentUser }) {
+function AvatarInitial({ user }: { user: CurrentUser }) {
+  return (
+    <span className="flex size-11 items-center justify-center rounded-full border border-line bg-control font-text text-base leading-none font-semibold text-fg">
+      {user.name.charAt(0)}
+    </span>
+  );
+}
+
+/**
+ * App sidebar shell: brand, collapsible navigation, pinned items and the
+ * user card. The menu content comes from `sections` / `bottom`, see
+ * `GlobalSidebar` and `ProjectSidebar`.
+ */
+export function Sidebar({
+  user,
+  sections,
+  bottom = [],
+  density = "comfortable",
+}: SidebarProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
-  const isActive = (item: NavItem) =>
-    Boolean(item.href && pathname.startsWith(item.href));
+  const isActive = (item: NavItem) => {
+    if (!item.href) return false;
+    if (item.exact) return pathname === item.href;
+    return [item.href, ...(item.alsoActiveFor ?? [])].some(
+      (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+    );
+  };
 
   if (collapsed) {
     return (
@@ -170,31 +221,38 @@ export function Sidebar({ user }: { user: CurrentUser }) {
 
         <nav
           aria-label="Hlavní navigace"
-          className="flex min-h-0 flex-1 flex-col items-center gap-1.5"
+          className="flex min-h-0 flex-1 flex-col items-center gap-1.5 overflow-y-auto px-1 [scrollbar-width:none]"
         >
-          {mainNav.map((item) => (
-            <NavLink
-              key={item.label}
-              item={item}
-              active={isActive(item)}
-              collapsed
-            />
+          {sections.map((section, index) => (
+            <Fragment key={section.title ?? index}>
+              {index > 0 && (
+                <span className="my-1.5 h-px w-6 shrink-0 bg-line-soft" />
+              )}
+              {section.items.map((item) => (
+                <NavLink
+                  key={item.label}
+                  item={item}
+                  active={isActive(item)}
+                  collapsed
+                  density={density}
+                />
+              ))}
+            </Fragment>
           ))}
         </nav>
 
         <div className="flex flex-col items-center gap-1.5">
-          {bottomNav.map((item) => (
+          {bottom.map((item) => (
             <NavLink
               key={item.label}
               item={item}
               active={isActive(item)}
               collapsed
+              density="comfortable"
             />
           ))}
           <div className="pt-2.5" title={user.name}>
-            <span className="flex size-11 items-center justify-center rounded-full border border-line bg-control font-text text-base leading-none font-semibold text-fg">
-              {user.name.charAt(0)}
-            </span>
+            <AvatarInitial user={user} />
           </div>
         </div>
       </aside>
@@ -218,28 +276,44 @@ export function Sidebar({ user }: { user: CurrentUser }) {
 
       <nav
         aria-label="Hlavní navigace"
-        className="flex min-h-0 flex-1 flex-col gap-1.5"
+        className={cn(
+          "-mx-1 flex min-h-0 flex-1 flex-col overflow-y-auto px-1 [scrollbar-width:none]",
+          density === "compact" ? "gap-0.5" : "gap-1.5",
+        )}
       >
-        {mainNav.map((item) => (
-          <NavLink
-            key={item.label}
-            item={item}
-            active={isActive(item)}
-            collapsed={false}
-          />
+        {sections.map((section, index) => (
+          <Fragment key={section.title ?? index}>
+            {section.title && (
+              <p className="px-3 pt-[18px] pb-1.5 font-text text-[11px] leading-[1.4] font-semibold tracking-[0.8px] text-fg-3 uppercase">
+                {section.title}
+              </p>
+            )}
+            {section.items.map((item) => (
+              <NavLink
+                key={item.label}
+                item={item}
+                active={isActive(item)}
+                collapsed={false}
+                density={density}
+              />
+            ))}
+          </Fragment>
         ))}
       </nav>
 
-      <div className="flex flex-col gap-1.5">
-        {bottomNav.map((item) => (
-          <NavLink
-            key={item.label}
-            item={item}
-            active={isActive(item)}
-            collapsed={false}
-          />
-        ))}
-      </div>
+      {bottom.length > 0 && (
+        <div className="flex flex-col gap-1.5">
+          {bottom.map((item) => (
+            <NavLink
+              key={item.label}
+              item={item}
+              active={isActive(item)}
+              collapsed={false}
+              density="comfortable"
+            />
+          ))}
+        </div>
+      )}
 
       <button
         type="button"

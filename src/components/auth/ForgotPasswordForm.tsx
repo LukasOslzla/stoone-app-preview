@@ -11,6 +11,7 @@ import { AuthHeading, authLinkClass } from "@/components/auth/AuthHeading";
 import {
   Button,
   buttonBase,
+  buttonSizes,
   buttonVariants,
 } from "@/components/ui/Button";
 import { TextField } from "@/components/ui/TextField";
@@ -62,7 +63,7 @@ export function ForgotPasswordForm() {
 
         <a
           href="mailto:"
-          className={cn(buttonBase, buttonVariants.outline)}
+          className={cn(buttonBase, buttonSizes.lg, buttonVariants.outline)}
         >
           Otevřít e-mailovou schránku
         </a>

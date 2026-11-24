@@ -1,0 +1,89 @@
+"use client";
+
+import { useEffect, useId, useRef } from "react";
+import type { ReactNode } from "react";
+import { X } from "lucide-react";
+import { cn } from "@/lib/cn";
+
+type ModalProps = {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  description?: string;
+  children: ReactNode;
+  /** Width class of the panel, 640px by default. */
+  className?: string;
+};
+
+/**
+ * Dialog over a dimmed, blurred page. Built on the native <dialog>, so focus
+ * is trapped and Escape closes it.
+ */
+export function Modal({
+  open,
+  onClose,
+  title,
+  description,
+  children,
+  className,
+}: ModalProps) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
+
+  useEffect(() => {
+    const dialog = ref.current;
+    if (!dialog) return;
+    if (open && !dialog.open) dialog.showModal();
+    if (!open && dialog.open) dialog.close();
+
+    // Next.js keeps the previous page mounted but hidden after a navigation.
+    // A modal <dialog> left open there would keep the whole document inert,
+    // so always close it when this effect is torn down.
+    return () => {
+      if (dialog.open) dialog.close();
+    };
+  }, [open]);
+
+  return (
+    <dialog
+      ref={ref}
+      aria-labelledby={titleId}
+      onClose={onClose}
+      // A click on the backdrop lands on the <dialog> element itself.
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+      className={cn(
+        "mx-auto mt-[min(220px,12vh)] w-[640px] max-w-[calc(100%-2rem)] rounded-3xl border border-line bg-card p-0 text-fg shadow-[0_24px_64px_#000000A6] backdrop:bg-[#0A0A0CB8] backdrop:backdrop-blur-[3px]",
+        className,
+      )}
+    >
+      <div className="flex flex-col gap-6 p-7">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex min-w-0 flex-col gap-1.5">
+            <h2
+              id={titleId}
+              className="font-title text-2xl leading-[1.2] font-medium text-fg"
+            >
+              {title}
+            </h2>
+            {description && (
+              <p className="font-text text-sm leading-[1.4] text-fg-2">
+                {description}
+              </p>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Zavřít"
+            className="flex size-8 shrink-0 items-center justify-center rounded-full bg-control text-fg-2 transition-colors hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-beige"
+          >
+            <X className="size-4" />
+          </button>
+        </div>
+        {children}
+      </div>
+    </dialog>
+  );
+}

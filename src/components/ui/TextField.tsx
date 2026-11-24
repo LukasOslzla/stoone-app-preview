@@ -8,6 +8,7 @@ import {
   EyeSlashIcon,
   WarningCircleIcon,
 } from "@phosphor-icons/react";
+import { controlBox, controlText } from "@/components/ui/form/control";
 import { cn } from "@/lib/cn";
 
 type TextFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "className"> & {
@@ -46,20 +47,14 @@ export function TextField({
       </label>
 
       <div
-        className={cn(
-          "flex h-14 w-full items-center gap-3 rounded-2xl border-[1.5px] px-[18px] shadow-[inset_0_1px_0_#FFFFFF0F] transition-[border-color,background-color,box-shadow]",
-          hasError
-            ? "border-red bg-[#F0524B0D]"
-            : "border-[#D2D5C54D] bg-[#F8F6EF08] focus-within:border-beige focus-within:shadow-[0_0_12px_#CAC3B84D] hover:not-focus-within:border-[#D2D5C599] hover:not-focus-within:bg-[#F8F6EF0D]",
-          disabled && "pointer-events-none opacity-50",
-        )}
+        className={controlBox({ size: "lg", invalid: hasError, disabled })}
       >
         <input
           id={inputId}
           disabled={disabled}
           aria-invalid={hasError || undefined}
           aria-describedby={error || hint ? messageId : undefined}
-          className="h-full min-w-0 flex-1 bg-transparent font-text text-base leading-[1.4] text-fg outline-none placeholder:text-fg-3"
+          className={cn(controlText("lg"), "h-full")}
           {...inputProps}
         />
         {trailing}

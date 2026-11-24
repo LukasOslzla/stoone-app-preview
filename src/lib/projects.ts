@@ -11,6 +11,8 @@ export type Project = {
   logoText: string;
   active: boolean;
   buildings: number;
+  /** Human-readable time of the last Realpad sync; undefined = not connected. */
+  realpadSync?: string;
   units: {
     total: number;
     free: number;
@@ -27,6 +29,7 @@ const projects: Project[] = [
     logoText: "momentum",
     active: true,
     buildings: 2,
+    realpadSync: "před 5 min",
     units: { total: 240, free: 196, sold: 1, reserved: 21, preReserved: 18 },
   },
   {
@@ -60,4 +63,11 @@ export function formatBuildings(count: number) {
   if (count === 1) return `${count} budova`;
   if (count >= 2 && count <= 4) return `${count} budovy`;
   return `${count} budov`;
+}
+
+/** "1 jednotka", "3 jednotky", "240 jednotek" */
+export function formatUnits(count: number) {
+  if (count === 1) return `${count} jednotka`;
+  if (count >= 2 && count <= 4) return `${count} jednotky`;
+  return `${count} jednotek`;
 }
