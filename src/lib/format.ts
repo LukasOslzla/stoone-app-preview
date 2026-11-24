@@ -39,13 +39,19 @@ export function formatFileSize(bytes: number) {
 
 /**
  * "z 5" / "ze 4" — the preposition gets an extra "e" before numbers whose
- * name starts with a consonant cluster or "s" (dvou, tří, čtyř, sedmi, sta).
+ * name starts with a consonant cluster or "s" (dvou, tří, čtyř, sedmi, sto…).
  */
 export function outOf(total: number) {
   const tens = total % 100;
   const withE =
     [2, 3, 4, 7, 12, 13, 14, 17].includes(tens) ||
     (tens >= 70 && tens <= 79) ||
-    (total >= 100 && tens === 0);
+    (total >= 100 && total < 200);
   return `${withE ? "ze" : "z"} ${total}`;
+}
+
+/** "2026-11-10" → "10. 11. 2026" */
+export function formatDate(isoDate: string) {
+  const [year, month, day] = isoDate.split("-").map(Number);
+  return `${day}. ${month}. ${year}`;
 }

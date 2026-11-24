@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -30,6 +31,10 @@ export type NavItem = {
   trailing?: "external" | "locked";
   /** Slightly smaller label for long names. */
   smallLabel?: boolean;
+  /** Makes the item a button that opens something (e.g. a panel). */
+  onSelect?: () => void;
+  /** State of what `onSelect` opens. */
+  expanded?: boolean;
 };
 
 export type NavSection = {
@@ -45,8 +50,12 @@ type SidebarProps = {
   sections: NavSection[];
   /** Items pinned above the user card (always in the comfortable size). */
   bottom?: NavItem[];
+  /** Floating panel anchored next to the bottom items (notifications). */
+  bottomPanel?: ReactNode;
   /** `comfortable` = 48px rows (global menu), `compact` = 40px rows (project menu). */
   density?: Density;
+  /** Where the user card leads ("Můj účet"); without it the card is inert. */
+  accountHref?: string;
 };
 
 function NavLink({
@@ -72,7 +81,9 @@ function NavLink({
         : "h-12 w-full gap-3.5 rounded-[14px] px-3.5 text-left",
     active
       ? "bg-[#CAC3B826] ring-1 ring-[#CAC3B82E] ring-inset"
-      : "hover:bg-white/5",
+      : item.expanded
+        ? "bg-white/5"
+        : "hover:bg-white/5",
   );
 
   const content = (
@@ -147,11 +158,23 @@ function NavLink({
   }
 
   return (
-    <button type="button" {...shared}>
+    <button
+      type="button"
+      aria-expanded={item.onSelect ? Boolean(item.expanded) : undefined}
+      // The open panel closes on outside presses; keep this one for the toggle.
+      onPointerDown={
+        item.onSelect ? (event) => event.stopPropagation() : undefined
+      }
+      onClick={item.onSelect}
+      {...shared}
+    >
       {content}
     </button>
   );
 }
+
+const userCardClass =
+  "flex w-full items-center gap-3 rounded-xl border border-line bg-card p-2.5 text-left shadow-[inset_0_1px_0_#FFFFFF14] transition-colors hover:border-[#D2D5C566] focus-visible:outline-[1.5px] focus-visible:outline-beige";
 
 function Avatar({ user }: { user: CurrentUser }) {
   if (!user.avatarUrl) {
@@ -186,7 +209,9 @@ export function Sidebar({
   user,
   sections,
   bottom = [],
+  bottomPanel,
   density = "comfortable",
+  accountHref,
 }: SidebarProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
@@ -241,7 +266,8 @@ export function Sidebar({
           ))}
         </nav>
 
-        <div className="flex flex-col items-center gap-1.5">
+        <div className="relative flex flex-col items-center gap-1.5">
+          {bottomPanel}
           {bottom.map((item) => (
             <NavLink
               key={item.label}
@@ -252,12 +278,42 @@ export function Sidebar({
             />
           ))}
           <div className="pt-2.5" title={user.name}>
-            <AvatarInitial user={user} />
+            {accountHref ? (
+              <Link
+                href={accountHref}
+                aria-label="Můj účet"
+                className="block rounded-full focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige"
+              >
+                <AvatarInitial user={user} />
+              </Link>
+            ) : (
+              <AvatarInitial user={user} />
+            )}
           </div>
         </div>
       </aside>
     );
   }
+
+  const userCard = (
+    <>
+      <span className="relative size-11 shrink-0">
+        <Avatar user={user} />
+        {user.online && (
+          <span className="absolute top-[31px] left-[31px] size-[13px] rounded-full border-[2.5px] border-card bg-green" />
+        )}
+      </span>
+      <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span className="truncate font-text text-sm leading-[1.3] font-semibold text-fg">
+          {user.name}
+        </span>
+        <span className="truncate font-text text-xs leading-[1.3] font-medium text-fg-3">
+          {user.organization} · {user.role}
+        </span>
+      </span>
+      <ChevronsUpDown className="size-4 shrink-0 text-fg-3" />
+    </>
+  );
 
   return (
     <aside className="flex h-full w-[248px] shrink-0 flex-col gap-6 border-r border-line-soft px-3.5 pt-5 pb-3.5">
@@ -302,7 +358,8 @@ export function Sidebar({
       </nav>
 
       {bottom.length > 0 && (
-        <div className="flex flex-col gap-1.5">
+        <div className="relative flex flex-col gap-1.5">
+          {bottomPanel}
           {bottom.map((item) => (
             <NavLink
               key={item.label}
@@ -315,26 +372,22 @@ export function Sidebar({
         </div>
       )}
 
-      <button
-        type="button"
-        className="flex w-full items-center gap-3 rounded-xl border border-line bg-card p-2.5 text-left shadow-[inset_0_1px_0_#FFFFFF14] transition-colors hover:border-[#D2D5C566] focus-visible:outline-[1.5px] focus-visible:outline-beige"
-      >
-        <span className="relative size-11 shrink-0">
-          <Avatar user={user} />
-          {user.online && (
-            <span className="absolute top-[31px] left-[31px] size-[13px] rounded-full border-[2.5px] border-card bg-green" />
+      {accountHref ? (
+        <Link
+          href={accountHref}
+          aria-current={pathname === accountHref ? "page" : undefined}
+          className={cn(
+            userCardClass,
+            pathname === accountHref && "border-beige",
           )}
-        </span>
-        <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <span className="truncate font-text text-sm leading-[1.3] font-semibold text-fg">
-            {user.name}
-          </span>
-          <span className="truncate font-text text-xs leading-[1.3] font-medium text-fg-3">
-            {user.organization} · {user.role}
-          </span>
-        </span>
-        <ChevronsUpDown className="size-4 shrink-0 text-fg-3" />
-      </button>
+        >
+          {userCard}
+        </Link>
+      ) : (
+        <button type="button" className={userCardClass}>
+          {userCard}
+        </button>
+      )}
     </aside>
   );
 }

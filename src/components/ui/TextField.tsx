@@ -11,7 +11,10 @@ import {
 import { controlBox, controlText } from "@/components/ui/form/control";
 import { cn } from "@/lib/cn";
 
-type TextFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "className"> & {
+type TextFieldProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "className"
+> & {
   label: string;
   /** Validation message; also switches the input to the error style. */
   error?: string;
@@ -46,9 +49,7 @@ export function TextField({
         {label}
       </label>
 
-      <div
-        className={controlBox({ size: "lg", invalid: hasError, disabled })}
-      >
+      <div className={controlBox({ size: "lg", invalid: hasError, disabled })}>
         <input
           id={inputId}
           disabled={disabled}

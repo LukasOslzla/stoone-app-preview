@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { CheckCircleIcon, CircleIcon } from "@phosphor-icons/react/ssr";
 import { cn } from "@/lib/cn";
 
@@ -6,15 +7,26 @@ type CheckCardProps = {
   description?: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
+  /** `radio` cards with the same `name` exclude each other. */
+  type?: "checkbox" | "radio";
+  name?: string;
+  /** Shown instead of the check mark (e.g. the icon of a role). */
+  icon?: ReactNode;
   disabled?: boolean;
 };
 
-/** Card that toggles like a checkbox; use in a grid to pick several items. */
+/**
+ * Card that toggles like a checkbox or a radio; use in a grid to pick one or
+ * several items.
+ */
 export function CheckCard({
   title,
   description,
   checked,
   onChange,
+  type = "checkbox",
+  name,
+  icon,
   disabled,
 }: CheckCardProps) {
   return (
@@ -28,13 +40,18 @@ export function CheckCard({
       )}
     >
       <input
-        type="checkbox"
+        type={type}
+        name={name}
         className="sr-only"
         checked={checked}
         disabled={disabled}
         onChange={(event) => onChange(event.target.checked)}
       />
-      {checked ? (
+      {icon ? (
+        <span className={cn("shrink-0", checked ? "text-beige" : "text-fg-2")}>
+          {icon}
+        </span>
+      ) : checked ? (
         <CheckCircleIcon weight="fill" className="size-5 shrink-0 text-beige" />
       ) : (
         <CircleIcon
@@ -43,11 +60,21 @@ export function CheckCard({
         />
       )}
       <span className="flex min-w-0 flex-col gap-px">
-        <span className="font-text text-sm leading-[1.4] font-bold text-fg">
+        <span
+          className={cn(
+            "font-text text-sm leading-[1.4] text-fg",
+            icon ? "font-semibold" : "font-bold",
+          )}
+        >
           {title}
         </span>
         {description && (
-          <span className="truncate font-text text-xs leading-[1.4] text-fg-3">
+          <span
+            className={cn(
+              "font-text text-xs leading-[1.4] text-fg-3",
+              !icon && "truncate",
+            )}
+          >
             {description}
           </span>
         )}

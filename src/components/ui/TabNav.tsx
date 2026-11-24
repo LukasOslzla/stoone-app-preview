@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LockIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/cn";
 
 export type TabItem = {
@@ -10,12 +11,23 @@ export type TabItem = {
   href?: string;
   /** Number shown after the label. */
   count?: number;
+  /** Small lock pill after the label, e.g. "jen správce". */
+  restriction?: string;
 };
 
-const count = (tab: TabItem) =>
-  tab.count !== undefined && (
-    <span className="text-[13px] font-normal text-fg-3">{tab.count}</span>
-  );
+const count = (tab: TabItem) => (
+  <>
+    {tab.count !== undefined && (
+      <span className="text-[13px] font-normal text-fg-3">{tab.count}</span>
+    )}
+    {tab.restriction && (
+      <span className="flex h-5 items-center gap-1 rounded-full bg-control px-[7px] text-[11px] leading-none font-semibold text-fg-3">
+        <LockIcon weight="fill" className="size-2.5" />
+        {tab.restriction}
+      </span>
+    )}
+  </>
+);
 
 /** Underlined tabs where each tab is its own route. */
 export function TabNav({ tabs, label }: { tabs: TabItem[]; label: string }) {

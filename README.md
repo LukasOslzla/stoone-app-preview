@@ -15,6 +15,11 @@
 | Byty – seznam | `/projects/momentum/units` |
 | Byty – přidat ručně, nahrát z Excelu | `/projects/momentum/units/new`, `/projects/momentum/units/import` |
 | Sektory – seznam, detail (základní údaje, domy na obrázku), nový sektor | `/projects/brique/sectors`, `/projects/brique/sectors/sektor-6`, `/projects/brique/sectors/sektor-6/houses`, `/projects/brique/sectors/new` |
+| Soubory (mřížka, tabulka, potvrzení smazání) | `/projects/momentum/files` |
+| Uživatelé a role (uživatelé, role, pozvánka) | `/projects/momentum/users`, `/projects/momentum/users/roles` |
+| Můj účet (z karty uživatele v menu) | `/projects/momentum/account` |
+| Migrace dat | `/projects/momentum/migration` |
+| Notifikace (panel z menu) | položka „Notifikace“ dole v menu |
 | Detail bytu (Přehled, Půdorysy a dokumenty, SEO) | `/projects/momentum/units/a-240`, `…/files`, `…/seo` |
 | Detail budovy | `/projects/momentum/buildings/vybaveni` |
 | Detail patra (Základní údaje, Půdorys a dokumenty, Byty na půdorysu) | `/projects/momentum/floors/ab-8`, `…/plan`, `…/units` |

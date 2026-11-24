@@ -6,10 +6,7 @@ import { cn } from "@/lib/cn";
  * bottom-right corner and a gradient hairline border.
  * Padding and layout come from `className`.
  */
-export function Card({
-  className,
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
+export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div className={cn("surface-card rounded-[20px]", className)} {...props} />
   );

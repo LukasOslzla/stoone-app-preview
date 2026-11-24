@@ -10,7 +10,12 @@ type DotPillProps = {
 };
 
 /** Neutral pill with a coloured status dot. */
-export function DotPill({ label, color, size = "sm", className }: DotPillProps) {
+export function DotPill({
+  label,
+  color,
+  size = "sm",
+  className,
+}: DotPillProps) {
   return (
     <span
       className={cn(

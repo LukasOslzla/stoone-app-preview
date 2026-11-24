@@ -43,11 +43,14 @@ const tones: Record<
 type BannerProps = {
   tone: BannerTone;
   children: ReactNode;
+  /** Replaces the default icon of the tone. */
+  icon?: Icon;
   className?: string;
 };
 
-export function Banner({ tone, children, className }: BannerProps) {
-  const { box, iconColor, icon: IconComponent, role } = tones[tone];
+export function Banner({ tone, children, icon, className }: BannerProps) {
+  const { box, iconColor, icon: defaultIcon, role } = tones[tone];
+  const IconComponent = icon ?? defaultIcon;
 
   return (
     <div

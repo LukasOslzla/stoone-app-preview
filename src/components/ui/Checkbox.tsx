@@ -4,12 +4,16 @@ import { CheckIcon } from "@phosphor-icons/react/ssr";
 type CheckboxProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   "type" | "className"
-> & { label: string };
+> & {
+  label: string;
+  /** Keeps the label for screen readers only (checkbox grids). */
+  hideLabel?: boolean;
+};
 
 /** Checkbox with its label on the right. */
-export function Checkbox({ label, ...props }: CheckboxProps) {
+export function Checkbox({ label, hideLabel, ...props }: CheckboxProps) {
   return (
-    <label className="group flex cursor-pointer items-center gap-2.5 font-text text-sm leading-[1.4] text-fg-2">
+    <label className="group flex cursor-pointer items-center gap-2.5 font-text text-sm leading-[1.4] text-fg-2 has-disabled:cursor-default has-disabled:opacity-60">
       <span className="relative flex size-5 shrink-0">
         <input type="checkbox" className="peer sr-only" {...props} />
         <span className="size-full rounded-md border-[1.5px] border-line transition-colors group-hover:border-[#D2D5C566] peer-checked:border-beige peer-checked:bg-beige peer-focus-visible:outline-[1.5px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-beige" />
@@ -18,7 +22,7 @@ export function Checkbox({ label, ...props }: CheckboxProps) {
           className="absolute inset-0 m-auto hidden size-3 text-ink peer-checked:block"
         />
       </span>
-      {label}
+      {hideLabel ? <span className="sr-only">{label}</span> : label}
     </label>
   );
 }

@@ -176,9 +176,7 @@ export function TextArea({
           rows={rows}
           disabled={disabled}
           aria-invalid={error ? true : undefined}
-          aria-describedby={
-            error || hint ? `${textareaId}-message` : undefined
-          }
+          aria-describedby={error || hint ? `${textareaId}-message` : undefined}
           className={`${controlText()} min-h-[101px] resize-y py-3.5`}
           {...props}
         />
