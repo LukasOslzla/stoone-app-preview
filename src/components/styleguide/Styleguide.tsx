@@ -12,14 +12,19 @@ import {
   SquaresFourIcon,
   TrashIcon,
 } from "@phosphor-icons/react";
+import { ChangePasswordDialog } from "@/components/account/ChangePasswordDialog";
 import { AiPrompt } from "@/components/app/AiPrompt";
 import { PageIntro } from "@/components/app/PageIntro";
+import { MenuItemsEditor } from "@/components/editor/MenuItemsEditor";
+import { NotificationSettingsDialog } from "@/components/notifications/NotificationSettingsDialog";
+import { RangeSelect, dateRanges } from "@/components/project/RangeSelect";
 import { RealpadSyncPill } from "@/components/project/RealpadSync";
 import { StooneLogo } from "@/components/StooneLogo";
 import {
   AiSuggestionCard,
   type AiSuggestion,
 } from "@/components/seo/AiSuggestionCard";
+import { ShareImageField } from "@/components/seo/ShareImageField";
 import { ActionMenu } from "@/components/ui/ActionMenu";
 import { AiSuggestButton } from "@/components/ui/AiSuggestButton";
 import { Banner } from "@/components/ui/Banner";
@@ -40,10 +45,14 @@ import {
 import { DeltaBadge } from "@/components/ui/DeltaBadge";
 import { DetailRows } from "@/components/ui/DetailRows";
 import { DotPill } from "@/components/ui/DotPill";
+import { DropdownMenu } from "@/components/ui/DropdownMenu";
+import { FormDialog } from "@/components/ui/FormDialog";
+import { Disclosure } from "@/components/ui/Disclosure";
 import { Dropzone } from "@/components/ui/Dropzone";
 import { InfoStrip } from "@/components/ui/InfoStrip";
 import { LogoTile } from "@/components/ui/LogoTile";
 import { Modal } from "@/components/ui/Modal";
+import { NumberedSteps } from "@/components/ui/NumberedSteps";
 import { Pagination } from "@/components/ui/Pagination";
 import { PrevNext } from "@/components/ui/PrevNext";
 import { SearchInput } from "@/components/ui/SearchInput";
@@ -52,11 +61,13 @@ import { SortableList } from "@/components/ui/SortableList";
 import { StatusChip } from "@/components/ui/StatusChip";
 import { Stepper } from "@/components/ui/Stepper";
 import { Switch } from "@/components/ui/Switch";
+import { SwitchRow } from "@/components/ui/SwitchRow";
 import { TabNav } from "@/components/ui/TabNav";
 import { PasswordField, TextField } from "@/components/ui/TextField";
 import { SelectInput, TextArea, TextInput } from "@/components/ui/form/Field";
 import { TagsInput } from "@/components/ui/form/TagsInput";
 import { formatPrice } from "@/lib/format";
+import { defaultNotificationSettings } from "@/lib/notifications";
 import { unitStatuses, type UnitStatus } from "@/lib/unit-status";
 import { Chapter, Demo, Row } from "./Showcase";
 
@@ -122,13 +133,29 @@ export function Styleguide() {
   const [tags, setTags] = useState(["RD01", "RD02"]);
   const [page, setPage] = useState(2);
   const [sort, setSort] = useState<SortState | null>(null);
-  const [modal, setModal] = useState<"modal" | "confirm" | null>(null);
+  const [modal, setModal] = useState<
+    "modal" | "confirm" | "form" | "password" | "notifications" | null
+  >(null);
   const [items, setItems] = useState([
     { id: "1", label: "O projektu" },
     { id: "2", label: "Lokalita" },
     { id: "3", label: "Ceník" },
   ]);
   const [files, setFiles] = useState<string | null>(null);
+  const [demoRange, setDemoRange] = useState("30d");
+  const [saleStatus, setSaleStatus] = useState("sale");
+  const [notificationSettings, setNotificationSettings] = useState(
+    defaultNotificationSettings,
+  );
+  const [shareImage, setShareImage] = useState<{
+    title: string;
+    note: string;
+    url?: string;
+  }>({
+    title: "og.webp",
+    note: "1200 × 630 px · správná velikost",
+    url: "/images/momentum-og.webp",
+  });
 
   const columns: DataTableColumn<DemoUnit>[] = [
     {
@@ -340,12 +367,71 @@ export function Styleguide() {
             <SelectInput
               label="Dispozice"
               hint="Podle projektové dokumentace"
+              defaultValue="2kk"
               options={[
                 { value: "2kk", label: "2+kk" },
                 { value: "3kk", label: "3+kk" },
               ]}
             />
             <TextArea label="Popis" defaultValue="Světlý byt s lodžií." />
+          </Demo>
+
+          <Demo
+            name="SelectInput"
+            source="ui/form/Field"
+            note={
+              <>
+                Vlastní seznam místo systémového. Volby mohou mít{" "}
+                <code>description</code> a <code>disabled</code>;{" "}
+                <code>placeholder</code> se ukáže, dokud není nic vybráno.
+                Ovládání: šipky, Home / End, Enter, Esc, psaní písmen. Když pod
+                polem není místo, otevře se nahoru. S <code>name</code> se
+                hodnota odešle ve formuláři.
+              </>
+            }
+          >
+            <SelectInput
+              label="Stav prodeje"
+              value={saleStatus}
+              onChange={setSaleStatus}
+              options={[
+                {
+                  value: "sale",
+                  label: "V prodeji",
+                  description: "Byty jsou vidět na webu",
+                },
+                {
+                  value: "soon",
+                  label: "Připravujeme",
+                  description: "Na webu jen s poznámkou",
+                },
+                { value: "sold", label: "Vyprodáno" },
+                { value: "archive", label: "Archiv", disabled: true },
+              ]}
+            />
+            <div className="grid grid-cols-2 gap-3">
+              <SelectInput
+                label="Bez výběru"
+                options={[
+                  { value: "a", label: "Budova A" },
+                  { value: "b", label: "Budova B" },
+                ]}
+              />
+              <SelectInput
+                label="S chybou"
+                error="Vyberte patro"
+                options={[
+                  { value: "1", label: "1. patro" },
+                  { value: "2", label: "2. patro" },
+                ]}
+              />
+            </div>
+            <SelectInput
+              label="Nedostupné"
+              disabled
+              defaultValue="cs"
+              options={[{ value: "cs", label: "Čeština" }]}
+            />
           </Demo>
 
           <Demo
@@ -368,7 +454,11 @@ export function Styleguide() {
               <SelectInput
                 size="sm"
                 label="Vede na"
-                options={[{ value: "cenik", label: "Ceník" }]}
+                defaultValue="cenik"
+                options={[
+                  { value: "cenik", label: "Ceník" },
+                  { value: "kontakt", label: "Kontakt" },
+                ]}
               />
             </div>
             <TagsInput
@@ -415,6 +505,51 @@ export function Styleguide() {
               />
             </Row>
             <SearchInput label="Hledat byt" placeholder="Hledat byt" />
+          </Demo>
+
+          <Demo
+            name="SwitchRow · Disclosure"
+            source="ui/SwitchRow, ui/Disclosure"
+            note={
+              <>
+                <code>SwitchRow</code> je nastavení na jednom řádku (popisek,
+                volitelný popis, přepínač). <code>Disclosure</code> schová méně
+                používanou část formuláře za rozbalovací řádek.
+              </>
+            }
+          >
+            <SwitchRow
+              label="Online kamera"
+              checked={switchOn}
+              onChange={setSwitchOn}
+            />
+            <SwitchRow
+              label="Denní souhrn e-mailem"
+              description="Každé ráno v 8:00, jen když je co hlásit"
+              checked={!switchOn}
+              onChange={(value) => setSwitchOn(!value)}
+            />
+            <Disclosure label="Pokročilé: klíčová slova, strukturovaná data">
+              <TagsInput
+                label="Klíčová slova"
+                values={tags}
+                onChange={setTags}
+                addLabel="Přidat slovo"
+              />
+            </Disclosure>
+          </Demo>
+
+          <Demo
+            name="MenuItemsEditor"
+            source="editor/MenuItemsEditor"
+            note="Seznam odkazů s řazením, přejmenováním na místě, přidáním a odebráním. Používá hlavička i patička v editoru obsahu."
+          >
+            <MenuItemsEditor
+              items={items}
+              label="Odkazy"
+              addLabel="Přidat odkaz"
+              onChange={(_, next) => setItems(next)}
+            />
           </Demo>
 
           <Demo
@@ -824,6 +959,160 @@ export function Styleguide() {
               warning="Tuto akci nelze vrátit zpět."
               confirmLabel="Smazat soubor"
             />
+          </Demo>
+
+          <Demo
+            name="FormDialog"
+            source="ui/FormDialog"
+            note={
+              <>
+                Dialog s formulářem a patičkou „Zrušit / potvrdit“. Sám řeší
+                stav odesílání; když <code>onSubmit</code> vrátí{" "}
+                <code>false</code> (chyba ve formuláři), zůstane otevřený. Staví
+                na něm Změnit heslo, Přidat stránku a Požádat o novou sekci.
+              </>
+            }
+          >
+            <Row>
+              <Button
+                size="md"
+                variant="outline"
+                onClick={() => setModal("form")}
+              >
+                Otevřít formulář
+              </Button>
+              <Button
+                size="md"
+                variant="outline"
+                onClick={() => setModal("password")}
+              >
+                Změnit heslo
+              </Button>
+              <Button
+                size="md"
+                variant="outline"
+                onClick={() => setModal("notifications")}
+              >
+                Nastavení upozornění
+              </Button>
+            </Row>
+            <FormDialog
+              open={modal === "form"}
+              onClose={() => setModal(null)}
+              size="sm"
+              title="Přejmenovat soubor"
+              description="Název se změní i na webu."
+              submitLabel="Uložit"
+              submittingLabel="Ukládám…"
+              onSubmit={() =>
+                new Promise<void>((resolve) => setTimeout(resolve, 900))
+              }
+            >
+              <TextInput label="Název" defaultValue="pudorys-a101.pdf" />
+            </FormDialog>
+            <NotificationSettingsDialog
+              open={modal === "notifications"}
+              onClose={() => setModal(null)}
+              settings={notificationSettings}
+              onChange={setNotificationSettings}
+            />
+            <ChangePasswordDialog
+              open={modal === "password"}
+              onClose={() => setModal(null)}
+              onChanged={() => {}}
+            />
+          </Demo>
+
+          <Demo
+            name="NumberedSteps"
+            source="ui/NumberedSteps"
+            note="Krátký návod v krocích, např. v nápovědě „Jak upravit stránku“."
+          >
+            <NumberedSteps
+              steps={[
+                {
+                  title: "U stránky klikněte na Upravit",
+                  text: "Otevře se editor s náhledem webu.",
+                },
+                {
+                  title: "Přepište obsah sekce",
+                  text: "Vzhled sekce zůstává stejný.",
+                },
+                { title: "Klikněte na Zveřejnit změny" },
+              ]}
+            />
+          </Demo>
+
+          <Demo
+            name="ShareImageField"
+            source="seo/ShareImageField"
+            note={
+              <>
+                Řádek s obrázkem pro sdílení. S <code>onReplace</code> ukáže
+                tlačítko, které otevře výběr souboru.
+              </>
+            }
+          >
+            <ShareImageField
+              title={shareImage.title}
+              note={shareImage.note}
+              thumbnailUrl={shareImage.url}
+              onReplace={(file) =>
+                setShareImage({
+                  title: file.name,
+                  note: "Nový obrázek",
+                  url: URL.createObjectURL(file),
+                })
+              }
+            />
+          </Demo>
+
+          <Demo
+            name="DropdownMenu"
+            source="ui/DropdownMenu"
+            note={
+              <>
+                Nabídka z libovolného tlačítka: volby se zaškrtnutím, odkazy (
+                <code>href</code>) i akce, skupiny s nadpisem. <code>side</code>
+                : bottom · top, <code>align</code>: start · end. Zavře se
+                klávesou Esc nebo kliknutím mimo, šipky přecházejí mezi
+                položkami. Používá ji přepínač projektu, období, jazyk, AI lišta
+                a karta uživatele.
+              </>
+            }
+          >
+            <Row>
+              <DropdownMenu
+                label="Období"
+                groups={[
+                  {
+                    label: "Období",
+                    items: dateRanges.map((range) => ({
+                      id: range.id,
+                      label: range.label,
+                      selected: range.id === demoRange,
+                      onSelect: () => setDemoRange(range.id),
+                    })),
+                  },
+                  {
+                    items: [
+                      {
+                        id: "disabled",
+                        label: "Vlastní rozsah",
+                        note: "připravujeme",
+                        disabled: true,
+                      },
+                    ],
+                  },
+                ]}
+                trigger={(props) => (
+                  <Button size="md" variant="outline" {...props}>
+                    {dateRanges.find((range) => range.id === demoRange)?.label}
+                  </Button>
+                )}
+              />
+              <RangeSelect />
+            </Row>
           </Demo>
 
           <Demo

@@ -71,3 +71,16 @@ export async function saveAccount(values: AccountValues): Promise<void> {
 export async function signOutOtherSessions(): Promise<void> {
   await wait(600);
 }
+
+/**
+ * Mock: any current password is accepted except "spatne" (to show the error).
+ * Resolves to `false` when the current password is wrong.
+ */
+export async function changePassword(
+  current: string,
+  next: string,
+): Promise<boolean> {
+  void next;
+  await wait(800);
+  return current !== "spatne";
+}

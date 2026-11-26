@@ -52,7 +52,11 @@ function useFiles(initial: ManagedFile[], onChange: () => void) {
 }
 
 /** Unit detail, tab "Půdorysy a dokumenty". */
-export function UnitFilesTab({ projectSlug, unit, realpad }: UnitFilesTabProps) {
+export function UnitFilesTab({
+  projectSlug,
+  unit,
+  realpad,
+}: UnitFilesTabProps) {
   const { saving, saved, handleSubmit, markDirty } = useSaveForm(() =>
     saveUnit(projectSlug, unit.id, {}),
   );

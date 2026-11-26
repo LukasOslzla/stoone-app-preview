@@ -69,7 +69,7 @@ export function NotFoundTab({
                 options={settings.pageOptions}
                 value={values.buttonTarget}
                 disabled={saving}
-                onChange={(event) => update("buttonTarget", event.target.value)}
+                onChange={(value) => update("buttonTarget", value)}
               />
             </div>
           </Card>

@@ -11,9 +11,12 @@ import {
   CaretRightIcon,
   LockIcon,
   SidebarSimpleIcon,
+  SignOutIcon,
+  UserCircleIcon,
 } from "@phosphor-icons/react";
 import { ChevronsUpDown } from "lucide-react";
 import { StooneLogo } from "@/components/StooneLogo";
+import { DropdownMenu, type DropdownGroup } from "@/components/ui/DropdownMenu";
 import { cn } from "@/lib/cn";
 import type { CurrentUser } from "@/lib/user";
 
@@ -54,7 +57,7 @@ type SidebarProps = {
   bottomPanel?: ReactNode;
   /** `comfortable` = 48px rows (global menu), `compact` = 40px rows (project menu). */
   density?: Density;
-  /** Where the user card leads ("Můj účet"); without it the card is inert. */
+  /** Adds "Můj účet" to the menu of the user card. */
   accountHref?: string;
 };
 
@@ -224,6 +227,35 @@ export function Sidebar({
     );
   };
 
+  const onAccount = accountHref !== undefined && pathname === accountHref;
+  const userMenu: DropdownGroup[] = [
+    ...(accountHref
+      ? [
+          {
+            items: [
+              {
+                id: "account",
+                label: "Můj účet",
+                icon: <UserCircleIcon weight="fill" />,
+                href: accountHref,
+                selected: onAccount ? true : undefined,
+              },
+            ],
+          },
+        ]
+      : []),
+    {
+      items: [
+        {
+          id: "sign-out",
+          label: "Odhlásit se",
+          icon: <SignOutIcon weight="fill" />,
+          href: "/login",
+        },
+      ],
+    },
+  ];
+
   if (collapsed) {
     return (
       <aside className="flex h-full w-[88px] shrink-0 flex-col items-center gap-7 border-r border-line-soft py-6">
@@ -277,19 +309,24 @@ export function Sidebar({
               density="comfortable"
             />
           ))}
-          <div className="pt-2.5" title={user.name}>
-            {accountHref ? (
-              <Link
-                href={accountHref}
-                aria-label="Můj účet"
+          <DropdownMenu
+            label="Uživatel"
+            side="top"
+            width="w-[220px]"
+            className="pt-2.5"
+            groups={userMenu}
+            trigger={(props) => (
+              <button
+                type="button"
+                aria-label={user.name}
+                title={user.name}
+                {...props}
                 className="block rounded-full focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige"
               >
                 <AvatarInitial user={user} />
-              </Link>
-            ) : (
-              <AvatarInitial user={user} />
+              </button>
             )}
-          </div>
+          />
         </div>
       </aside>
     );
@@ -372,22 +409,21 @@ export function Sidebar({
         </div>
       )}
 
-      {accountHref ? (
-        <Link
-          href={accountHref}
-          aria-current={pathname === accountHref ? "page" : undefined}
-          className={cn(
-            userCardClass,
-            pathname === accountHref && "border-beige",
-          )}
-        >
-          {userCard}
-        </Link>
-      ) : (
-        <button type="button" className={userCardClass}>
-          {userCard}
-        </button>
-      )}
+      <DropdownMenu
+        label="Uživatel"
+        side="top"
+        width="w-full"
+        groups={userMenu}
+        trigger={(props, open) => (
+          <button
+            type="button"
+            {...props}
+            className={cn(userCardClass, (onAccount || open) && "border-beige")}
+          >
+            {userCard}
+          </button>
+        )}
+      />
     </aside>
   );
 }

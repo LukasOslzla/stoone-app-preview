@@ -7,8 +7,9 @@ type SiteStatusBarProps = {
   domain: string;
   /** Label / value pairs shown after the status. */
   facts: { label: string; value: string }[];
-  /** Text of the (still inert) help link on the right. */
+  /** Help link on the right; shown when both are given. */
   helpLabel?: string;
+  onHelp?: () => void;
 };
 
 /** Strip with the state of the public web and a few key numbers. */
@@ -17,6 +18,7 @@ export function SiteStatusBar({
   domain,
   facts,
   helpLabel,
+  onHelp,
 }: SiteStatusBarProps) {
   return (
     <div className="flex flex-wrap items-center gap-x-5 gap-y-3 rounded-[18px] border border-line-soft bg-card px-5 py-4">
@@ -58,9 +60,10 @@ export function SiteStatusBar({
         </Fragment>
       ))}
 
-      {helpLabel && (
+      {helpLabel && onHelp && (
         <button
           type="button"
+          onClick={onHelp}
           className="ml-auto flex items-center gap-2 rounded-md font-text text-[13px] leading-[1.4] font-semibold text-fg-2 transition-colors hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-offset-4 focus-visible:outline-beige"
         >
           <QuestionIcon weight="fill" className="size-4 text-fg-3" />

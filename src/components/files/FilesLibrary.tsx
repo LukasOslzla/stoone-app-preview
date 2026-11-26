@@ -34,6 +34,7 @@ import {
   type FileCategory,
   type LibraryCounts,
   type LibraryFile,
+  getRealpadFiles,
 } from "@/lib/files";
 import {
   formatDate,
@@ -72,29 +73,45 @@ export function FilesLibrary({
   const [view, setView] = useState<View>("grid");
   const [sort, setSort] = useState<SortState | null>(null);
   const [toDelete, setToDelete] = useState<LibraryFile | null>(null);
-  const [busy, setBusy] = useState<"upload" | "delete" | "ai" | null>(null);
+  const [busy, setBusy] = useState<
+    "upload" | "delete" | "ai" | "realpad" | null
+  >(null);
+  // `null` = hidden (the default).
+  const [realpadFiles, setRealpadFiles] = useState<LibraryFile[] | null>(null);
+
+  async function toggleRealpad() {
+    if (realpadFiles) {
+      setRealpadFiles(null);
+      return;
+    }
+    setBusy("realpad");
+    setRealpadFiles(await getRealpadFiles(projectSlug));
+    setBusy(null);
+  }
 
   const needle = query.trim().toLowerCase();
-  const visible = files.filter(
+  const visible = [...files, ...(realpadFiles ?? [])].filter(
     (file) =>
       (category === "all" || file.category === category) &&
       (needle === "" || file.name.toLowerCase().includes(needle)),
   );
   const missingAltCount = files.filter((file) => file.missingAlt).length;
 
-  const menu = (file: LibraryFile) => (
-    <ActionMenu
-      label={`Akce: ${file.name}`}
-      items={[
-        {
-          label: "Smazat",
-          tone: "danger",
-          icon: <TrashIcon weight="fill" className="size-3.5" />,
-          onSelect: () => setToDelete(file),
-        },
-      ]}
-    />
-  );
+  // Files from Realpad are managed at their unit.
+  const menu = (file: LibraryFile) =>
+    file.fromRealpad ? null : (
+      <ActionMenu
+        label={`Akce: ${file.name}`}
+        items={[
+          {
+            label: "Smazat",
+            tone: "danger",
+            icon: <TrashIcon weight="fill" className="size-3.5" />,
+            onSelect: () => setToDelete(file),
+          },
+        ]}
+      />
+    );
 
   const columns: DataTableColumn<LibraryFile>[] = [
     {
@@ -284,11 +301,28 @@ export function FilesLibrary({
       {realpad && (
         <InfoStrip
           icon={LockIcon}
-          // Inert: showing the Realpad files has no design yet.
-          action={{ label: "Zobrazit i tak" }}
+          action={{
+            label:
+              busy === "realpad"
+                ? "Načítám…"
+                : realpadFiles
+                  ? "Skrýt"
+                  : "Zobrazit i tak",
+            onClick: busy === "realpad" ? undefined : toggleRealpad,
+          }}
         >
-          {formatNumber(counts.realpadHidden)} půdorysů a karet bytů z Realpadu
-          tu neukazujeme – najdete je přímo u jednotlivých bytů.
+          {realpadFiles ? (
+            <>
+              Ukazujeme i prvních {realpadFiles.length} z{" "}
+              {formatNumber(counts.realpadHidden)} souborů z Realpadu. Mazat ani
+              měnit je tu nejde – spravují se u jednotlivých bytů.
+            </>
+          ) : (
+            <>
+              {formatNumber(counts.realpadHidden)} půdorysů a karet bytů z
+              Realpadu tu neukazujeme – najdete je přímo u jednotlivých bytů.
+            </>
+          )}
         </InfoStrip>
       )}
 

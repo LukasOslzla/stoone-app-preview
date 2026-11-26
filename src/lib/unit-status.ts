@@ -1,11 +1,7 @@
 /** Sales status of a unit and how it is labelled and coloured across the app. */
 
 export type UnitStatus =
-  | "free"
-  | "reserved"
-  | "preReserved"
-  | "sold"
-  | "notForSale";
+  "free" | "reserved" | "preReserved" | "sold" | "notForSale";
 
 export const unitStatuses: Record<
   UnitStatus,

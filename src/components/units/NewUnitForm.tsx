@@ -128,7 +128,7 @@ export function NewUnitForm({ projectSlug, buildings }: NewUnitFormProps) {
             options={toOptions(buildings)}
             value={values.building}
             disabled={saving}
-            onChange={(event) => update("building", event.target.value)}
+            onChange={(value) => update("building", value)}
           />
           <SelectInput
             label="Patro"
@@ -136,7 +136,7 @@ export function NewUnitForm({ projectSlug, buildings }: NewUnitFormProps) {
             options={floorOptions}
             value={String(values.floor)}
             disabled={saving}
-            onChange={(event) => update("floor", Number(event.target.value))}
+            onChange={(value) => update("floor", Number(value))}
           />
           <SelectInput
             label="Dispozice"
@@ -144,7 +144,7 @@ export function NewUnitForm({ projectSlug, buildings }: NewUnitFormProps) {
             options={toOptions(["1+kk", "1,5+kk", "2+kk", "3+kk", "4+kk"])}
             value={values.layout}
             disabled={saving}
-            onChange={(event) => update("layout", event.target.value)}
+            onChange={(value) => update("layout", value)}
           />
           <TextInput
             label="Plocha"
@@ -174,9 +174,7 @@ export function NewUnitForm({ projectSlug, buildings }: NewUnitFormProps) {
             options={statusOptions}
             value={values.status}
             disabled={saving}
-            onChange={(event) =>
-              update("status", event.target.value as UnitStatus)
-            }
+            onChange={(value) => update("status", value as UnitStatus)}
           />
         </div>
 

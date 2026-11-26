@@ -284,6 +284,38 @@ const header: SiteHeader = {
   links: { favourites: true, camera: true, portal: true },
 };
 
+/* ── Site footer ───────────────────────────────────────────────────────── */
+
+export type SiteFooter = {
+  phone: string;
+  email: string;
+  links: MenuItem[];
+  social: { instagram: boolean; facebook: boolean; youtube: boolean };
+  /** Small line at the very bottom (copyright). */
+  note: string;
+};
+
+export const footerSocialLabels: Record<keyof SiteFooter["social"], string> = {
+  instagram: "Instagram",
+  facebook: "Facebook",
+  youtube: "YouTube",
+};
+
+const footer: SiteFooter = {
+  phone: "+420 800 123 456",
+  email: "prodej@momentum-smichov.cz",
+  links: [
+    { id: "pricing", label: "Ceník" },
+    { id: "financing", label: "Financování" },
+    { id: "documents", label: "Dokumenty" },
+    { id: "contact", label: "Kontakt" },
+    { id: "privacy", label: "Zásady ochrany osobních údajů" },
+    { id: "cookies", label: "Cookies" },
+  ],
+  social: { instagram: true, facebook: true, youtube: false },
+  note: "© 2026 Momentum Smíchov. Vizualizace jsou ilustrační.",
+};
+
 /* ── Shared content ────────────────────────────────────────────────────── */
 
 export type OpeningDay = {
@@ -348,6 +380,7 @@ export type EditorData = {
   domain: string;
   projectName: string;
   header: SiteHeader;
+  footer: SiteFooter;
   pages: EditorPage[];
   sectionTypes: SectionType[];
   shared: SharedContent;
@@ -368,6 +401,7 @@ export async function getEditorData(
     domain: settings.domain.replace(/^www\./, ""),
     projectName,
     header,
+    footer,
     pages: sitePages.map((page) => ({
       id: page.id,
       name: page.path === "/cs" ? "Hlavní stránka" : page.name,
@@ -387,6 +421,7 @@ const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 /** What the editor keeps as a draft until "Zveřejnit změny". */
 export type EditorDraft = {
   header: SiteHeader;
+  footer: SiteFooter;
   /** Sections of every page, by page id. */
   sections: Record<string, PageSection[]>;
   hours: OpeningDay[];
@@ -458,4 +493,14 @@ export async function suggestSectionText(
   await wait(900);
   const options = textSuggestions[field];
   return options[attempt % options.length];
+}
+
+/** Mock: sends a request for a section that is missing in the gallery. */
+export async function requestSection(
+  projectSlug: string,
+  request: { text: string; example: string },
+): Promise<void> {
+  void projectSlug;
+  void request;
+  await wait(900);
 }

@@ -47,6 +47,35 @@ export async function getSitePages(projectSlug: string): Promise<SitePage[]> {
   return pages;
 }
 
+/** "Vybavení bytů" → "vybaveni-bytu"; `keepSlashes` allows nested paths. */
+export function slugifyPath(text: string, keepSlashes = false) {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(keepSlashes ? /[^a-z0-9/]+/g : /[^a-z0-9]+/g, "-")
+    .replace(/^[-/]+|-+$/g, "");
+}
+
+/** Mock: waits and returns the new page as a draft. */
+export async function createSitePage(
+  projectSlug: string,
+  input: { name: string; path: string; copyOf: string | null },
+): Promise<SitePage> {
+  void projectSlug;
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  return {
+    id: input.path,
+    name: input.name,
+    path: input.path,
+    status: "draft",
+    editedLabel: "Právě teď",
+    editedDaysAgo: 0,
+    editedBy: "Dominik Ř.",
+    visits: null,
+  };
+}
+
 export type SiteStatus = {
   online: boolean;
   /** Public domain, e.g. "momentum.cz". */

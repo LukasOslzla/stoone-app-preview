@@ -15,6 +15,7 @@ import {
   type SectionCategory,
   type SectionType,
 } from "@/lib/editor";
+import { RequestSectionDialog } from "./RequestSectionDialog";
 import { SectionIcon } from "./sectionIcons";
 
 type SectionGalleryProps = {
@@ -25,8 +26,7 @@ type SectionGalleryProps = {
   afterName?: string;
   onInsert: (typeId: string) => void;
   onBack: () => void;
-  /** "Požádat o novou sekci". */
-  onRequest: () => void;
+  projectSlug: string;
 };
 
 /** "Galerie sekcí": every building block of the web with its preview. */
@@ -36,8 +36,10 @@ export function SectionGallery({
   afterName,
   onInsert,
   onBack,
-  onRequest,
+  projectSlug,
 }: SectionGalleryProps) {
+  const [requestOpen, setRequestOpen] = useState(false);
+  const [requested, setRequested] = useState(false);
   const [category, setCategory] = useState<SectionCategory | "all">("all");
   const [query, setQuery] = useState("");
 
@@ -174,14 +176,16 @@ export function SectionGallery({
               Chybí vám tu něco?
             </h2>
             <p className="max-w-[220px] font-text text-xs leading-[1.4] text-fg-3">
-              Popište, jakou sekci potřebujete, a připravíme ji.
+              {requested
+                ? "Žádost jsme přijali. Ozveme se v notifikacích."
+                : "Popište, jakou sekci potřebujete, a připravíme ji."}
             </p>
             <button
               type="button"
-              onClick={onRequest}
+              onClick={() => setRequestOpen(true)}
               className="rounded-md font-text text-[13px] leading-[1.4] font-semibold text-beige transition-colors hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-offset-4 focus-visible:outline-beige"
             >
-              Požádat o novou sekci
+              {requested ? "Požádat o další sekci" : "Požádat o novou sekci"}
             </button>
           </li>
         </ul>
@@ -191,6 +195,13 @@ export function SectionGallery({
           {plural(types.length, ["sekce", "sekcí", "sekcí"])}
         </p>
       </div>
+
+      <RequestSectionDialog
+        open={requestOpen}
+        onClose={() => setRequestOpen(false)}
+        projectSlug={projectSlug}
+        onSent={() => setRequested(true)}
+      />
     </div>
   );
 }

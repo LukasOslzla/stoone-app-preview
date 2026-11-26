@@ -28,6 +28,7 @@ async function Content({ params }: Props) {
       pages={pages}
       site={site}
       editorHref={`/projects/${slug}/editor`}
+      projectSlug={slug}
     />
   );
 }

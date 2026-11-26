@@ -179,7 +179,7 @@ export function SectionEditPanel({
             label="Vede na"
             options={pageOptions}
             value={content.linkTarget ?? ""}
-            onChange={(event) => set("linkTarget", event.target.value)}
+            onChange={(value) => set("linkTarget", value)}
           />
         </div>
       )}

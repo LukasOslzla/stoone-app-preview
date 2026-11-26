@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CaretDownIcon, LockIcon } from "@phosphor-icons/react";
+import { LockIcon } from "@phosphor-icons/react";
 import { useSaveForm } from "@/components/buildings/useSaveForm";
 import type { AiSuggestion } from "@/components/seo/AiSuggestionCard";
 import { SearchPreview } from "@/components/seo/SearchPreview";
@@ -9,6 +9,9 @@ import { SeoTextField } from "@/components/seo/SeoTextField";
 import { ShareImageField } from "@/components/seo/ShareImageField";
 import { SharePreview } from "@/components/seo/SharePreview";
 import { Card, CardHeader } from "@/components/ui/Card";
+import { Disclosure } from "@/components/ui/Disclosure";
+import { TagsInput } from "@/components/ui/form/TagsInput";
+import { SwitchRow } from "@/components/ui/SwitchRow";
 import {
   saveSiteSettings,
   suggestSiteSeo,
@@ -35,13 +38,20 @@ export function SiteSeoTab({
     title: seo.title,
     description: seo.description,
   });
+  const [shareImage, setShareImage] = useState(seo.shareImage);
+  const [advanced, setAdvanced] = useState({
+    keywords: seo.keywords,
+    structuredData: seo.structuredData,
+  });
   const [suggestion, setSuggestion] = useState<
     Partial<Record<SeoKey, AiSuggestion | null>>
   >({});
   const [attempts, setAttempts] = useState({ title: 0, description: 0 });
   const [suggesting, setSuggesting] = useState<SeoKey | null>(null);
   const { saving, saved, handleSubmit, markDirty } = useSaveForm(() =>
-    saveSiteSettings(projectSlug, { seo: { ...seo, ...values } }),
+    saveSiteSettings(projectSlug, {
+      seo: { ...seo, ...values, ...advanced, shareImage },
+    }),
   );
 
   function update(key: SeoKey, value: string) {
@@ -103,25 +113,47 @@ export function SiteSeoTab({
             />
 
             <ShareImageField
-              title={seo.shareImage.fileName}
-              note={seo.shareImage.note}
-              thumbnailUrl={seo.shareImage.url}
+              title={shareImage.fileName}
+              note={shareImage.note}
+              thumbnailUrl={shareImage.url}
+              disabled={saving}
+              onReplace={(file) => {
+                // Mock upload: the picture stays in the browser.
+                setShareImage({
+                  url: URL.createObjectURL(file),
+                  fileName: file.name,
+                  note: "Nový obrázek · uloží se s ostatními změnami",
+                });
+                markDirty();
+              }}
             />
 
-            {/* Inert: the advanced section has no design yet. */}
-            <button
-              type="button"
-              className="flex items-center gap-2.5 rounded-md border-t border-line-soft pt-4 text-left font-text text-[13px] leading-[1.4] font-medium text-fg-2 transition-colors hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-offset-4 focus-visible:outline-beige"
+            <Disclosure
+              label="Pokročilé: klíčová slova, strukturovaná data"
+              icon={<LockIcon weight="fill" className="text-fg-3" />}
             >
-              <LockIcon weight="fill" className="size-3.5 shrink-0 text-fg-3" />
-              <span className="min-w-0 flex-1">
-                Pokročilé: klíčová slova, strukturovaná data
-              </span>
-              <CaretDownIcon
-                weight="fill"
-                className="size-[13px] shrink-0 text-fg-3"
+              <TagsInput
+                label="Klíčová slova"
+                hint="Slova a spojení, pod kterými má být web k nalezení. Stačí 3–6."
+                addLabel="Přidat slovo"
+                values={advanced.keywords}
+                disabled={saving}
+                onChange={(keywords) => {
+                  setAdvanced((current) => ({ ...current, keywords }));
+                  markDirty();
+                }}
               />
-            </button>
+              <SwitchRow
+                label="Strukturovaná data"
+                description="Vyhledávač díky nim může ukázat ceny a dostupnost bytů přímo ve výsledcích."
+                checked={advanced.structuredData}
+                disabled={saving}
+                onChange={(structuredData) => {
+                  setAdvanced((current) => ({ ...current, structuredData }));
+                  markDirty();
+                }}
+              />
+            </Disclosure>
           </Card>
 
           <div className="flex w-full flex-col gap-4 xl:w-[420px] xl:shrink-0">
@@ -133,7 +165,7 @@ export function SiteSeoTab({
               description={values.description}
             />
             <SharePreview
-              imageUrl={seo.shareImage.url}
+              imageUrl={shareImage.url}
               domain={settings.domain.replace(/^www\./, "")}
               title={values.title}
             />

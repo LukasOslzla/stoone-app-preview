@@ -50,8 +50,11 @@ export default function ProjectLayout({
 
 async function CurrentProjectHeader({ params }: { params: Params }) {
   const { slug } = await params;
-  const project = await getProject(slug);
+  const [project, projects] = await Promise.all([
+    getProject(slug),
+    getProjects(),
+  ]);
   if (!project) notFound();
 
-  return <ProjectHeader project={project} />;
+  return <ProjectHeader project={project} projects={projects} />;
 }

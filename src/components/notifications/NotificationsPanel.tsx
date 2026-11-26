@@ -26,6 +26,8 @@ type NotificationsPanelProps = {
   onMarkAllRead: () => void;
   /** Called when the inline action of a notification is clicked. */
   onAction?: (notification: AppNotification) => void;
+  /** "Nastavení upozornění"; the link is hidden without it. */
+  onOpenSettings?: () => void;
   className?: string;
 };
 
@@ -35,6 +37,7 @@ export function NotificationsPanel({
   onClose,
   onMarkAllRead,
   onAction,
+  onOpenSettings,
   className,
 }: NotificationsPanelProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -131,15 +134,17 @@ export function NotificationsPanel({
         })}
       </ul>
 
-      <div className="flex justify-center border-t border-line-soft px-5 pt-2.5 pb-1.5">
-        {/* Inert: notification settings have no design yet. */}
-        <button
-          type="button"
-          className="rounded-md font-text text-xs leading-[1.4] font-semibold text-fg-2 transition-colors hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-offset-4 focus-visible:outline-beige"
-        >
-          Nastavení upozornění
-        </button>
-      </div>
+      {onOpenSettings && (
+        <div className="flex justify-center border-t border-line-soft px-5 pt-2.5 pb-1.5">
+          <button
+            type="button"
+            onClick={onOpenSettings}
+            className="rounded-md font-text text-xs leading-[1.4] font-semibold text-fg-2 transition-colors hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-offset-4 focus-visible:outline-beige"
+          >
+            Nastavení upozornění
+          </button>
+        </div>
+      )}
     </div>
   );
 }

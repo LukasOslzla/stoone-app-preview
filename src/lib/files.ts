@@ -28,6 +28,8 @@ export type LibraryFile = {
   uploadedAt: string;
   /** Image without an alt text (bad for SEO and accessibility). */
   missingAlt?: boolean;
+  /** Synced from Realpad: managed at the unit, cannot be deleted here. */
+  fromRealpad?: boolean;
 };
 
 const MB = 1024 * 1024;
@@ -140,6 +142,39 @@ export async function getLibraryFiles(
 ): Promise<LibraryFile[]> {
   void projectSlug;
   return files;
+}
+
+/**
+ * Floor plans and unit cards synced from Realpad (hidden by default).
+ * Mock: the first few of them.
+ */
+export async function getRealpadFiles(
+  projectSlug: string,
+): Promise<LibraryFile[]> {
+  void projectSlug;
+  await new Promise((resolve) => setTimeout(resolve, 700));
+  return ["A.101", "A.102", "A.103", "A.104"].flatMap((unit, index) => [
+    {
+      id: `realpad-plan-${unit}`,
+      name: `Půdorys bytu ${unit}`,
+      category: "document" as const,
+      typeLabel: "PDF",
+      sizeBytes: (380 + index * 35) * 1024,
+      usedOn: [`Byt ${unit}`],
+      uploadedAt: "2026-11-02",
+      fromRealpad: true,
+    },
+    {
+      id: `realpad-card-${unit}`,
+      name: `Karta bytu ${unit}`,
+      category: "document" as const,
+      typeLabel: "PDF",
+      sizeBytes: (1200 + index * 90) * 1024,
+      usedOn: [`Byt ${unit}`],
+      uploadedAt: "2026-11-02",
+      fromRealpad: true,
+    },
+  ]);
 }
 
 export type LibraryCounts = Record<FileCategory | "all", number> & {

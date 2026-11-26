@@ -15,6 +15,10 @@ export type SiteSettings = {
     title: string;
     description: string;
     shareImage: { url: string; fileName: string; note: string };
+    /** Advanced: words the web should be found for. */
+    keywords: string[];
+    /** Advanced: adds schema.org data about the project and its units. */
+    structuredData: boolean;
   };
   notFound: {
     heading: string;
@@ -42,6 +46,8 @@ const settings: SiteSettings = {
       fileName: "og.webp",
       note: "1200 × 630 px · správná velikost",
     },
+    keywords: ["byty Smíchov", "novostavba Praha 5", "vybavené byty"],
+    structuredData: true,
   },
   notFound: {
     heading: "Tady nic není",

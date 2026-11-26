@@ -82,8 +82,7 @@ export type ProjectDashboard = {
 
 const dailyVisits = [
   120, 150, 125, 168, 130, 135, 115, 133, 135, 160, 192, 185, 150, 158, 155,
-  178, 166, 136, 145, 130, 125, 123, 165, 150, 168, 135, 140, 145, 155, 167,
-  47,
+  178, 166, 136, 145, 130, 125, 123, 165, 150, 168, 135, 140, 145, 155, 167, 47,
 ];
 
 /** 24. 10. 2026 → 23. 11. 2026 */
@@ -143,7 +142,13 @@ const dashboard: ProjectDashboard = {
   },
   salesStatus: {
     total: 240,
-    counts: { free: 197, reserved: 21, preReserved: 17, sold: 1, notForSale: 4 },
+    counts: {
+      free: 197,
+      reserved: 21,
+      preReserved: 17,
+      sold: 1,
+      notForSale: 4,
+    },
   },
   funnel: [
     {
@@ -172,12 +177,60 @@ const dashboard: ProjectDashboard = {
     { name: "Byt A.421", visits: 424 },
   ],
   unitsByInterest: [
-    { unit: "A.421", floor: 4, layout: "1+kk", views: 2024, inquiries: 14, price: 6_946_000, status: "free" },
-    { unit: "A.221", floor: 2, layout: "1+kk", views: 1864, inquiries: 11, price: 6_572_000, status: "free" },
-    { unit: "A.321", floor: 3, layout: "1+kk", views: 1539, inquiries: 9, price: 6_672_000, status: "free" },
-    { unit: "A.432", floor: 4, layout: "1,5+kk", views: 571, inquiries: 3, price: 9_408_000, status: "free" },
-    { unit: "A.230", floor: 2, layout: "1,5+kk", views: 569, inquiries: 2, price: 8_349_000, status: "free" },
-    { unit: "A.232", floor: 2, layout: "1,5+kk", views: 565, inquiries: 0, price: 8_474_000, status: "free" },
+    {
+      unit: "A.421",
+      floor: 4,
+      layout: "1+kk",
+      views: 2024,
+      inquiries: 14,
+      price: 6_946_000,
+      status: "free",
+    },
+    {
+      unit: "A.221",
+      floor: 2,
+      layout: "1+kk",
+      views: 1864,
+      inquiries: 11,
+      price: 6_572_000,
+      status: "free",
+    },
+    {
+      unit: "A.321",
+      floor: 3,
+      layout: "1+kk",
+      views: 1539,
+      inquiries: 9,
+      price: 6_672_000,
+      status: "free",
+    },
+    {
+      unit: "A.432",
+      floor: 4,
+      layout: "1,5+kk",
+      views: 571,
+      inquiries: 3,
+      price: 9_408_000,
+      status: "free",
+    },
+    {
+      unit: "A.230",
+      floor: 2,
+      layout: "1,5+kk",
+      views: 569,
+      inquiries: 2,
+      price: 8_349_000,
+      status: "free",
+    },
+    {
+      unit: "A.232",
+      floor: 2,
+      layout: "1,5+kk",
+      views: 565,
+      inquiries: 0,
+      price: 8_474_000,
+      status: "free",
+    },
   ],
   alerts: [
     {

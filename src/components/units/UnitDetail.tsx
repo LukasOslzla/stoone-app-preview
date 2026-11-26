@@ -61,31 +61,35 @@ export function UnitDetail({ projectSlug, unit, realpad }: UnitDetailProps) {
   ];
 
   // What the admin fills in on the other tabs. `href` comes with those tabs.
-  const todo: { title: string; detail: string; done: boolean; href?: string }[] =
-    [
-      {
-        title: "Půdorysy",
-        detail: files(unit.floorPlans.length),
-        done: unit.floorPlans.length > 0,
-        href: `${base}/${unit.id}/files`,
-      },
-      {
-        title: "Dokumenty",
-        detail: files(unit.documents.length),
-        done: unit.documents.length > 0,
-        href: `${base}/${unit.id}/files`,
-      },
-      {
-        title: "Vyhledávače (SEO)",
-        detail:
-          unit.seo.title === unit.seo.autoTitle &&
-          unit.seo.description === unit.seo.autoDescription
-            ? "Vyplněno automaticky"
-            : "Upraveno ručně",
-        done: true,
-        href: `${base}/${unit.id}/seo`,
-      },
-    ];
+  const todo: {
+    title: string;
+    detail: string;
+    done: boolean;
+    href?: string;
+  }[] = [
+    {
+      title: "Půdorysy",
+      detail: files(unit.floorPlans.length),
+      done: unit.floorPlans.length > 0,
+      href: `${base}/${unit.id}/files`,
+    },
+    {
+      title: "Dokumenty",
+      detail: files(unit.documents.length),
+      done: unit.documents.length > 0,
+      href: `${base}/${unit.id}/files`,
+    },
+    {
+      title: "Vyhledávače (SEO)",
+      detail:
+        unit.seo.title === unit.seo.autoTitle &&
+        unit.seo.description === unit.seo.autoDescription
+          ? "Vyplněno automaticky"
+          : "Upraveno ručně",
+      done: true,
+      href: `${base}/${unit.id}/seo`,
+    },
+  ];
 
   return (
     <form onSubmit={handleSubmit}>

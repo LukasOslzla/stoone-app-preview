@@ -10,7 +10,7 @@ import { plural } from "@/lib/format";
 import {
   permissionActions,
   permissionAreas,
-  roles,
+  roles as builtInRoles,
   saveRolePermissions,
   type PermissionAction,
   type PermissionArea,
@@ -18,7 +18,8 @@ import {
   type RoleId,
   type TeamUser,
 } from "@/lib/team";
-import { roleIcons } from "./RoleChip";
+import { CreateRoleDialog } from "./CreateRoleDialog";
+import { RoleIcon } from "./RoleChip";
 import { TeamHeader, type TeamContext } from "./TeamHeader";
 
 type RolesTabProps = TeamContext & {
@@ -37,8 +38,10 @@ export function RolesTab({
   permissions: initialPermissions,
   ...context
 }: RolesTabProps) {
+  const [roles, setRoles] = useState(builtInRoles);
   const [selectedId, setSelectedId] = useState<RoleId>("editor");
   const [permissions, setPermissions] = useState(initialPermissions);
+  const [creating, setCreating] = useState(false);
 
   const selected = roles.find((role) => role.id === selectedId)!;
   const granted = permissions[selectedId];
@@ -66,7 +69,6 @@ export function RolesTab({
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start">
         <div className="flex w-full flex-col gap-2.5 lg:w-[300px] lg:shrink-0">
           {roles.map((role) => {
-            const IconComponent = roleIcons[role.id];
             const active = role.id === selectedId;
             const count = users.filter((user) => user.role === role.id).length;
 
@@ -90,7 +92,7 @@ export function RolesTab({
                       active ? "bg-beige text-ink" : "bg-control text-fg",
                     )}
                   >
-                    <IconComponent weight="fill" className="size-[15px]" />
+                    <RoleIcon role={role.id} className="size-[15px]" />
                   </span>
                   <span className="min-w-0 flex-1 font-text text-base leading-[1.4] font-medium text-fg">
                     {role.name}
@@ -107,8 +109,12 @@ export function RolesTab({
             );
           })}
 
-          {/* Inert: creating a role has no design yet. */}
-          <Button variant="outline" size="md" className="w-full">
+          <Button
+            variant="outline"
+            size="md"
+            className="w-full"
+            onClick={() => setCreating(true)}
+          >
             <PlusCircleIcon weight="fill" className="size-[15px] text-fg-2" />
             Vytvořit roli
           </Button>
@@ -178,6 +184,20 @@ export function RolesTab({
           </div>
         </Card>
       </div>
+
+      <CreateRoleDialog
+        open={creating}
+        onClose={() => setCreating(false)}
+        roles={roles}
+        onCreated={(role, copyOf) => {
+          setRoles((current) => [...current, role]);
+          setPermissions((current) => ({
+            ...current,
+            [role.id]: structuredClone(current[copyOf]),
+          }));
+          setSelectedId(role.id);
+        }}
+      />
     </div>
   );
 }

@@ -1,4 +1,7 @@
-import { ImageIcon } from "@phosphor-icons/react/ssr";
+"use client";
+
+import { useRef } from "react";
+import { ImageIcon } from "@phosphor-icons/react";
 
 type ShareImageFieldProps = {
   /** File name or what the image is ("Půdorys bytu"). */
@@ -7,8 +10,11 @@ type ShareImageFieldProps = {
   note: string;
   /** Preview; an icon is shown without it. */
   thumbnailUrl?: string;
-  /** Text of the (still inert) button on the right. */
+  /** Text of the button on the right. */
   actionLabel?: string;
+  /** Called with the picked image; without it the button is hidden. */
+  onReplace?: (file: File) => void;
+  disabled?: boolean;
 };
 
 /** "Obrázek při sdílení": the picture social networks show with a link. */
@@ -17,7 +23,11 @@ export function ShareImageField({
   note,
   thumbnailUrl,
   actionLabel = "Vyměnit",
+  onReplace,
+  disabled = false,
 }: ShareImageFieldProps) {
+  const input = useRef<HTMLInputElement>(null);
+
   return (
     <div className="flex flex-col gap-2">
       <p className="font-text text-sm leading-[1.4] font-medium text-fg">
@@ -44,12 +54,29 @@ export function ShareImageField({
             {note}
           </span>
         </span>
-        <button
-          type="button"
-          className="rounded-md font-text text-[13px] leading-[1.4] font-semibold text-fg-2 transition-colors hover:text-beige focus-visible:outline-[1.5px] focus-visible:outline-offset-4 focus-visible:outline-beige"
-        >
-          {actionLabel}
-        </button>
+        {onReplace && (
+          <>
+            <input
+              ref={input}
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (file) onReplace(file);
+                event.target.value = "";
+              }}
+            />
+            <button
+              type="button"
+              disabled={disabled}
+              onClick={() => input.current?.click()}
+              className="rounded-md font-text text-[13px] leading-[1.4] font-semibold text-fg-2 transition-colors enabled:hover:text-beige disabled:opacity-50 focus-visible:outline-[1.5px] focus-visible:outline-offset-4 focus-visible:outline-beige"
+            >
+              {actionLabel}
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

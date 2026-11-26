@@ -67,3 +67,62 @@ const notifications: AppNotification[] = [
 export function getNotifications(): AppNotification[] {
   return notifications;
 }
+
+/** What each kind of notification is called in the settings. */
+export const notificationKinds: {
+  id: NotificationKind;
+  label: string;
+  description: string;
+}[] = [
+  {
+    id: "warning",
+    label: "Problémy se synchronizací",
+    description: "Když se nepovede spojení s Realpadem",
+  },
+  {
+    id: "inquiry",
+    label: "Nové poptávky",
+    description: "Zájemce vyplnil formulář na webu",
+  },
+  {
+    id: "deadline",
+    label: "Končící rezervace",
+    description: "Tři dny před vypršením předrezervace",
+  },
+  {
+    id: "done",
+    label: "Dokončené úlohy",
+    description: "Importy, migrace a hromadné úpravy",
+  },
+  {
+    id: "user",
+    label: "Uživatelé",
+    description: "Přijaté pozvánky a změny rolí",
+  },
+];
+
+export type NotificationSettings = {
+  /** Kinds shown in the panel. */
+  kinds: Record<NotificationKind, boolean>;
+  /** Also send a daily summary by e-mail. */
+  email: boolean;
+};
+
+export const defaultNotificationSettings: NotificationSettings = {
+  kinds: {
+    warning: true,
+    inquiry: true,
+    deadline: true,
+    done: true,
+    user: false,
+  },
+  email: true,
+};
+
+/** Mock save: waits and resolves. */
+export async function saveNotificationSettings(
+  settings: NotificationSettings,
+): Promise<void> {
+  void settings;
+  await new Promise((resolve) => setTimeout(resolve, 300));
+}

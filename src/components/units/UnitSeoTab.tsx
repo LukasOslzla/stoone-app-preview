@@ -28,6 +28,11 @@ export function UnitSeoTab({ projectSlug, unit, realpad }: UnitSeoTabProps) {
     title: seo.title,
     description: seo.description,
   });
+  const [shareImage, setShareImage] = useState<{
+    title: string;
+    note: string;
+    url?: string;
+  }>(seo.shareImage);
   const [suggesting, setSuggesting] = useState<SeoKey | null>(null);
   const { saving, saved, handleSubmit, markDirty } = useSaveForm(() =>
     saveUnit(projectSlug, unit.id, { seo: { ...seo, ...values } }),
@@ -92,9 +97,20 @@ export function UnitSeoTab({ projectSlug, unit, realpad }: UnitSeoTabProps) {
             />
 
             <ShareImageField
-              title={seo.shareImage.title}
-              note={seo.shareImage.note}
+              title={shareImage.title}
+              note={shareImage.note}
+              thumbnailUrl={shareImage.url}
               actionLabel="Změnit"
+              disabled={saving}
+              onReplace={(file) => {
+                // Mock upload: the picture stays in the browser.
+                setShareImage({
+                  title: file.name,
+                  note: "Vlastní obrázek · uloží se s ostatními změnami",
+                  url: URL.createObjectURL(file),
+                });
+                markDirty();
+              }}
             />
           </Card>
 

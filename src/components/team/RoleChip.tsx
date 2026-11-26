@@ -1,12 +1,35 @@
-import { PencilSimpleIcon, ShieldIcon } from "@phosphor-icons/react/ssr";
+import { createElement } from "react";
+import type { Icon, IconProps } from "@phosphor-icons/react";
+import {
+  PencilSimpleIcon,
+  ShieldIcon,
+  UserGearIcon,
+} from "@phosphor-icons/react/ssr";
 import { cn } from "@/lib/cn";
 import { roles, type RoleId } from "@/lib/team";
 
-export const roleIcons = { admin: ShieldIcon, editor: PencilSimpleIcon };
+export const roleIcons: Record<string, Icon> = {
+  admin: ShieldIcon,
+  editor: PencilSimpleIcon,
+};
+
+/** Icon of a role; roles created by the user share one icon. */
+export function RoleIcon({ role, ...props }: IconProps & { role: RoleId }) {
+  return createElement(roleIcons[role] ?? UserGearIcon, {
+    weight: "fill",
+    ...props,
+  });
+}
 
 /** Pill with the role of a user; the admin role is highlighted. */
-export function RoleChip({ role }: { role: RoleId }) {
-  const IconComponent = roleIcons[role];
+export function RoleChip({
+  role,
+  name,
+}: {
+  role: RoleId;
+  /** Name of a role that is not built in. */
+  name?: string;
+}) {
   const admin = role === "admin";
 
   return (
@@ -18,8 +41,8 @@ export function RoleChip({ role }: { role: RoleId }) {
           : "border-line-soft bg-control text-fg-2",
       )}
     >
-      <IconComponent weight="fill" className="size-3" />
-      {roles.find((item) => item.id === role)?.name}
+      <RoleIcon role={role} className="size-3" />
+      {name ?? roles.find((item) => item.id === role)?.name}
     </span>
   );
 }

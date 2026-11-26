@@ -3,10 +3,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import Link from "next/link";
-import {
-  ArrowLeftIcon,
-  EnvelopeSimpleOpenIcon,
-} from "@phosphor-icons/react";
+import { ArrowLeftIcon, EnvelopeSimpleOpenIcon } from "@phosphor-icons/react";
 import { AuthHeading, authLinkClass } from "@/components/auth/AuthHeading";
 import {
   Button,

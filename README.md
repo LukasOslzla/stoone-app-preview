@@ -33,7 +33,7 @@
 
 ## Kde co je
 
-- `src/components/ui` – obecné stavební prvky: tlačítko, karta, formulářová pole (`form/`), `DataTable`, `Chip`, `SearchInput`, `Pagination`, `TabNav`, `Breadcrumb`, `Modal`, `ChoiceCard`, `Checkbox`, `Stepper`, `Dropzone`, `FileRows`, `SegmentedControl`, štítky stavů.
+- `src/components/ui` – obecné stavební prvky: tlačítko, karta, formulářová pole (`form/`), `DataTable`, `Chip`, `SearchInput`, `Pagination`, `TabNav`, `Breadcrumb`, `Modal`, `DropdownMenu` (nabídky v hlavičce, menu a AI liště), `ChoiceCard`, `Checkbox`, `Stepper`, `Dropzone`, `FileRows`, `SegmentedControl`, štítky stavů.
 - `src/components/app` – kostra aplikace: `AppShell`, postranní menu (`sidebar/`), hlavičky stránek (`PageHeader`, `PageIntro`, `FlowHeader`), AI lišta.
 - `src/components/detail` – rámec detailové stránky se záložkami (`DetailScaffold`).
 - `src/components/plan` – označování oblastí na obrázku (`PlanAreaEditor`, `PlanChecklist`).
@@ -51,7 +51,7 @@ Všechna data a ukládání jsou v `src/lib` a jsou to jen ukázky:
 - `auth.ts` – přihlášení (projde heslo s 8+ znaky) a obnova hesla
 - `projects.ts`, `user.ts`, `dashboard.ts`, `buildings.ts`, `units.ts`, `units-import.ts`
 
-V editoru obsahu (`editor.ts`) nahrazují živý web snímky obrazovky: přejmenování nebo přeřazení položek menu se proto v náhledu neprojeví, AI vrací na každé zadání stejný návrh a „Zveřejnit změny“ jen chvíli čeká. Patička a „Požádat o novou sekci“ nemají návrh.
+V editoru obsahu (`editor.ts`) nahrazují živý web snímky obrazovky: přejmenování nebo přeřazení položek menu se proto v náhledu neprojeví, AI vrací na každé zadání stejný návrh a „Zveřejnit změny“ jen chvíli čeká.
 
 Ukládání jen chvíli čeká, nahrané soubory zůstávají v prohlížeči, import z Excelu soubor nečte a „Vylepšit s AI“ vrací předpřipravený text. Stránky za loginem nejsou chráněné. Sektory mají stejná data u každého projektu, obrysy domů jsou kromě RD24 jen přibližné a odkaz „Použít ukázkový“ v průvodci Nový sektor je jen pro preview.
 

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { GlobeIcon, MoonIcon, SunIcon } from "@phosphor-icons/react/ssr";
+import { MoonIcon, SunIcon } from "@phosphor-icons/react/ssr";
+import { LocaleMenu } from "@/components/app/LocaleMenu";
 import { cn } from "@/lib/cn";
 
 type PageHeaderProps = {
@@ -34,22 +35,10 @@ export function PageHeader({
 
       <div className="flex shrink-0 items-center gap-4">
         {actions}
-        <LocaleButton />
+        <LocaleMenu />
         <ThemeSwitcher />
       </div>
     </header>
-  );
-}
-
-export function LocaleButton() {
-  return (
-    <button
-      type="button"
-      aria-label="Jazyk"
-      className="flex size-10 items-center justify-center rounded-xl text-fg-2 transition-colors hover:bg-white/5 hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-beige"
-    >
-      <GlobeIcon weight="fill" className="size-5" />
-    </button>
   );
 }
 

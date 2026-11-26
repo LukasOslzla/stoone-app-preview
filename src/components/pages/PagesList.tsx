@@ -8,6 +8,7 @@ import {
   PlusCircleIcon,
 } from "@phosphor-icons/react";
 import { PageIntro } from "@/components/app/PageIntro";
+import { Banner } from "@/components/ui/Banner";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import {
@@ -17,10 +18,13 @@ import {
   type SortState,
 } from "@/components/ui/DataTable";
 import { DotPill } from "@/components/ui/DotPill";
+import { Modal } from "@/components/ui/Modal";
+import { NumberedSteps } from "@/components/ui/NumberedSteps";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { formatNumber, plural } from "@/lib/format";
 import type { SitePage, SiteStatus } from "@/lib/pages";
+import { AddPageDialog } from "./AddPageDialog";
 import { SiteStatusBar } from "./SiteStatusBar";
 
 type Filter = "all" | SitePage["status"];
@@ -35,10 +39,19 @@ type PagesListProps = {
   site: SiteStatus;
   /** Address of the content editor of this project. */
   editorHref: string;
+  projectSlug: string;
 };
 
 /** "Stránky webu": state of the public web and the list of its pages. */
-export function PagesList({ pages, site, editorHref }: PagesListProps) {
+export function PagesList({
+  pages: initialPages,
+  site,
+  editorHref,
+  projectSlug,
+}: PagesListProps) {
+  const [pages, setPages] = useState(initialPages);
+  const [dialog, setDialog] = useState<"add" | "help" | null>(null);
+  const [created, setCreated] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<SortState | null>(null);
@@ -152,8 +165,7 @@ export function PagesList({ pages, site, editorHref }: PagesListProps) {
               />
               Zobrazit web
             </a>
-            {/* Inert: adding a page has no design yet. */}
-            <Button size="md">
+            <Button size="md" onClick={() => setDialog("add")}>
               <PlusCircleIcon weight="fill" className="size-4" />
               Přidat stránku
             </Button>
@@ -161,10 +173,18 @@ export function PagesList({ pages, site, editorHref }: PagesListProps) {
         }
       />
 
+      {created && (
+        <Banner tone="success">
+          Stránka „{created}“ je založená jako koncept. Obsah do ní přidáte v
+          editoru.
+        </Banner>
+      )}
+
       <SiteStatusBar
         online={site.online}
         domain={site.domain}
         helpLabel="Jak upravit stránku?"
+        onHelp={() => setDialog("help")}
         facts={[
           {
             label: "Stránek",
@@ -216,6 +236,51 @@ export function PagesList({ pages, site, editorHref }: PagesListProps) {
           empty="Žádná stránka neodpovídá filtru."
         />
       </Card>
+
+      <AddPageDialog
+        open={dialog === "add"}
+        onClose={() => setDialog(null)}
+        projectSlug={projectSlug}
+        domain={site.domain}
+        pages={pages}
+        onCreated={(page) => {
+          setPages((current) => [...current, page]);
+          setCreated(page.name);
+        }}
+      />
+
+      <Modal
+        open={dialog === "help"}
+        onClose={() => setDialog(null)}
+        title="Jak upravit stránku"
+        description="Změny se ukládají průběžně jako koncept a na web jdou až po zveřejnění."
+      >
+        <NumberedSteps
+          steps={[
+            {
+              title: "U stránky klikněte na Upravit",
+              text: "Otevře se editor s náhledem webu vpravo.",
+            },
+            {
+              title: "Vyberte sekci a přepište její obsah",
+              text: "Texty, odkazy a obrázky měníte vlevo; vzhled sekce zůstává stejný.",
+            },
+            {
+              title: "Přidejte nebo přeřaďte sekce",
+              text: "Sekce přetáhnete za úchyt, novou vložíte mezi dvě stávající.",
+            },
+            {
+              title: "Klikněte na Zveřejnit změny",
+              text: "Do té doby vidíte úpravy jen vy v náhledu.",
+            },
+          ]}
+        />
+        <div className="flex justify-end">
+          <Button size="md" onClick={() => setDialog(null)}>
+            Rozumím
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

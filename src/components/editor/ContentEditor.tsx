@@ -14,6 +14,8 @@ import {
 import { AddSectionDialog } from "./AddSectionDialog";
 import { AiAnswerCard } from "./AiAnswerCard";
 import { EditorBar } from "./EditorBar";
+import { FooterPanel } from "./FooterPanel";
+import { FooterPreview } from "./FooterPreview";
 import { HeaderPanel } from "./HeaderPanel";
 import { OpeningHoursPanel } from "./OpeningHoursPanel";
 import { OpeningHoursPreview } from "./OpeningHoursPreview";
@@ -63,6 +65,7 @@ export function ContentEditor({ projectSlug, data }: ContentEditorProps) {
     projectSlug,
     {
       header: data.header,
+      footer: data.footer,
       sections: Object.fromEntries(
         pages.map((page) => [page.id, page.sections]),
       ),
@@ -78,13 +81,11 @@ export function ContentEditor({ projectSlug, data }: ContentEditorProps) {
       sub: "Zobrazuje se na celém webu",
       kind: "site",
     },
-    // No design for the footer yet.
     {
       id: "footer",
       label: "Patička",
       sub: "Zobrazuje se na celém webu",
       kind: "site",
-      disabled: true,
     },
     ...pages.map((page): EditorTarget => ({
       id: `page:${page.id}`,
@@ -157,8 +158,7 @@ export function ContentEditor({ projectSlug, data }: ContentEditorProps) {
         afterName={previous && typeOf(previous)?.name}
         onInsert={addSection}
         onBack={() => setGalleryOpen(false)}
-        // No design for the request yet.
-        onRequest={() => {}}
+        projectSlug={projectSlug}
       />
     );
   }
@@ -194,6 +194,22 @@ export function ContentEditor({ projectSlug, data }: ContentEditorProps) {
           days={draft.hours}
           sites={shared.sites.length}
         />
+      ),
+    };
+  } else if (target === "footer") {
+    panel = (
+      <FooterPanel
+        footer={draft.footer}
+        onChange={(key, footer) =>
+          update(key, (current) => ({ ...current, footer }))
+        }
+      />
+    );
+    preview = {
+      url: domain,
+      hint: "Změny vidíte hned – na web jdou po „Zveřejnit změny“",
+      content: (
+        <FooterPreview siteName={data.projectName} footer={draft.footer} />
       ),
     };
   } else if (page && section) {

@@ -4,7 +4,8 @@
  * MOCK DATA — replace the functions below with real API calls.
  */
 
-export type RoleId = "admin" | "editor";
+/** "admin" and "editor" are built in; created roles get their own id. */
+export type RoleId = string;
 
 export type Role = {
   id: RoleId;
@@ -12,6 +13,8 @@ export type Role = {
   description: string;
   /** Shorter description used in the invite dialog. */
   inviteDescription: string;
+  /** Created by the user (built-in roles cannot be removed). */
+  custom?: boolean;
 };
 
 export const roles: Role[] = [
@@ -167,4 +170,19 @@ export async function saveRolePermissions(
   void roleId;
   void value;
   await wait(300);
+}
+
+/** Mock: waits and returns the new role. */
+export async function createRole(input: {
+  name: string;
+  description: string;
+}): Promise<Role> {
+  await wait(700);
+  return {
+    id: `role-${Date.now()}`,
+    name: input.name,
+    description: input.description || "Vlastní role",
+    inviteDescription: input.description || "Vlastní role",
+    custom: true,
+  };
 }

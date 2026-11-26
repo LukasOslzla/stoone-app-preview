@@ -31,7 +31,10 @@ type LoginFormProps = {
   redirectTo?: string;
 };
 
-export function LoginForm({ notice, redirectTo = "/overview" }: LoginFormProps) {
+export function LoginForm({
+  notice,
+  redirectTo = "/overview",
+}: LoginFormProps) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

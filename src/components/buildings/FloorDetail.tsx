@@ -55,9 +55,7 @@ export function FloorDetail({ projectSlug, floor }: FloorDetailProps) {
             options={saleStatusOptions}
             value={values.saleStatus}
             disabled={saving}
-            onChange={(event) =>
-              update("saleStatus", event.target.value as SaleStatus)
-            }
+            onChange={(value) => update("saleStatus", value as SaleStatus)}
           />
         </BasicsCard>
       </DetailScaffold>

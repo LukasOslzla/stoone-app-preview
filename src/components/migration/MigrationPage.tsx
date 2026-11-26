@@ -114,7 +114,7 @@ export function MigrationPage({
                 options={options}
                 value={from}
                 disabled={running}
-                onChange={(event) => change(setFrom)(event.target.value)}
+                onChange={(value) => change(setFrom)(value)}
               />
             </Step>
 
@@ -164,7 +164,7 @@ export function MigrationPage({
                     ? "Vyberte jiný projekt, než ze kterého berete data."
                     : undefined
                 }
-                onChange={(event) => change(setTo)(event.target.value)}
+                onChange={(value) => change(setTo)(value)}
               />
             </Step>
 
