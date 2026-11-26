@@ -95,26 +95,3 @@ export function Row({
     </div>
   );
 }
-
-/**
- * Renders the same sample twice, in the dark and in the light theme, side by
- * side. `data-theme` on a wrapper switches the tokens for everything inside.
- */
-export function BothThemes({ children }: { children: ReactNode }) {
-  return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-      {(["dark", "light"] as const).map((theme) => (
-        <div
-          key={theme}
-          data-theme={theme}
-          className="flex min-w-0 flex-col gap-3 rounded-xl border border-line-soft bg-panel p-4 text-fg"
-        >
-          <p className="font-text text-[11px] leading-[1.4] font-bold tracking-[0.8px] text-fg-3 uppercase">
-            {theme === "dark" ? "Tmavý" : "Světlý"}
-          </p>
-          {children}
-        </div>
-      ))}
-    </div>
-  );
-}

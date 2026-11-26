@@ -7,10 +7,12 @@ import {
   FileCsvIcon,
   InfoIcon,
   ListIcon,
+  MoonIcon,
   MagnifyingGlassIcon,
   PencilSimpleIcon,
   PlusCircleIcon,
   SquaresFourIcon,
+  SunIcon,
   TrashIcon,
   WarningCircleIcon,
 } from "@phosphor-icons/react";
@@ -18,7 +20,6 @@ import { ChangePasswordDialog } from "@/components/account/ChangePasswordDialog"
 import { AiPrompt } from "@/components/app/AiPrompt";
 import { PageIntro } from "@/components/app/PageIntro";
 import { LanguageMenu } from "@/components/app/sidebar/LanguageMenu";
-import { ThemeSwitcher } from "@/components/app/ThemeSwitcher";
 import { MenuItemsEditor } from "@/components/editor/MenuItemsEditor";
 import { NotificationSettingsDialog } from "@/components/notifications/NotificationSettingsDialog";
 import { RangeSelect, dateRanges } from "@/components/project/RangeSelect";
@@ -79,9 +80,10 @@ import { PasswordField, TextField } from "@/components/ui/TextField";
 import { SelectInput, TextArea, TextInput } from "@/components/ui/form/Field";
 import { TagsInput } from "@/components/ui/form/TagsInput";
 import { formatPrice } from "@/lib/format";
+import { useTheme, type ResolvedTheme } from "@/lib/theme";
 import { defaultNotificationSettings } from "@/lib/notifications";
 import { unitStatuses, type UnitStatus } from "@/lib/unit-status";
-import { BothThemes, Chapter, Demo, Row } from "./Showcase";
+import { Chapter, Demo, Row } from "./Showcase";
 
 const chapters = [
   ["tokens", "Barvy a písmo"],
@@ -206,6 +208,12 @@ const suggestion: AiSuggestion = {
  * `src/components/ui` with its variants. All examples are live.
  */
 export function Styleguide() {
+  // Version shown here: the app's theme until the switch on top is used.
+  const { theme: appTheme } = useTheme();
+  const [pickedVersion, setPickedVersion] = useState<ResolvedTheme | null>(
+    null,
+  );
+  const version = pickedVersion ?? appTheme;
   const [view, setView] = useState<"grid" | "table">("grid");
   const [filter, setFilter] = useState<"all" | "published" | "draft">("all");
   const [theme, setTheme] = useState<"auto" | "light" | "dark">("dark");
@@ -270,7 +278,9 @@ export function Styleguide() {
   ];
 
   return (
-    <div className="flex min-h-dvh bg-bg">
+    // The whole styleguide renders in the chosen version; the rest of the app
+    // keeps its own theme.
+    <div data-theme={version} className="flex min-h-dvh bg-bg text-fg">
       <aside className="sticky top-0 flex h-dvh w-[232px] shrink-0 flex-col gap-7 border-r border-line-soft px-5 py-7 max-lg:hidden">
         <StooneLogo className="h-[18px] w-[107.7px] text-beige" />
         <nav aria-label="Kapitoly" className="flex flex-col gap-0.5">
@@ -287,8 +297,33 @@ export function Styleguide() {
       </aside>
 
       <main className="flex min-w-0 flex-1 flex-col gap-12 px-8 py-9 pb-24">
-        <div className="flex justify-end">
-          <ThemeSwitcher />
+        <div className="sticky top-0 z-30 -mx-8 -mt-9 flex flex-wrap items-center justify-between gap-3 border-b border-line-soft bg-bg/90 px-8 py-3 backdrop-blur">
+          <p className="font-text text-[13px] leading-[1.4] text-fg-2">
+            Verze komponent:{" "}
+            <strong className="font-semibold text-fg">
+              {version === "dark" ? "tmavý režim" : "světlý režim"}
+            </strong>
+          </p>
+          <div className="w-[240px] max-w-full">
+            <SegmentedControl
+              label="Verze komponent"
+              value={version}
+              onChange={setPickedVersion}
+              options={[
+                {
+                  value: "dark",
+                  label: "Tmavý",
+                  icon: <MoonIcon weight="fill" className="size-4" />,
+                },
+                {
+                  value: "light",
+                  label: "Světlý",
+                  icon: <SunIcon weight="fill" className="size-4" />,
+                },
+              ]}
+              shape="block"
+            />
+          </div>
         </div>
         <PageIntro
           title="Styleguide"
@@ -298,7 +333,7 @@ export function Styleguide() {
         <Chapter
           id="tokens"
           title="Barvy a písmo"
-          description="Tokeny jsou v src/app/globals.css: blok @theme je tmavý režim, [data-theme=light] ho přepisuje. V kódu se používají jen přes třídy (bg-card, text-fg-2, border-line, bg-beige/15), nikdy jako hex – jinak se rozbije druhý režim. U každé barvy je hodnota tmavá / světlá."
+          description="Tokeny jsou v src/app/globals.css: blok @theme je tmavý režim, [data-theme=light] ho přepisuje. V kódu se používají jen přes třídy (bg-card, text-fg-2, border-line, bg-beige/15), nikdy jako hex – jinak se rozbije druhý režim. U každé barvy je hodnota pro verzi zvolenou nahoře."
         >
           <Demo name="Barvy" source="src/app/globals.css" wide>
             <ul className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3">
@@ -313,7 +348,8 @@ export function Styleguide() {
                       {color.name}
                     </code>
                     <span className="truncate font-text text-xs leading-[1.4] text-fg-3">
-                      {color.dark} / {color.light} · {color.use}
+                      {version === "dark" ? color.dark : color.light} ·{" "}
+                      {color.use}
                     </span>
                   </span>
                 </li>
@@ -382,7 +418,7 @@ export function Styleguide() {
         <Chapter
           id="themes"
           title="Světlý a tmavý režim"
-          description="Režim se přepíná atributem data-theme na <html> (lib/theme: setTheme, useTheme). Tmavý je výchozí; světlý používá paletu „By Detailist“. Ukázky níže jsou vždy dvakrát – tmavě a světle – bez ohledu na to, jaký režim máte zapnutý."
+          description="Režim se přepíná atributem data-theme na <html> (lib/theme: setTheme, useTheme). Tmavý je výchozí; světlý používá paletu „By Detailist“. Celý styleguide se zobrazuje ve verzi zvolené přepínačem nahoře."
         >
           <Demo name="Pravidla světlého režimu" wide>
             <ul className="flex list-disc flex-col gap-1.5 pl-5 font-text text-sm leading-[1.5] text-fg-2">
@@ -456,23 +492,21 @@ export function Styleguide() {
             source="ui/ProgressTicks, ui/PillSteps"
             note="Průběh: přechod béžová → měď (tmavý) a camel → olive (světlý). Pilulky se při nedostatku místa posouvají do strany: okraj se ztrácí a přibude kulatá šipka; po posunutí i šipka vlevo."
           >
-            <BothThemes>
-              <div className="flex flex-col gap-4">
-                <ProgressTicks percent={62} label="Ukázka průběhu" />
-                <PillSteps
-                  label="Podkroky"
-                  value={substep}
-                  onChange={setSubstep}
-                  steps={[
-                    { id: "1", label: "4.1 Dlažba", done: true },
-                    { id: "2", label: "4.2 Obklad", done: true },
-                    { id: "3", label: "4.3 Umyvadlo" },
-                    { id: "4", label: "4.4 Baterie" },
-                    { id: "5", label: "4.5 Sprchový kout" },
-                  ]}
-                />
-              </div>
-            </BothThemes>
+            <div className="flex flex-col gap-4">
+              <ProgressTicks percent={62} label="Ukázka průběhu" />
+              <PillSteps
+                label="Podkroky"
+                value={substep}
+                onChange={setSubstep}
+                steps={[
+                  { id: "1", label: "4.1 Dlažba", done: true },
+                  { id: "2", label: "4.2 Obklad", done: true },
+                  { id: "3", label: "4.3 Umyvadlo" },
+                  { id: "4", label: "4.4 Baterie" },
+                  { id: "5", label: "4.5 Sprchový kout" },
+                ]}
+              />
+            </div>
           </Demo>
 
           <Demo
@@ -480,28 +514,26 @@ export function Styleguide() {
             source="ui/Card, ui/form/Field, ui/Button, ui/DotPill"
             wide
           >
-            <BothThemes>
-              <Card className="flex flex-col gap-4 p-5">
-                <CardHeader
-                  title="Základní údaje"
-                  action={
-                    <DotPill
-                      label="Volné"
-                      color="var(--color-green)"
-                      tone="tinted"
-                    />
-                  }
-                />
-                <TextInput label="Cena" defaultValue="6 946 000" suffix="Kč" />
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <Button size="md">Uložit změny</Button>
-                  <Button size="md" variant="outline">
-                    Zrušit
-                  </Button>
-                  <DotPill label="Koncept" color="var(--color-yellow)" />
-                </div>
-              </Card>
-            </BothThemes>
+            <Card className="flex flex-col gap-4 p-5">
+              <CardHeader
+                title="Základní údaje"
+                action={
+                  <DotPill
+                    label="Volné"
+                    color="var(--color-green)"
+                    tone="tinted"
+                  />
+                }
+              />
+              <TextInput label="Cena" defaultValue="6 946 000" suffix="Kč" />
+              <div className="flex flex-wrap items-center gap-2.5">
+                <Button size="md">Uložit změny</Button>
+                <Button size="md" variant="outline">
+                  Zrušit
+                </Button>
+                <DotPill label="Koncept" color="var(--color-yellow)" />
+              </div>
+            </Card>
           </Demo>
 
           <Demo
@@ -516,18 +548,16 @@ export function Styleguide() {
             }
             wide
           >
-            <BothThemes>
-              <div className="flex flex-col gap-4">
-                <Stepper
-                  variant="pills"
-                  steps={["Podlahy", "Dveře", "Koupelna"]}
-                  current={1}
-                />
-                <div className="w-[220px] max-w-full">
-                  <LanguageMenu />
-                </div>
+            <div className="flex flex-col gap-4">
+              <Stepper
+                variant="pills"
+                steps={["Podlahy", "Dveře", "Koupelna"]}
+                current={1}
+              />
+              <div className="w-[220px] max-w-full">
+                <LanguageMenu />
               </div>
-            </BothThemes>
+            </div>
           </Demo>
         </Chapter>
 
