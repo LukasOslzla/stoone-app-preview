@@ -66,7 +66,7 @@ export function AiSuggestionCard({
           type="button"
           disabled={loading}
           onClick={onAnother}
-          className="flex h-8 items-center gap-1.5 rounded-full border border-line px-3.5 font-text text-[13px] leading-none font-semibold text-fg transition-colors enabled:hover:bg-white/5 disabled:opacity-60 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-ai"
+          className="flex h-8 items-center gap-1.5 rounded-full border border-line px-3.5 font-text text-[13px] leading-none font-semibold text-fg transition-colors enabled:hover:bg-tint/5 disabled:opacity-60 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-ai"
         >
           <ArrowsClockwiseIcon
             weight="fill"

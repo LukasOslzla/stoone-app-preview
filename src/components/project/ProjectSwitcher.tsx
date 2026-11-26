@@ -57,8 +57,8 @@ export function ProjectSwitcher({ project, projects }: ProjectSwitcherProps) {
           title="Přepnout projekt"
           {...props}
           className={cn(
-            "-m-1.5 flex max-w-full min-w-0 items-center gap-3.5 rounded-2xl p-1.5 text-left transition-colors hover:bg-white/5 focus-visible:outline-[1.5px] focus-visible:outline-beige",
-            open && "bg-white/5",
+            "-m-1.5 flex max-w-full min-w-0 items-center gap-3.5 rounded-2xl p-1.5 text-left transition-colors hover:bg-tint/5 focus-visible:outline-[1.5px] focus-visible:outline-beige",
+            open && "bg-tint/5",
           )}
         >
           <LogoTile text={project.logoText} size="md" muted={!project.active} />

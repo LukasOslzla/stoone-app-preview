@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { notFound } from "next/navigation";
 import { UnitFilesTab } from "@/components/units/UnitFilesTab";
 import { getProject } from "@/lib/projects";
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /** Unit detail – "Půdorysy a dokumenty". */
 export default function UnitFilesPage({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

@@ -4,10 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import {
   CaretLeftIcon,
+  MagnifyingGlassIcon,
   PlusCircleIcon,
   SparkleIcon,
 } from "@phosphor-icons/react";
 import { Chip } from "@/components/ui/Chip";
+import { Button } from "@/components/ui/Button";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { outOf, plural } from "@/lib/format";
 import {
@@ -62,7 +65,7 @@ export function SectionGallery({
         <button
           type="button"
           onClick={onBack}
-          className="flex h-9 items-center gap-1.5 rounded-full border border-line pr-3.5 pl-2.5 font-text text-[13px] leading-none font-semibold text-fg transition-colors hover:bg-white/5 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige"
+          className="flex h-9 items-center gap-1.5 rounded-full border border-line pr-3.5 pl-2.5 font-text text-[13px] leading-none font-semibold text-fg transition-colors hover:bg-tint/5 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige"
         >
           <CaretLeftIcon weight="fill" className="size-3 text-fg-2" />
           Zpět na {pageName}
@@ -115,6 +118,27 @@ export function SectionGallery({
           ))}
         </div>
 
+        {visible.length === 0 && (
+          <EmptyState
+            size="sm"
+            icon={MagnifyingGlassIcon}
+            title="Takovou sekci tu nemáme"
+            text="Zkuste jiný druh nebo hledaný text – nebo o sekci požádejte níže."
+            action={
+              <Button
+                size="md"
+                variant="outline"
+                onClick={() => {
+                  setCategory("all");
+                  setQuery("");
+                }}
+              >
+                Zrušit filtry
+              </Button>
+            }
+          />
+        )}
+
         <ul className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5">
           {visible.map((type) => {
             return (
@@ -144,7 +168,7 @@ export function SectionGallery({
                       type="button"
                       onClick={() => onInsert(type.id)}
                       aria-label={`Vložit na stránku: ${type.name}`}
-                      className="flex h-10 items-center gap-2 rounded-full bg-beige px-[18px] font-text text-sm leading-none font-bold text-ink transition-colors after:absolute after:inset-0 hover:bg-copper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg"
+                      className="flex h-10 items-center gap-2 rounded-full bg-beige px-[18px] font-text text-sm leading-none font-bold text-ink transition-colors after:absolute after:inset-0 hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg"
                     >
                       <PlusCircleIcon weight="fill" className="size-[15px]" />
                       Vložit na stránku

@@ -88,8 +88,8 @@ export function FloorUnitsTab({ projectSlug, floor }: FloorUnitsTabProps) {
 function FloorPlanPlaceholder() {
   return (
     <>
-      <div className="absolute top-[9.52%] left-[6.7%] h-[80.95%] w-[86.59%] rounded border-2 border-[#D2D5C54D]" />
-      <div className="absolute top-[44.76%] left-[6.7%] flex h-[10.48%] w-[86.59%] items-center justify-center border border-[#D2D5C526] bg-[#FFFFFF08]">
+      <div className="absolute top-[9.52%] left-[6.7%] h-[80.95%] w-[86.59%] rounded border-2 border-mist/30" />
+      <div className="absolute top-[44.76%] left-[6.7%] flex h-[10.48%] w-[86.59%] items-center justify-center border border-mist/15 bg-tint/3">
         <span className="font-text text-[11px] leading-[1.4] text-fg-3">
           Chodba · výtah · schodiště
         </span>

@@ -24,7 +24,7 @@ export function TopPagesCard({ pages }: { pages: TopPage[] }) {
                 {formatNumber(page.visits)}
               </span>
             </div>
-            <div className="h-2 overflow-hidden rounded-full bg-[#FFFFFF0F]">
+            <div className="h-2 overflow-hidden rounded-full bg-tint/6">
               <div
                 className="h-full rounded-full bg-beige"
                 style={{ width: `${(page.visits / max) * 100}%` }}

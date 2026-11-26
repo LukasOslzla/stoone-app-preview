@@ -109,9 +109,9 @@ export function SitePreview({
               highlight.tone === "outline" &&
                 "pointer-events-none rounded-[10px] border border-beige",
               highlight.tone === "fill" &&
-                "rounded-md border border-beige bg-[#CAC3B840]",
+                "rounded-md border border-beige bg-beige/25",
               highlight.tone === "ai" &&
-                "pointer-events-none rounded-lg bg-[#7C5CFF1A]",
+                "pointer-events-none rounded-lg bg-ai/10",
             );
             const tag = highlight.tag && (
               <span

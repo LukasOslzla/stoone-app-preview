@@ -95,7 +95,7 @@ export function EditorBar({
           {busy ? (
             <SpinnerIcon weight="bold" className="size-3.5 animate-spin" />
           ) : (
-            <CheckCircleIcon weight="fill" className="size-3.5" />
+            <CheckCircleIcon weight="fill" className="size-3.5 text-green" />
           )}
           {statusLabels[status]}
         </p>
@@ -105,7 +105,7 @@ export function EditorBar({
           disabled={!canUndo}
           aria-label="Vrátit poslední změnu"
           title="Vrátit poslední změnu"
-          className="flex size-9 items-center justify-center rounded-full border border-line-soft text-fg-2 transition-colors enabled:hover:bg-white/5 enabled:hover:text-fg disabled:opacity-40 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige"
+          className="flex size-9 items-center justify-center rounded-full border border-line-soft text-fg-2 transition-colors enabled:hover:bg-tint/5 enabled:hover:text-fg disabled:opacity-40 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige"
         >
           <ArrowCounterClockwiseIcon weight="bold" className="size-3.5" />
         </button>

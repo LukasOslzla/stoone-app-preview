@@ -43,7 +43,7 @@ export function PrevNext({
             href={href}
             aria-label={label}
             title={label}
-            className={`${itemClass} hover:bg-white/5 hover:text-fg`}
+            className={`${itemClass} hover:bg-tint/5 hover:text-fg`}
           >
             <IconComponent weight="fill" className="size-3" />
           </Link>

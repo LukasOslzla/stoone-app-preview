@@ -115,7 +115,7 @@ export function SectionEditPanel({
       </button>
 
       <div className="flex items-center gap-2.5">
-        <span className="flex size-8 shrink-0 items-center justify-center rounded-[9px] bg-[#CAC3B81F]">
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-[9px] bg-beige/12">
           <SectionIcon type={type.id} className="size-[15px] text-beige" />
         </span>
         <div className="flex min-w-0 flex-1 flex-col gap-px">
@@ -225,7 +225,7 @@ export function SectionEditPanel({
                 aria-label="Přidat obrázek"
                 title="Přidat obrázek"
                 onClick={() => set("images", [...images, nextImage])}
-                className="flex h-[72px] w-14 items-center justify-center rounded-[10px] border border-dashed border-line text-beige transition-colors hover:border-beige hover:bg-white/5 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige"
+                className="flex h-[72px] w-14 items-center justify-center rounded-[10px] border border-dashed border-line text-beige transition-colors hover:border-beige hover:bg-tint/5 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige"
               >
                 <PlusCircleIcon weight="fill" className="size-4" />
               </button>

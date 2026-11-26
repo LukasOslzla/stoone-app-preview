@@ -59,7 +59,7 @@ export function Modal({
         if (event.target === event.currentTarget) onClose();
       }}
       className={cn(
-        "mx-auto mt-[min(220px,12vh)] max-w-[calc(100%-2rem)] rounded-3xl border border-line bg-card p-0 text-fg shadow-[0_24px_64px_#000000A6] backdrop:bg-[#0A0A0CB8] backdrop:backdrop-blur-[3px]",
+        "mx-auto mt-[min(220px,12vh)] max-w-[calc(100%-2rem)] rounded-3xl border border-line bg-popover p-0 text-fg shadow-float backdrop:bg-[#0A0A0CB8] backdrop:backdrop-blur-[3px]",
         size === "sm" ? "w-[480px]" : "w-[640px]",
         className,
       )}

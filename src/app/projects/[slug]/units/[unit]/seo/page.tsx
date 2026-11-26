@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { notFound } from "next/navigation";
 import { UnitSeoTab } from "@/components/units/UnitSeoTab";
 import { getProject } from "@/lib/projects";
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /** Unit detail – "Vyhledávače (SEO)". */
 export default function UnitSeoPage({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

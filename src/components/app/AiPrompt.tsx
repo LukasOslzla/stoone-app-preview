@@ -53,7 +53,7 @@ export function AiPrompt({
     <form
       onSubmit={handleSubmit}
       className={cn(
-        "flex h-[52px] items-center gap-3.5 rounded-full border border-line-soft bg-[#2A2A2FF2] pr-2.5 pl-[18px] shadow-[0_10px_32px_#00000080] backdrop-blur-[10px]",
+        "flex h-[52px] items-center gap-3.5 rounded-full border border-line-soft bg-float pr-2.5 pl-[18px] shadow-prompt backdrop-blur-[10px]",
         className,
       )}
     >
@@ -114,7 +114,7 @@ export function AiPrompt({
       {files.length > 0 && (
         <span
           title={files.map((file) => file.name).join(", ")}
-          className="-ml-1 flex h-7 max-w-[150px] shrink-0 items-center gap-1.5 rounded-full bg-[#FFFFFF0F] pr-1 pl-2.5"
+          className="-ml-1 flex h-7 max-w-[150px] shrink-0 items-center gap-1.5 rounded-full bg-tint/6 pr-1 pl-2.5"
         >
           <PaperclipIcon weight="bold" className="size-3 shrink-0 text-fg-2" />
           <span className="truncate font-text text-xs leading-none font-medium text-fg">
@@ -165,8 +165,8 @@ export function AiPrompt({
             title="Model AI"
             {...props}
             className={cn(
-              "flex h-8 items-center gap-1.5 rounded-full px-2.5 transition-colors hover:bg-[#FFFFFF1A] focus-visible:outline-[1.5px] focus-visible:outline-beige",
-              open ? "bg-[#FFFFFF1A]" : "bg-[#FFFFFF0F]",
+              "flex h-8 items-center gap-1.5 rounded-full px-2.5 transition-colors hover:bg-tint/10 focus-visible:outline-[1.5px] focus-visible:outline-beige",
+              open ? "bg-tint/10" : "bg-tint/6",
             )}
           >
             <SparkleIcon weight="fill" className="size-3.5 text-fg-2" />
@@ -188,7 +188,7 @@ export function AiPrompt({
         type="submit"
         aria-label="Odeslat"
         disabled={!canSend}
-        className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#FFFFFF1F] text-fg-2 transition-colors enabled:hover:bg-beige enabled:hover:text-ink focus-visible:outline-[1.5px] focus-visible:outline-beige"
+        className="flex size-8 shrink-0 items-center justify-center rounded-full bg-tint/12 text-fg-2 transition-colors enabled:hover:bg-beige enabled:hover:text-ink focus-visible:outline-[1.5px] focus-visible:outline-beige"
       >
         <ArrowUp className="size-4" />
       </button>

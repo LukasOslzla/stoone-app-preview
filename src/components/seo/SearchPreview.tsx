@@ -28,13 +28,15 @@ export function SearchPreview({
         {label}
       </p>
 
-      <div className="flex flex-col gap-1.5 rounded-2xl border border-line-soft bg-fg p-5 font-sans">
+      <div className="flex flex-col gap-1.5 rounded-2xl border border-line-soft bg-paper p-5 font-sans">
         <div className="flex items-center gap-2">
-          <span className="flex size-[22px] shrink-0 items-center justify-center rounded-full bg-ink text-[11px] leading-none font-bold text-fg">
+          <span className="flex size-[22px] shrink-0 items-center justify-center rounded-full bg-[#1C1A18] text-[11px] leading-none font-bold text-[#F8F6EF]">
             {siteName.charAt(0).toLowerCase()}
           </span>
           <div className="flex min-w-0 flex-col">
-            <span className="text-xs leading-[1.3] text-ink">{siteName}</span>
+            <span className="text-xs leading-[1.3] text-[#1C1A18]">
+              {siteName}
+            </span>
             <span className="truncate text-[11px] leading-[1.3] text-[#5F6368]">
               {urlParts.join(" › ")}
             </span>

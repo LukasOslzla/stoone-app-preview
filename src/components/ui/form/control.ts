@@ -36,8 +36,8 @@ export function controlBox({
       !wrap &&
       (size === "lg" ? "h-14" : size === "sm" ? "h-[42px]" : "h-12"),
     invalid
-      ? "border-red bg-[#F0524B0D]"
-      : "border-[#D2D5C54D] bg-[#F8F6EF08] focus-within:border-beige focus-within:shadow-[0_0_12px_#CAC3B84D] hover:not-focus-within:border-[#D2D5C599] hover:not-focus-within:bg-[#F8F6EF0D]",
+      ? "border-red bg-red/5"
+      : "border-mist/30 bg-field focus-within:border-beige focus-within:shadow-focus hover:not-focus-within:border-mist/60 hover:not-focus-within:bg-field-hover",
     disabled && "pointer-events-none opacity-50",
   );
 }

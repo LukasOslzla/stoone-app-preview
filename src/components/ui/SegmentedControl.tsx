@@ -60,7 +60,7 @@ export function SegmentedControl<T extends string>({
               shape === "rounded" && "h-7 rounded-lg px-3",
               block
                 ? selected
-                  ? "bg-[#CAC3B826] text-fg ring-1 ring-[#CAC3B859] ring-inset [&_svg]:text-beige"
+                  ? "bg-beige/15 text-fg ring-1 ring-beige/35 ring-inset [&_svg]:text-beige"
                   : "text-fg-2 hover:text-fg [&_svg]:text-fg-3"
                 : selected
                   ? cn(

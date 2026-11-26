@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { NewSectorWizard } from "@/components/sectors/NewSectorWizard";
 import { getUnassignedHouses, suggestSectorName } from "@/lib/sectors";
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = { title: "Nový sektor" };
 /** New sector: name and image → houses → outlines on the image. */
 export default function NewSectorPage({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

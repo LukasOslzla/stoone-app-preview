@@ -19,6 +19,7 @@
 | Nastavení webu (vyhledávače a sdílení, stránka 404) | `/projects/momentum/settings`, `/projects/momentum/settings/not-found` |
 | Editor obsahu (hlavička, sekce stránek, galerie sekcí, sdílený obsah, odpověď AI) | `/projects/momentum/editor`, stránka přímo: `/projects/momentum/editor?page=%2Fcs` |
 | Styleguide pro vývojáře (tokeny a živé ukázky komponent) | `/styleguide` |
+| Konfigurátor standardů pro kupující (Vaše jednotky, průvodce po krocích) | `/configurator`, `/configurator/a-101` |
 | Soubory (mřížka, tabulka, potvrzení smazání) | `/projects/momentum/files` |
 | Uživatelé a role (uživatelé, role, pozvánka) | `/projects/momentum/users`, `/projects/momentum/users/roles` |
 | Můj účet (z karty uživatele v menu) | `/projects/momentum/account` |
@@ -39,10 +40,12 @@
 - `src/components/plan` – označování oblastí na obrázku (`PlanAreaEditor`, `PlanChecklist`).
 - `src/components/seo` – SEO pole s počítadlem a náhled ve vyhledávači.
 - `src/components/editor` – editor obsahu: lišta (`EditorBar`, `TargetSelect`), levé panely, náhled webu se zvýrazněním (`SitePreview`), galerie sekcí, odpověď AI.
+- `src/components/configurator` – konfigurátor pro kupující: hlavička, karta jednotky s termínem a průběhem, průvodce (`ConfigWizard`), karta varianty.
 - `src/components/styleguide` – stránka `/styleguide` s živými ukázkami všech sdílených komponent.
 - `src/components/charts` – graf (`AreaChart`).
 - `src/components/{dashboard,units,buildings,project,auth}` – obrazovky složené z prvků výše.
-- `src/app/globals.css` – barvy a písma z návrhu jako Tailwind tokeny.
+- `src/app/globals.css` – barvy a písma z návrhu jako Tailwind tokeny pro tmavý i světlý režim (`[data-theme="light"]`). Barvy se v komponentách používají jen přes tokeny, ne jako hex.
+- `src/lib/theme.ts` – přepínání režimu (`setTheme`, `useTheme`); volba se pamatuje v prohlížeči.
 
 ## Co je mock
 
@@ -52,6 +55,8 @@ Všechna data a ukládání jsou v `src/lib` a jsou to jen ukázky:
 - `projects.ts`, `user.ts`, `dashboard.ts`, `buildings.ts`, `units.ts`, `units-import.ts`
 
 V editoru obsahu (`editor.ts`) nahrazují živý web snímky obrazovky: přejmenování nebo přeřazení položek menu se proto v náhledu neprojeví, AI vrací na každé zadání stejný návrh a „Zveřejnit změny“ jen chvíli čeká.
+
+V konfigurátoru (`configurator.ts`) jsou vzorky jen barevné přechody místo fotek produktů, nabídka variant je vymyšlená a „Stáhnout souhrn (PDF)“ nic nestáhne.
 
 Ukládání jen chvíli čeká, nahrané soubory zůstávají v prohlížeči, import z Excelu soubor nečte a „Vylepšit s AI“ vrací předpřipravený text. Stránky za loginem nejsou chráněné. Sektory mají stejná data u každého projektu, obrysy domů jsou kromě RD24 jen přibližné a odkaz „Použít ukázkový“ v průvodci Nový sektor je jen pro preview.
 

@@ -81,7 +81,7 @@ export function RolesTab({
                 className={cn(
                   "flex flex-col gap-2 rounded-2xl p-4 text-left transition-colors focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige",
                   active
-                    ? "border-[1.5px] border-beige bg-[#CAC3B814]"
+                    ? "border-[1.5px] border-beige bg-beige/8"
                     : "surface-card hover:brightness-110",
                 )}
               >

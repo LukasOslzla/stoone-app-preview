@@ -23,9 +23,7 @@ export function DeltaBadge({
     <span
       className={cn(
         "flex h-6 shrink-0 items-center gap-1 rounded-full px-2 font-text text-xs leading-none font-bold",
-        tone === "positive"
-          ? "bg-[#6FD13C1F] text-green"
-          : "bg-[#F0524B1F] text-red",
+        tone === "positive" ? "bg-green/12 text-green" : "bg-red/12 text-red",
         className,
       )}
     >

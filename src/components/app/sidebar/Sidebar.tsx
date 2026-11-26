@@ -19,6 +19,7 @@ import { StooneLogo } from "@/components/StooneLogo";
 import { DropdownMenu, type DropdownGroup } from "@/components/ui/DropdownMenu";
 import { cn } from "@/lib/cn";
 import type { CurrentUser } from "@/lib/user";
+import { LanguageMenu } from "./LanguageMenu";
 
 export type NavItem = {
   label: string;
@@ -83,10 +84,10 @@ function NavLink({
         ? "h-10 w-full gap-3 rounded-[10px] px-3 text-left"
         : "h-12 w-full gap-3.5 rounded-[14px] px-3.5 text-left",
     active
-      ? "bg-[#CAC3B826] ring-1 ring-[#CAC3B82E] ring-inset"
+      ? "bg-beige/15 ring-1 ring-beige/18 ring-inset"
       : item.expanded
-        ? "bg-white/5"
-        : "hover:bg-white/5",
+        ? "bg-tint/5"
+        : "hover:bg-tint/5",
   );
 
   const content = (
@@ -177,7 +178,7 @@ function NavLink({
 }
 
 const userCardClass =
-  "flex w-full items-center gap-3 rounded-xl border border-line bg-card p-2.5 text-left shadow-[inset_0_1px_0_#FFFFFF14] transition-colors hover:border-[#D2D5C566] focus-visible:outline-[1.5px] focus-visible:outline-beige";
+  "flex w-full items-center gap-3 rounded-xl border border-line bg-card p-2.5 text-left shadow-[inset_0_1px_0_#FFFFFF14] transition-colors hover:border-mist/40 focus-visible:outline-[1.5px] focus-visible:outline-beige";
 
 function Avatar({ user }: { user: CurrentUser }) {
   if (!user.avatarUrl) {
@@ -264,7 +265,7 @@ export function Sidebar({
           onClick={() => setCollapsed(false)}
           aria-label="Rozbalit menu"
           title="Rozbalit menu"
-          className="group flex h-12 w-16 shrink-0 items-center justify-center gap-1.5 rounded-[14px] pl-2 transition-colors hover:bg-white/5 focus-visible:outline-[1.5px] focus-visible:outline-beige"
+          className="group flex h-12 w-16 shrink-0 items-center justify-center gap-1.5 rounded-[14px] pl-2 transition-colors hover:bg-tint/5 focus-visible:outline-[1.5px] focus-visible:outline-beige"
         >
           {/* Only the "S" of the wordmark is visible. */}
           <span className="relative block h-6 w-[20.8px] shrink-0 overflow-hidden">
@@ -309,6 +310,7 @@ export function Sidebar({
               density="comfortable"
             />
           ))}
+          <LanguageMenu collapsed />
           <DropdownMenu
             label="Uživatel"
             side="top"
@@ -361,7 +363,7 @@ export function Sidebar({
           onClick={() => setCollapsed(true)}
           aria-label="Sbalit menu"
           title="Sbalit menu"
-          className="flex size-8 items-center justify-center rounded-[10px] text-fg-2 transition-colors hover:bg-white/5 hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-beige"
+          className="flex size-8 items-center justify-center rounded-[10px] text-fg-2 transition-colors hover:bg-tint/5 hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-beige"
         >
           <SidebarSimpleIcon weight="fill" className="size-5" />
         </button>
@@ -406,6 +408,7 @@ export function Sidebar({
               density="comfortable"
             />
           ))}
+          <LanguageMenu />
         </div>
       )}
 

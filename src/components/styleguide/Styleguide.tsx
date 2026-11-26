@@ -7,14 +7,18 @@ import {
   FileCsvIcon,
   InfoIcon,
   ListIcon,
+  MagnifyingGlassIcon,
   PencilSimpleIcon,
   PlusCircleIcon,
   SquaresFourIcon,
   TrashIcon,
+  WarningCircleIcon,
 } from "@phosphor-icons/react";
 import { ChangePasswordDialog } from "@/components/account/ChangePasswordDialog";
 import { AiPrompt } from "@/components/app/AiPrompt";
 import { PageIntro } from "@/components/app/PageIntro";
+import { LanguageMenu } from "@/components/app/sidebar/LanguageMenu";
+import { ThemeSwitcher } from "@/components/app/ThemeSwitcher";
 import { MenuItemsEditor } from "@/components/editor/MenuItemsEditor";
 import { NotificationSettingsDialog } from "@/components/notifications/NotificationSettingsDialog";
 import { RangeSelect, dateRanges } from "@/components/project/RangeSelect";
@@ -49,14 +53,22 @@ import { DropdownMenu } from "@/components/ui/DropdownMenu";
 import { FormDialog } from "@/components/ui/FormDialog";
 import { Disclosure } from "@/components/ui/Disclosure";
 import { Dropzone } from "@/components/ui/Dropzone";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { InfoStrip } from "@/components/ui/InfoStrip";
 import { LogoTile } from "@/components/ui/LogoTile";
 import { Modal } from "@/components/ui/Modal";
 import { NumberedSteps } from "@/components/ui/NumberedSteps";
 import { Pagination } from "@/components/ui/Pagination";
+import { PillSteps } from "@/components/ui/PillSteps";
+import { ProgressTicks } from "@/components/ui/ProgressTicks";
 import { PrevNext } from "@/components/ui/PrevNext";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
+import {
+  Skeleton,
+  SkeletonCards,
+  SkeletonRows,
+} from "@/components/ui/Skeleton";
 import { SortableList } from "@/components/ui/SortableList";
 import { StatusChip } from "@/components/ui/StatusChip";
 import { Stepper } from "@/components/ui/Stepper";
@@ -69,40 +81,111 @@ import { TagsInput } from "@/components/ui/form/TagsInput";
 import { formatPrice } from "@/lib/format";
 import { defaultNotificationSettings } from "@/lib/notifications";
 import { unitStatuses, type UnitStatus } from "@/lib/unit-status";
-import { Chapter, Demo, Row } from "./Showcase";
+import { BothThemes, Chapter, Demo, Row } from "./Showcase";
 
 const chapters = [
   ["tokens", "Barvy a písmo"],
+  ["themes", "Světlý a tmavý režim"],
   ["buttons", "Tlačítka"],
   ["forms", "Formuláře"],
   ["choices", "Výběr a filtry"],
   ["navigation", "Navigace"],
   ["status", "Stavy a hlášky"],
   ["data", "Data a karty"],
+  ["states", "Prázdné stavy a načítání"],
   ["overlays", "Dialogy a nabídky"],
   ["ai", "AI"],
 ] as const;
 
-/** Tokens from `src/app/globals.css` (`@theme`). */
-const colors: { name: string; value: string; use: string }[] = [
-  { name: "bg", value: "#151519", use: "pozadí aplikace" },
-  { name: "card", value: "#1E1E23", use: "karty, dialogy" },
-  { name: "inset", value: "#0F0F12", use: "zapuštěné plochy" },
-  { name: "control", value: "#2A2A30", use: "aktivní přepínače, štítky" },
-  { name: "line", value: "#D2D5C533", use: "ohraničení" },
-  { name: "line-soft", value: "#D2D5C524", use: "jemné oddělovače" },
-  { name: "fg", value: "#F8F6EF", use: "hlavní text" },
-  { name: "fg-2", value: "#D2D5C5B3", use: "doplňkový text" },
-  { name: "fg-3", value: "#D2D5C573", use: "popisky, nápověda" },
-  { name: "beige", value: "#CAC3B8", use: "hlavní akce, výběr" },
-  { name: "ink", value: "#1C1A18", use: "text na béžové" },
-  { name: "copper", value: "#CA9377", use: "hover hlavní akce" },
-  { name: "copper-deep", value: "#A26D55", use: "stisk hlavní akce" },
-  { name: "brick", value: "#8E3C39", use: "tmavě červený akcent" },
-  { name: "green", value: "#6FD13C", use: "úspěch, volné" },
-  { name: "yellow", value: "#F2C94C", use: "upozornění, koncept" },
-  { name: "red", value: "#F0524B", use: "chyba, smazání" },
-  { name: "ai", value: "#B3A2FF", use: "AI a sdílený obsah" },
+/** Tokens from `src/app/globals.css`: dark value, light value, purpose. */
+const colors: { name: string; dark: string; light: string; use: string }[] = [
+  {
+    name: "bg",
+    dark: "#151519",
+    light: "#E9E6DF",
+    use: "pozadí, postranní menu",
+  },
+  { name: "panel", dark: "#151519", light: "#F2F1ED", use: "hlavní plocha" },
+  { name: "card", dark: "#1E1E23", light: "#FFFFFF8C", use: "karty" },
+  {
+    name: "popover",
+    dark: "#1E1E23",
+    light: "#FFFFFF",
+    use: "nabídky, dialogy",
+  },
+  { name: "inset", dark: "#0F0F12", light: "#EAE8E2", use: "zapuštěné plochy" },
+  {
+    name: "control",
+    dark: "#2A2A30",
+    light: "#E1DDD4",
+    use: "aktivní přepínače, štítky",
+  },
+  {
+    name: "field",
+    dark: "#F8F6EF08",
+    light: "#FFFFFF",
+    use: "výplň formulářových polí",
+  },
+  { name: "line", dark: "#D2D5C533", light: "#2A231A2E", use: "ohraničení" },
+  {
+    name: "line-soft",
+    dark: "#D2D5C524",
+    light: "#2A231A1A",
+    use: "jemné oddělovače",
+  },
+  { name: "fg", dark: "#F8F6EF", light: "#231E18", use: "hlavní text" },
+  {
+    name: "fg-2",
+    dark: "#D2D5C5B3",
+    light: "#231E18B8",
+    use: "doplňkový text",
+  },
+  {
+    name: "fg-3",
+    dark: "#D2D5C573",
+    light: "#231E188F",
+    use: "popisky, nápověda",
+  },
+  {
+    name: "beige",
+    dark: "#CAC3B8",
+    light: "#231E18",
+    use: "hlavní akce, výběr",
+  },
+  {
+    name: "ink",
+    dark: "#1C1A18",
+    light: "#FFFFFF",
+    use: "text na hlavní akci",
+  },
+  { name: "tint", dark: "#FFFFFF", light: "#231E18", use: "hover: bg-tint/5" },
+  {
+    name: "mist",
+    dark: "#D2D5C5",
+    light: "#231E18",
+    use: "okraje s průhledností",
+  },
+  {
+    name: "copper",
+    dark: "#CA9377",
+    light: "#D0AE8F",
+    use: "rezervováno, grafy",
+  },
+  {
+    name: "brick",
+    dark: "#8E3C39",
+    light: "#8E3C39",
+    use: "tmavě červený akcent",
+  },
+  { name: "green", dark: "#6FD13C", light: "#2F8F0E", use: "úspěch, volné" },
+  {
+    name: "yellow",
+    dark: "#F2C94C",
+    light: "#A87700",
+    use: "upozornění, koncept",
+  },
+  { name: "red", dark: "#F0524B", light: "#D93A33", use: "chyba, smazání" },
+  { name: "ai", dark: "#B3A2FF", light: "#6D4FE0", use: "AI a sdílený obsah" },
 ];
 
 type DemoUnit = { id: string; name: string; status: UnitStatus; price: number };
@@ -144,6 +227,10 @@ export function Styleguide() {
   const [files, setFiles] = useState<string | null>(null);
   const [demoRange, setDemoRange] = useState("30d");
   const [saleStatus, setSaleStatus] = useState("sale");
+  const [substep, setSubstep] = useState("3");
+  const [tableState, setTableState] = useState<"data" | "loading" | "empty">(
+    "data",
+  );
   const [notificationSettings, setNotificationSettings] = useState(
     defaultNotificationSettings,
   );
@@ -191,7 +278,7 @@ export function Styleguide() {
             <a
               key={id}
               href={`#${id}`}
-              className="rounded-lg px-3 py-2 font-text text-sm leading-[1.4] font-medium text-fg-2 transition-colors hover:bg-white/5 hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-beige"
+              className="rounded-lg px-3 py-2 font-text text-sm leading-[1.4] font-medium text-fg-2 transition-colors hover:bg-tint/5 hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-beige"
             >
               {label}
             </a>
@@ -200,6 +287,9 @@ export function Styleguide() {
       </aside>
 
       <main className="flex min-w-0 flex-1 flex-col gap-12 px-8 py-9 pb-24">
+        <div className="flex justify-end">
+          <ThemeSwitcher />
+        </div>
         <PageIntro
           title="Styleguide"
           description="Přehled barev, písma a sdílených komponent aplikace STOONE. Ukázky jsou živé – používají stejný kód jako obrazovky. U každé komponenty je cesta, odkud se importuje; podrobný popis vlastností je v komentářích u typů ve zdrojovém souboru."
@@ -208,7 +298,7 @@ export function Styleguide() {
         <Chapter
           id="tokens"
           title="Barvy a písmo"
-          description="Tokeny jsou v src/app/globals.css v bloku @theme. V Tailwindu se používají jako bg-card, text-fg-2, border-line apod."
+          description="Tokeny jsou v src/app/globals.css: blok @theme je tmavý režim, [data-theme=light] ho přepisuje. V kódu se používají jen přes třídy (bg-card, text-fg-2, border-line, bg-beige/15), nikdy jako hex – jinak se rozbije druhý režim. U každé barvy je hodnota tmavá / světlá."
         >
           <Demo name="Barvy" source="src/app/globals.css" wide>
             <ul className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3">
@@ -216,14 +306,14 @@ export function Styleguide() {
                 <li key={color.name} className="flex items-center gap-3">
                   <span
                     className="size-10 shrink-0 rounded-[10px] border border-line"
-                    style={{ backgroundColor: color.value }}
+                    style={{ backgroundColor: `var(--color-${color.name})` }}
                   />
                   <span className="flex min-w-0 flex-col">
                     <code className="font-mono text-xs leading-[1.4] text-fg">
                       {color.name}
                     </code>
                     <span className="truncate font-text text-xs leading-[1.4] text-fg-3">
-                      {color.value} · {color.use}
+                      {color.dark} / {color.light} · {color.use}
                     </span>
                   </span>
                 </li>
@@ -286,6 +376,158 @@ export function Styleguide() {
               <LogoTile text="momentum" size="lg" />
               <LogoTile text="brique" muted />
             </Row>
+          </Demo>
+        </Chapter>
+
+        <Chapter
+          id="themes"
+          title="Světlý a tmavý režim"
+          description="Režim se přepíná atributem data-theme na <html> (lib/theme: setTheme, useTheme). Tmavý je výchozí; světlý používá paletu „By Detailist“. Ukázky níže jsou vždy dvakrát – tmavě a světle – bez ohledu na to, jaký režim máte zapnutý."
+        >
+          <Demo name="Pravidla světlého režimu" wide>
+            <ul className="flex list-disc flex-col gap-1.5 pl-5 font-text text-sm leading-[1.5] text-fg-2">
+              <li>
+                <strong className="text-fg">Plochy:</strong> postranní menu má{" "}
+                <code>bg</code>, obsah <code>panel</code> s levou linkou{" "}
+                <code>line-soft</code>.
+              </li>
+              <li>
+                <strong className="text-fg">Karty</strong> jsou poloprůhledná
+                bílá (<code>card</code>, 55 %) s jemným přechodem camel do rohu
+                a bez stínů.
+              </li>
+              <li>
+                <strong className="text-fg">Bílé jsou</strong> formulářová pole,
+                hledání, nabídky, dialogy a náhledy Googlu a sdílení (
+                <code>field</code>, <code>popover</code>, <code>paper</code>).
+              </li>
+              <li>
+                <strong className="text-fg">Akcent = inkoust:</strong> vše, co
+                je v tmavém režimu béžové (hlavní tlačítko, aktivní položka
+                menu, výběr, aktuální krok), je ve světlém <code>#231E18</code>,
+                podklady s průhledností (<code>bg-beige/15</code>).
+              </li>
+              <li>
+                <strong className="text-fg">
+                  Zelená znamená jen „hotovo“:
+                </strong>{" "}
+                dokončený krok, hotový podkrok, „Uloženo“ a stavy typu Volné /
+                Dokončeno. Fajfka vybrané karty a štítek „Standard“ zůstávají
+                neutrální.
+              </li>
+              <li>
+                <strong className="text-fg">Grafy:</strong> měděné tóny se ve
+                světlém mění na camel a olive, křivka návštěvnosti je slate.
+              </li>
+            </ul>
+          </Demo>
+
+          <Demo
+            name="Doplňkové barvy"
+            note={
+              <>
+                Stejné v obou režimech: <code>camel</code>, <code>olive</code>,{" "}
+                <code>slate</code>. Camel tónuje karty a začíná průběh, olive
+                průběh končí a nahrazuje tmavou měď, slate je křivka hlavního
+                grafu.
+              </>
+            }
+          >
+            <ul className="grid grid-cols-3 gap-3">
+              {[
+                ["camel", "#D0AE8F"],
+                ["olive", "#6E6351"],
+                ["slate", "#32424B"],
+              ].map(([name, hex]) => (
+                <li key={name} className="flex flex-col gap-2">
+                  <span
+                    className="h-14 rounded-xl border border-line"
+                    style={{ backgroundColor: `var(--color-${name})` }}
+                  />
+                  <code className="font-mono text-xs text-fg">{name}</code>
+                  <span className="font-text text-xs text-fg-3">{hex}</span>
+                </li>
+              ))}
+            </ul>
+          </Demo>
+
+          <Demo
+            name="Průběh a pilulky podkroků"
+            source="ui/ProgressTicks, ui/PillSteps"
+            note="Průběh: přechod béžová → měď (tmavý) a camel → olive (světlý). Pilulky se při nedostatku místa posouvají do strany: okraj se ztrácí a přibude kulatá šipka; po posunutí i šipka vlevo."
+          >
+            <BothThemes>
+              <div className="flex flex-col gap-4">
+                <ProgressTicks percent={62} label="Ukázka průběhu" />
+                <PillSteps
+                  label="Podkroky"
+                  value={substep}
+                  onChange={setSubstep}
+                  steps={[
+                    { id: "1", label: "4.1 Dlažba", done: true },
+                    { id: "2", label: "4.2 Obklad", done: true },
+                    { id: "3", label: "4.3 Umyvadlo" },
+                    { id: "4", label: "4.4 Baterie" },
+                    { id: "5", label: "4.5 Sprchový kout" },
+                  ]}
+                />
+              </div>
+            </BothThemes>
+          </Demo>
+
+          <Demo
+            name="Karta, pole, hlavní tlačítko, štítek"
+            source="ui/Card, ui/form/Field, ui/Button, ui/DotPill"
+            wide
+          >
+            <BothThemes>
+              <Card className="flex flex-col gap-4 p-5">
+                <CardHeader
+                  title="Základní údaje"
+                  action={
+                    <DotPill
+                      label="Volné"
+                      color="var(--color-green)"
+                      tone="tinted"
+                    />
+                  }
+                />
+                <TextInput label="Cena" defaultValue="6 946 000" suffix="Kč" />
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <Button size="md">Uložit změny</Button>
+                  <Button size="md" variant="outline">
+                    Zrušit
+                  </Button>
+                  <DotPill label="Koncept" color="var(--color-yellow)" />
+                </div>
+              </Card>
+            </BothThemes>
+          </Demo>
+
+          <Demo
+            name="Stepper – pilulky, položka Jazyk"
+            source="ui/Stepper, app/sidebar/LanguageMenu"
+            note={
+              <>
+                <code>Stepper variant=&quot;pills&quot;</code> používá
+                konfigurátor; hotové kroky mají zelenou fajfku. Jazyk je řádek v
+                postranním menu pod Notifikacemi.
+              </>
+            }
+            wide
+          >
+            <BothThemes>
+              <div className="flex flex-col gap-4">
+                <Stepper
+                  variant="pills"
+                  steps={["Podlahy", "Dveře", "Koupelna"]}
+                  current={1}
+                />
+                <div className="w-[220px] max-w-full">
+                  <LanguageMenu />
+                </div>
+              </div>
+            </BothThemes>
           </Demo>
         </Chapter>
 
@@ -819,10 +1061,18 @@ export function Styleguide() {
               ))}
             </Row>
             <Row label="DotPill · neutral a tinted">
-              <DotPill label="Aktivní" color="#6FD13C" />
-              <DotPill label="Na webu" color="#6FD13C" tone="tinted" />
-              <DotPill label="Koncept" color="#F2C94C" tone="tinted" />
-              <DotPill label="Malý" color="#CA9377" size="sm" />
+              <DotPill label="Aktivní" color="var(--color-green)" />
+              <DotPill
+                label="Na webu"
+                color="var(--color-green)"
+                tone="tinted"
+              />
+              <DotPill
+                label="Koncept"
+                color="var(--color-yellow)"
+                tone="tinted"
+              />
+              <DotPill label="Malý" color="var(--color-copper)" size="sm" />
             </Row>
             <Row label="DeltaBadge">
               <DeltaBadge label="12 %" trend="up" />
@@ -867,7 +1117,7 @@ export function Styleguide() {
               <CardHeader
                 title="Základní údaje"
                 description="Synchronizováno z Realpadu"
-                action={<DotPill label="Aktivní" color="#6FD13C" />}
+                action={<DotPill label="Aktivní" color="var(--color-green)" />}
               />
               <DetailRows
                 rows={[
@@ -897,6 +1147,125 @@ export function Styleguide() {
                 sort={sort}
                 onSortChange={setSort}
                 minWidth={420}
+              />
+            </Card>
+          </Demo>
+        </Chapter>
+
+        <Chapter
+          id="states"
+          title="Prázdné stavy a načítání"
+          description="Každý seznam má tři stavy navíc: načítá se, nic v něm není a nepodařilo se ho načíst. Celostránkové varianty jsou v src/app/error.tsx a src/app/not-found.tsx; stránky se při načítání nahrazují komponentou PageSkeleton."
+        >
+          <Demo
+            name="EmptyState"
+            source="ui/EmptyState"
+            note={
+              <>
+                <code>tone</code>: neutral · error. <code>size</code>: md (část
+                stránky) · sm (uvnitř tabulek, karet a panelů). Do{" "}
+                <code>action</code> patří jedno hlavní tlačítko, které stav
+                řeší.
+              </>
+            }
+          >
+            <Card>
+              <EmptyState
+                icon={BuildingsIcon}
+                title="Zatím tu nejsou žádné byty"
+                text="Nahrajte je z Excelu, nebo přidejte první ručně."
+                action={
+                  <Button size="md">
+                    <PlusCircleIcon weight="fill" className="size-4" />
+                    Přidat byty
+                  </Button>
+                }
+              />
+            </Card>
+            <Card>
+              <EmptyState
+                size="sm"
+                icon={MagnifyingGlassIcon}
+                title="Žádný byt neodpovídá filtru"
+                text="Zkuste jiný stav nebo upravte hledaný text."
+                action={
+                  <Button size="md" variant="outline">
+                    Zrušit filtry
+                  </Button>
+                }
+              />
+            </Card>
+          </Demo>
+
+          <Demo
+            name="EmptyState – chyba"
+            source="ui/EmptyState"
+            note='Stejná komponenta s tone="error"; vždy nabídněte „Zkusit znovu“.'
+          >
+            <Card>
+              <EmptyState
+                tone="error"
+                icon={WarningCircleIcon}
+                title="Byty se nepodařilo načíst"
+                text="Zkontrolujte připojení a zkuste to znovu."
+                action={<Button size="md">Zkusit znovu</Button>}
+              />
+            </Card>
+          </Demo>
+
+          <Demo
+            name="Skeleton · SkeletonRows · SkeletonCards · PageSkeleton"
+            source="ui/Skeleton"
+            note="Zástupné bloky při načítání. Tvar má odpovídat tomu, co se načte."
+          >
+            <Row>
+              <Skeleton className="size-11 rounded-xl" />
+              <div className="flex flex-col gap-2">
+                <Skeleton className="h-5 w-40" />
+                <Skeleton className="h-3.5 w-56" />
+              </div>
+            </Row>
+            <SkeletonRows rows={3} />
+            <SkeletonCards count={3} className="!grid-cols-3" />
+          </Demo>
+
+          <Demo
+            name="DataTable – stavy"
+            source="ui/DataTable"
+            note={
+              <>
+                <code>loading</code> ukáže zástupné řádky, <code>empty</code>{" "}
+                přijme text nebo <code>EmptyState</code>.
+              </>
+            }
+          >
+            <SegmentedControl
+              label="Stav tabulky"
+              className="self-start"
+              value={tableState}
+              onChange={setTableState}
+              options={[
+                { value: "data", label: "Data" },
+                { value: "loading", label: "Načítání" },
+                { value: "empty", label: "Prázdná" },
+              ]}
+            />
+            <Card className="px-6 py-2">
+              <DataTable
+                columns={columns}
+                rows={tableState === "data" ? units : []}
+                loading={tableState === "loading"}
+                rowKey={(unit) => unit.id}
+                sort={sort}
+                onSortChange={setSort}
+                minWidth={420}
+                empty={
+                  <EmptyState
+                    size="sm"
+                    icon={MagnifyingGlassIcon}
+                    title="Žádný byt neodpovídá filtru"
+                  />
+                }
               />
             </Card>
           </Demo>

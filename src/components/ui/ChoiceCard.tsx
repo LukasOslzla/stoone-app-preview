@@ -29,8 +29,8 @@ export function ChoiceCard({
   const className = cn(
     "flex min-w-0 flex-1 flex-col gap-3.5 rounded-[18px] p-5 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-beige",
     recommended
-      ? "border-[1.5px] border-beige bg-[#CAC3B814] hover:bg-[#CAC3B81F]"
-      : "border border-line hover:border-[#D2D5C566] hover:bg-white/[0.03]",
+      ? "border-[1.5px] border-beige bg-beige/8 hover:bg-beige/12"
+      : "border border-line hover:border-mist/40 hover:bg-tint/3",
   );
 
   const content = (

@@ -79,7 +79,7 @@ export function ActionMenu({ label, items, className }: ActionMenuProps) {
         onPointerDown={(event) => event.stopPropagation()}
         onClick={toggle}
         className={cn(
-          "inline-flex size-7 items-center justify-center rounded-full text-fg-3 transition-colors hover:bg-white/5 hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-beige",
+          "inline-flex size-7 items-center justify-center rounded-full text-fg-3 transition-colors hover:bg-tint/5 hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-beige",
           className,
         )}
       >
@@ -91,7 +91,7 @@ export function ActionMenu({ label, items, className }: ActionMenuProps) {
           role="menu"
           onPointerDown={(event) => event.stopPropagation()}
           style={{ top: position.top, left: position.left, width: MENU_WIDTH }}
-          className="fixed z-50 flex flex-col rounded-xl border border-line bg-card p-1 shadow-[0_12px_32px_#00000080]"
+          className="fixed z-50 flex flex-col rounded-xl border border-line bg-popover p-1 shadow-float"
         >
           {items.map((item) => (
             <button
@@ -104,7 +104,7 @@ export function ActionMenu({ label, items, className }: ActionMenuProps) {
                 item.onSelect();
               }}
               className={cn(
-                "flex h-9 items-center gap-2 rounded-lg px-2.5 text-left font-text text-[13px] leading-none font-semibold transition-colors hover:bg-white/5 focus-visible:bg-white/5 focus-visible:outline-none",
+                "flex h-9 items-center gap-2 rounded-lg px-2.5 text-left font-text text-[13px] leading-none font-semibold transition-colors hover:bg-tint/5 focus-visible:bg-tint/5 focus-visible:outline-none",
                 item.tone === "danger" ? "text-red" : "text-fg",
               )}
             >

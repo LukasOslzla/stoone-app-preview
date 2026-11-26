@@ -2,9 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CheckCircleIcon, WarningCircleIcon } from "@phosphor-icons/react";
+import {
+  CheckCircleIcon,
+  MagnifyingGlassIcon,
+  WarningCircleIcon,
+} from "@phosphor-icons/react";
 import { PageIntro } from "@/components/app/PageIntro";
 import { AddUnitsButton } from "@/components/units/AddUnitsButton";
+import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Chip } from "@/components/ui/Chip";
 import {
@@ -13,6 +18,7 @@ import {
   type DataTableColumn,
   type SortState,
 } from "@/components/ui/DataTable";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Pagination } from "@/components/ui/Pagination";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { TabNav } from "@/components/ui/TabNav";
@@ -126,6 +132,13 @@ export function UnitsList({
   const [sort, setSort] = useState<SortState | null>(null);
   const [page, setPage] = useState(1);
 
+  function clearFilters() {
+    setStatus("all");
+    setMissingPlanOnly(false);
+    setQuery("");
+    setPage(1);
+  }
+
   const base = `/projects/${projectSlug}/units`;
   const columns = buildColumns(base);
 
@@ -215,7 +228,19 @@ export function UnitsList({
           sort={sort}
           onSortChange={resetPage(setSort)}
           minWidth={980}
-          empty="Žádný byt neodpovídá filtru."
+          empty={
+            <EmptyState
+              size="sm"
+              icon={MagnifyingGlassIcon}
+              title="Žádný byt neodpovídá filtru"
+              text="Zkuste jiný stav nebo upravte hledaný text."
+              action={
+                <Button size="md" variant="outline" onClick={clearFilters}>
+                  Zrušit filtry
+                </Button>
+              }
+            />
+          }
         />
       </Card>
 

@@ -70,7 +70,7 @@ export function TagsInput({
             id={id}
             type="button"
             onClick={() => setDraft("")}
-            className="flex h-8 items-center gap-1.5 rounded-full px-2.5 font-text text-[13px] leading-none font-semibold text-beige transition-colors hover:bg-[#CAC3B814] focus-visible:outline-[1.5px] focus-visible:outline-beige"
+            className="flex h-8 items-center gap-1.5 rounded-full px-2.5 font-text text-[13px] leading-none font-semibold text-beige transition-colors hover:bg-beige/8 focus-visible:outline-[1.5px] focus-visible:outline-beige"
           >
             <PlusCircleIcon weight="fill" className="size-3.5" />
             {addLabel}

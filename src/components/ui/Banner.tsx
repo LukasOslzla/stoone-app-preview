@@ -15,25 +15,25 @@ const tones: Record<
   { box: string; iconColor: string; icon: Icon; role: "alert" | "status" }
 > = {
   error: {
-    box: "border-[#F0524B59] bg-[#F0524B14]",
+    box: "border-red/35 bg-red/8",
     iconColor: "text-red",
     icon: XCircleIcon,
     role: "alert",
   },
   locked: {
-    box: "border-[#F0524B59] bg-[#F0524B14]",
+    box: "border-red/35 bg-red/8",
     iconColor: "text-red",
     icon: LockIcon,
     role: "alert",
   },
   warning: {
-    box: "border-[#F2C94C59] bg-[#F2C94C14]",
+    box: "border-yellow/35 bg-yellow/8",
     iconColor: "text-yellow",
     icon: TimerIcon,
     role: "status",
   },
   success: {
-    box: "border-[#6FD13C59] bg-[#6FD13C14]",
+    box: "border-green/35 bg-green/8",
     iconColor: "text-green",
     icon: CheckCircleIcon,
     role: "status",

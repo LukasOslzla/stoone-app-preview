@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { SectorDetail } from "@/components/sectors/SectorDetail";
 import { getSector } from "@/lib/sectors";
 import { loadSectorContext } from "./context";
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /** Sector detail – "Základní údaje". */
 export default function SectorPage({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

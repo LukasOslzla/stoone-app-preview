@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import type { Icon } from "@phosphor-icons/react";
 import {
+  BellSlashIcon,
   ChatCenteredTextIcon,
   CheckCircleIcon,
   TimerIcon,
@@ -10,14 +11,15 @@ import {
   WarningCircleIcon,
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/cn";
+import { EmptyState } from "@/components/ui/EmptyState";
 import type { AppNotification, NotificationKind } from "@/lib/notifications";
 
 const kinds: Record<NotificationKind, { icon: Icon; tile: string }> = {
-  warning: { icon: WarningCircleIcon, tile: "bg-[#F2C94C1F] text-yellow" },
-  inquiry: { icon: ChatCenteredTextIcon, tile: "bg-[#6FD13C1F] text-green" },
-  deadline: { icon: TimerIcon, tile: "bg-[#F0524B1F] text-red" },
-  done: { icon: CheckCircleIcon, tile: "bg-[#CAC3B81F] text-beige" },
-  user: { icon: UserPlusIcon, tile: "bg-[#CAC3B81F] text-beige" },
+  warning: { icon: WarningCircleIcon, tile: "bg-yellow/12 text-yellow" },
+  inquiry: { icon: ChatCenteredTextIcon, tile: "bg-green/12 text-green" },
+  deadline: { icon: TimerIcon, tile: "bg-red/12 text-red" },
+  done: { icon: CheckCircleIcon, tile: "bg-beige/12 text-beige" },
+  user: { icon: UserPlusIcon, tile: "bg-beige/12 text-beige" },
 };
 
 type NotificationsPanelProps = {
@@ -64,7 +66,7 @@ export function NotificationsPanel({
       role="dialog"
       aria-label="Notifikace"
       className={cn(
-        "flex w-[400px] max-w-[calc(100vw-2rem)] flex-col gap-1 rounded-[20px] border border-line bg-card pt-[18px] pb-2 shadow-[0_24px_64px_#000000A6]",
+        "flex w-[400px] max-w-[calc(100vw-2rem)] flex-col gap-1 rounded-[20px] border border-line bg-popover pt-[18px] pb-2 shadow-float",
         className,
       )}
     >
@@ -82,16 +84,22 @@ export function NotificationsPanel({
         </button>
       </div>
 
+      {notifications.length === 0 && (
+        <EmptyState
+          size="sm"
+          icon={BellSlashIcon}
+          title="Žádné notifikace"
+          text="Až se něco stane, najdete to tady."
+        />
+      )}
+
       <ul className="flex max-h-[min(520px,60vh)] flex-col gap-1 overflow-y-auto">
         {notifications.map((item) => {
           const { icon: IconComponent, tile } = kinds[item.kind];
           return (
             <li
               key={item.id}
-              className={cn(
-                "flex gap-3 px-5 py-3",
-                item.unread && "bg-[#FFFFFF05]",
-              )}
+              className={cn("flex gap-3 px-5 py-3", item.unread && "bg-tint/2")}
             >
               <span
                 className={cn(

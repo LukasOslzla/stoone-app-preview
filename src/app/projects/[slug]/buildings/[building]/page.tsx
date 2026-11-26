@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { notFound } from "next/navigation";
 import { BuildingDetail } from "@/components/buildings/BuildingDetail";
 import { getBuilding } from "@/lib/buildings";
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /** Building detail – "Základní údaje". */
 export default function BuildingPage({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

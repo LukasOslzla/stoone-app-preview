@@ -79,9 +79,9 @@ export function NotFoundTab({
               Náhled stránky
             </p>
             {/* Schematic preview in the colours of a light public web. */}
-            <div className="flex h-[400px] flex-col overflow-hidden rounded-2xl bg-fg font-sans">
+            <div className="flex h-[400px] flex-col overflow-hidden rounded-2xl border border-line-soft bg-[#F8F6EF] font-sans">
               <div className="flex items-center justify-between gap-4 px-5 py-4">
-                <span className="text-[15px] leading-[1.4] font-extrabold text-ink">
+                <span className="text-[15px] leading-[1.4] font-extrabold text-[#1C1A18]">
                   {projectName.toLowerCase()}
                 </span>
                 <span className="flex gap-2.5 truncate text-[10px] leading-[1.4] text-[#5F6368]">
@@ -94,14 +94,14 @@ export function NotFoundTab({
                 <span className="text-[13px] leading-[1.4] font-bold tracking-[2px] text-[#C56A45]">
                   404
                 </span>
-                <p className="text-3xl leading-[1.15] font-bold break-words text-ink">
+                <p className="text-3xl leading-[1.15] font-bold break-words text-[#1C1A18]">
                   {values.heading || "Nadpis"}
                 </p>
                 <p className="max-w-[300px] text-xs leading-normal text-[#4D5156]">
                   {values.text}
                 </p>
                 {values.buttonLabel && (
-                  <span className="flex h-9 items-center rounded-full bg-ink px-[18px] text-xs leading-none font-semibold text-fg">
+                  <span className="flex h-9 items-center rounded-full bg-[#1C1A18] px-[18px] text-xs leading-none font-semibold text-[#F8F6EF]">
                     {values.buttonLabel}
                   </span>
                 )}

@@ -31,7 +31,7 @@ export function OpeningHoursPanel({
 
   return (
     <EditorPanel>
-      <div className="-mb-0.5 flex flex-col gap-2.5 rounded-[14px] border border-[#A78BFA40] bg-[#A78BFA14] p-3.5">
+      <div className="-mb-0.5 flex flex-col gap-2.5 rounded-[14px] border border-ai/25 bg-ai/8 p-3.5">
         <p className="flex items-center gap-2 font-text text-sm leading-[1.4] font-semibold text-fg">
           <LinkSimpleIcon weight="bold" className="size-[15px] text-ai" />
           Sdílený obsah
@@ -129,8 +129,8 @@ function TimeInput({
       title={invalid ? "Zadejte čas jako 9:00" : undefined}
       onChange={(event) => onChange(event.target.value)}
       className={cn(
-        "h-[30px] w-[62px] shrink-0 rounded-lg border bg-[#F8F6EF08] text-center font-text text-[13px] leading-none text-fg transition-colors outline-none focus:border-beige",
-        invalid ? "border-red" : "border-[#D2D5C54D] hover:border-[#D2D5C599]",
+        "h-[30px] w-[62px] shrink-0 rounded-lg border bg-field text-center font-text text-[13px] leading-none text-fg transition-colors outline-none focus:border-beige",
+        invalid ? "border-red" : "border-mist/30 hover:border-mist/60",
       )}
     />
   );

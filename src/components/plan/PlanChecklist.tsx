@@ -36,7 +36,7 @@ export function PlanChecklist({
         aria-valuemin={0}
         aria-valuemax={items.length}
         aria-valuenow={marked}
-        className="h-1.5 overflow-hidden rounded-full bg-[#FFFFFF14]"
+        className="h-1.5 overflow-hidden rounded-full bg-tint/8"
       >
         <div
           className="h-full rounded-full bg-beige transition-[width]"
@@ -58,8 +58,8 @@ export function PlanChecklist({
                 className={cn(
                   "flex h-[46px] w-full items-center gap-2.5 rounded-[10px] px-3 text-left transition-colors focus-visible:outline-[1.5px] focus-visible:outline-beige",
                   selected
-                    ? "bg-[#CAC3B81F] ring-1 ring-[#CAC3B840] ring-inset"
-                    : "hover:bg-white/5",
+                    ? "bg-beige/12 ring-1 ring-beige/25 ring-inset"
+                    : "hover:bg-tint/5",
                 )}
               >
                 {done ? (
@@ -75,7 +75,7 @@ export function PlanChecklist({
                     weight="fill"
                     className={cn(
                       "size-4 shrink-0",
-                      selected ? "text-beige" : "text-[#FFFFFF1F]",
+                      selected ? "text-beige" : "text-tint/12",
                     )}
                   />
                 )}

@@ -54,7 +54,7 @@ export function RangeSelect({
           type="button"
           {...props}
           className={cn(
-            "flex h-9 items-center gap-2 rounded-full border px-3.5 transition-colors hover:bg-white/5 focus-visible:outline-[1.5px] focus-visible:outline-beige",
+            "flex h-9 items-center gap-2 rounded-full border px-3.5 transition-colors hover:bg-tint/5 focus-visible:outline-[1.5px] focus-visible:outline-beige",
             open ? "border-beige" : "border-line",
           )}
         >

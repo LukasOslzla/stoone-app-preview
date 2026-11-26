@@ -40,7 +40,7 @@ export function ConfirmDialog({
       description={description}
       size="sm"
       icon={
-        <span className="flex size-12 items-center justify-center rounded-full bg-[#F0524B1F]">
+        <span className="flex size-12 items-center justify-center rounded-full bg-red/12">
           <TrashIcon weight="fill" className="size-[22px] text-red" />
         </span>
       }

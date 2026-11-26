@@ -121,7 +121,7 @@ export function TargetSelect({
         onClick={() => select(target)}
         className={cn(
           "flex h-[38px] w-full shrink-0 items-center gap-2.5 rounded-[9px] px-2.5 text-left transition-colors focus-visible:outline-[1.5px] focus-visible:outline-beige",
-          selected ? "bg-[#CAC3B81F]" : "hover:bg-white/5",
+          selected ? "bg-beige/12" : "hover:bg-tint/5",
           target.disabled && "cursor-default opacity-45 hover:bg-transparent",
         )}
       >
@@ -181,8 +181,8 @@ export function TargetSelect({
         aria-controls={open ? listId : undefined}
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          "flex h-10 max-w-[260px] items-center gap-2.5 rounded-xl border bg-card pr-3 pl-3.5 text-left transition-colors focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige",
-          open ? "border-beige" : "border-line hover:border-[#D2D5C566]",
+          "flex h-10 max-w-[260px] items-center gap-2.5 rounded-xl border bg-popover pr-3 pl-3.5 text-left transition-colors focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige",
+          open ? "border-beige" : "border-line hover:border-mist/40",
         )}
       >
         <span className="flex min-w-0 flex-col">
@@ -206,9 +206,9 @@ export function TargetSelect({
           id={listId}
           role="listbox"
           aria-label="Co chcete upravit"
-          className="absolute top-[46px] left-0 z-30 flex max-h-[min(560px,calc(100dvh-180px))] w-[340px] flex-col gap-0.5 overflow-y-auto rounded-2xl border border-line bg-card p-2.5 shadow-[0_20px_48px_#000000B3]"
+          className="absolute top-[46px] left-0 z-30 flex max-h-[min(560px,calc(100dvh-180px))] w-[340px] flex-col gap-0.5 overflow-y-auto rounded-2xl border border-line bg-popover p-2.5 shadow-float"
         >
-          <label className="flex h-[38px] shrink-0 items-center gap-2.5 rounded-[10px] border border-line-soft bg-inset px-3 focus-within:border-beige">
+          <label className="flex h-[38px] shrink-0 items-center gap-2.5 rounded-[10px] border border-line-soft bg-field-inset px-3 focus-within:border-beige">
             <MagnifyingGlassIcon
               weight="fill"
               className="size-3.5 shrink-0 text-fg-3"
@@ -239,7 +239,7 @@ export function TargetSelect({
                 <button
                   type="button"
                   onClick={() => setAllPages(true)}
-                  className="flex h-[38px] w-full shrink-0 items-center gap-2.5 rounded-[9px] px-2.5 text-left transition-colors hover:bg-white/5 focus-visible:outline-[1.5px] focus-visible:outline-beige"
+                  className="flex h-[38px] w-full shrink-0 items-center gap-2.5 rounded-[9px] px-2.5 text-left transition-colors hover:bg-tint/5 focus-visible:outline-[1.5px] focus-visible:outline-beige"
                 >
                   <CaretRightIcon
                     weight="fill"

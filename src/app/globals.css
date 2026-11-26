@@ -1,25 +1,197 @@
 @import "tailwindcss";
 
 /* Design tokens from the Pencil file (v2/* variables). */
-@theme {
-  --color-bg: #151519;
+/*
+ * Design tokens from the Pencil file (v2/* variables). The values here are
+ * the dark theme; `[data-theme="light"]` below overrides them. Use them as
+ * utilities (bg-card, text-fg-2, border-line, bg-beige/15…), never as hex.
+ */
+/* `static` keeps every token in the CSS, also those only used via var(). */
+@theme static {
+  --color-bg: #151519; /* app background, sidebar */
+  --color-panel: #151519; /* main area next to the sidebar */
   --color-card: #1e1e23;
+  --color-popover: #1e1e23; /* menus, dialogs (always opaque) */
+  --color-surface: #18181c; /* base of gradient cards */
   --color-inset: #0f0f12;
   --color-control: #2a2a30;
+  --color-field: #f8f6ef08; /* fill of form controls */
+  --color-field-hover: #f8f6ef0d;
+  --color-field-inset: #0f0f12; /* search fields */
+  --color-float: #2a2a2ff2; /* floating AI prompt */
   --color-line: #d2d5c533;
   --color-line-soft: #d2d5c524;
   --color-fg: #f8f6ef;
   --color-fg-2: #d2d5c5b3;
   --color-fg-3: #d2d5c573;
+  --color-mist: #d2d5c5; /* base of borders; use with alpha: border-mist/30 */
+  --color-tint: #ffffff; /* hover / pressed overlays: bg-tint/5 */
+  --color-neutral: #5a5a62; /* "not for sale", hidden */
+  --color-green: #6fd13c;
+  --color-yellow: #f2c94c;
+  --color-red: #f0524b;
+  --color-beige: #cac3b8; /* primary actions, selection */
+  --color-ink: #1c1a18; /* text on beige */
+  --color-primary-hover: #ca9377;
+  --color-primary-active: #a26d55;
+  --color-brick: #8e3c39;
+  --color-copper: #ca9377;
+  --color-copper-deep: #a26d55;
+  --color-ai: #b3a2ff;
+  --color-ai-fill: #201d2e;
+
+  /* Supplementary colours ("By Detailist" palette), same in both themes. */
+  --color-camel: #d0ae8f;
+  --color-olive: #6e6351;
+  --color-slate: #32424b;
+
+  /* Previews of other sites (Google result, link sharing). */
+  --color-paper: #f8f6ef;
+
+  /* Charts: copper tones in dark, camel / olive / slate in light. */
+  --color-chart-line-from: #cac3b8;
+  --color-chart-line-mid: #ca9377;
+  --color-chart-line-to: #a26d55;
+  --color-chart-area: #ca9377;
+  --chart-area-opacity: 0.35;
+  --color-progress-from: #cac3b8;
+  --color-progress-to: #ca9377;
+
+  /* Layers of the surface-card utility. */
+  --card-border: transparent;
+  --card-gradient: linear-gradient(
+    135deg,
+    #cac3b800 0%,
+    #cac3b808 45%,
+    #cac3b81f 100%
+  );
+  --card-edge: linear-gradient(135deg, #ffffff0f 0%, #cac3b833 100%);
+
+  --shadow-float: 0 20px 48px #000000b3;
+  --shadow-prompt: 0 10px 32px #00000080;
+  --shadow-focus: 0 0 12px #cac3b84d;
+}
+
+/* The dark values again, so a nested data-theme="dark" (styleguide samples) works inside a light page. */
+[data-theme="dark"] {
+  --color-bg: #151519;
+  --color-panel: #151519;
+  --color-card: #1e1e23;
+  --color-popover: #1e1e23;
+  --color-surface: #18181c;
+  --color-inset: #0f0f12;
+  --color-control: #2a2a30;
+  --color-field: #f8f6ef08;
+  --color-field-hover: #f8f6ef0d;
+  --color-field-inset: #0f0f12;
+  --color-float: #2a2a2ff2;
+  --color-line: #d2d5c533;
+  --color-line-soft: #d2d5c524;
+  --color-fg: #f8f6ef;
+  --color-fg-2: #d2d5c5b3;
+  --color-fg-3: #d2d5c573;
+  --color-mist: #d2d5c5;
+  --color-tint: #ffffff;
+  --color-neutral: #5a5a62;
   --color-green: #6fd13c;
   --color-yellow: #f2c94c;
   --color-red: #f0524b;
   --color-beige: #cac3b8;
+  --color-ink: #1c1a18;
+  --color-primary-hover: #ca9377;
+  --color-primary-active: #a26d55;
   --color-brick: #8e3c39;
   --color-copper: #ca9377;
   --color-copper-deep: #a26d55;
-  --color-ink: #1c1a18;
   --color-ai: #b3a2ff;
+  --color-ai-fill: #201d2e;
+  --color-camel: #d0ae8f;
+  --color-olive: #6e6351;
+  --color-slate: #32424b;
+  --color-paper: #f8f6ef;
+  --color-chart-line-from: #cac3b8;
+  --color-chart-line-mid: #ca9377;
+  --color-chart-line-to: #a26d55;
+  --color-chart-area: #ca9377;
+  --chart-area-opacity: 0.35;
+  --color-progress-from: #cac3b8;
+  --color-progress-to: #ca9377;
+  --card-border: transparent;
+  --card-gradient: linear-gradient(
+    135deg,
+    #cac3b800 0%,
+    #cac3b808 45%,
+    #cac3b81f 100%
+  );
+  --card-edge: linear-gradient(135deg, #ffffff0f 0%, #cac3b833 100%);
+  --shadow-float: 0 20px 48px #000000b3;
+  --shadow-prompt: 0 10px 32px #00000080;
+  --shadow-focus: 0 0 12px #cac3b84d;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --color-bg: #e9e6df;
+  --color-panel: #f2f1ed;
+  /* Cards are a half-transparent white; anything floating is fully white. */
+  --color-card: #ffffff8c;
+  --color-popover: #ffffff;
+  --color-surface: #ffffff8c;
+  --color-inset: #eae8e2;
+  --color-control: #e1ddd4;
+  --color-field: #ffffff;
+  --color-field-hover: #ffffff;
+  --color-field-inset: #ffffff;
+  --color-float: #fffffff2;
+  --color-line: #2a231a2e;
+  --color-line-soft: #2a231a1a;
+  --color-fg: #231e18;
+  --color-fg-2: #231e18b8;
+  --color-fg-3: #231e188f;
+  --color-mist: #231e18;
+  --color-tint: #231e18;
+  --color-neutral: #a8a29b;
+  --color-green: #2f8f0e;
+  --color-yellow: #a87700;
+  --color-red: #d93a33;
+  /* In light mode the accent is the ink colour itself. */
+  --color-beige: #231e18;
+  --color-ink: #ffffff;
+  --color-primary-hover: #3d352c;
+  --color-primary-active: #0f0c09;
+  --color-copper: #d0ae8f;
+  --color-copper-deep: #6e6351;
+  --color-ai: #6d4fe0;
+  --color-ai-fill: #f1edff;
+  --color-paper: #ffffff;
+
+  --color-chart-line-from: #32424b;
+  --color-chart-line-mid: #32424b;
+  --color-chart-line-to: #32424b;
+  --color-chart-area: #32424b;
+  --chart-area-opacity: 0.2;
+  --color-progress-from: #d0ae8f;
+  --color-progress-to: #6e6351;
+
+  /*
+   * Cards: half-transparent white with a camel gradient into the corner
+   * (0 % → 5 % at 55 % → 20 %). The fill is see-through, so the border is a
+   * plain colour instead of a gradient layer behind it. No drop shadow.
+   */
+  --card-border: #231e181f;
+  --card-gradient: linear-gradient(
+    135deg,
+    #d0ae8f00 0%,
+    #d0ae8f0d 55%,
+    #d0ae8f33 100%
+  );
+  --card-edge: linear-gradient(transparent, transparent);
+
+  --shadow-float: 0 20px 48px #17171b2e;
+  --shadow-prompt: 0 10px 32px #17171b2e;
+  --shadow-focus: 0 0 12px #231e1826;
+
+  color-scheme: light;
 }
 
 @theme inline {
@@ -31,6 +203,10 @@
   html,
   body {
     height: 100%;
+  }
+
+  html {
+    color-scheme: dark;
   }
 
   body {
@@ -56,13 +232,20 @@
 
 /* Surfaces with gradient fills and gradient borders (not expressible as plain utilities). */
 @utility surface-card {
-  border: 1px solid transparent;
+  border: 1px solid var(--card-border);
   background:
-    linear-gradient(135deg, #cac3b800 0%, #cac3b808 45%, #cac3b81f 100%)
-      padding-box,
-    linear-gradient(#18181c, #18181c) padding-box,
-    linear-gradient(135deg, #ffffff0f 0%, #cac3b833 100%) border-box;
+    var(--card-gradient) padding-box,
+    linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+    var(--card-edge) border-box;
   box-shadow: inset 0 1px 0 #ffffff14;
+}
+
+@utility bg-progress {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-progress-from),
+    var(--color-progress-to)
+  );
 }
 
 @utility surface-ai {
@@ -70,7 +253,7 @@
   background:
     linear-gradient(90deg, #f08cb014 0%, #5e7cf00f 55%, #9532ff1a 100%)
       padding-box,
-    linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+    linear-gradient(var(--color-panel), var(--color-panel)) padding-box,
     linear-gradient(90deg, #f08cb0b3 0%, #5e7cf0b3 55%, #9532ffb3 100%)
       border-box;
 }

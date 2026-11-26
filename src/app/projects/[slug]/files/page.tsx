@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { notFound } from "next/navigation";
 import { FilesLibrary } from "@/components/files/FilesLibrary";
 import { getLibraryCounts, getLibraryFiles } from "@/lib/files";
@@ -12,7 +13,7 @@ export const metadata: Metadata = { title: "Soubory" };
 /** File library of the project. */
 export default function FilesPage({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

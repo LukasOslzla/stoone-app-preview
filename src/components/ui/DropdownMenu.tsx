@@ -148,7 +148,7 @@ export function DropdownMenu({
           aria-label={label}
           onKeyDown={onKeyDown}
           className={cn(
-            "absolute z-50 flex max-h-[min(480px,70dvh)] flex-col overflow-y-auto rounded-2xl border border-line bg-card p-1.5 shadow-[0_20px_48px_#000000B3]",
+            "absolute z-50 flex max-h-[min(480px,70dvh)] flex-col overflow-y-auto rounded-2xl border border-line bg-popover p-1.5 shadow-float",
             width,
             align === "end" ? "right-0" : "left-0",
             side === "top" ? "bottom-full mb-2" : "top-full mt-2",
@@ -172,7 +172,7 @@ export function DropdownMenu({
               {group.items.map((item) => {
                 const itemClass = cn(
                   "flex min-h-[38px] w-full items-center gap-2.5 rounded-[9px] px-2.5 py-1.5 text-left transition-colors focus-visible:outline-[1.5px] focus-visible:-outline-offset-1 focus-visible:outline-beige",
-                  item.selected ? "bg-[#CAC3B81F]" : "hover:bg-white/5",
+                  item.selected ? "bg-beige/12" : "hover:bg-tint/5",
                   item.disabled &&
                     "cursor-default opacity-45 hover:bg-transparent",
                 );

@@ -26,7 +26,7 @@ export function SiteStatusBar({
         <span
           className={cn(
             "flex size-7 shrink-0 items-center justify-center rounded-full",
-            online ? "bg-[#6FD13C1F]" : "bg-[#F0524B1F]",
+            online ? "bg-green/12" : "bg-red/12",
           )}
         >
           <span

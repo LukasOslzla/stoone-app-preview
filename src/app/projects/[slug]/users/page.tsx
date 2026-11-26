@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { UsersTab } from "@/components/team/UsersTab";
 import { getProjects } from "@/lib/projects";
 import { getTeamUsers } from "@/lib/team";
@@ -11,7 +12,7 @@ export const metadata: Metadata = { title: "Uživatelé a role" };
 /** Users with access to the administration. */
 export default function UsersPage({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { RolesTab } from "@/components/team/RolesTab";
 import { getProjects } from "@/lib/projects";
 import { getRolePermissions, getTeamUsers } from "@/lib/team";
@@ -11,7 +12,7 @@ export const metadata: Metadata = { title: "Role" };
 /** Roles and what each of them may do. */
 export default function RolesPage({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

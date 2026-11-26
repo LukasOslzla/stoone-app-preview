@@ -310,8 +310,8 @@ export function SelectInput({
           onKeyDown={onKeyDown}
           className={cn(
             controlBox({ invalid: Boolean(error), disabled, size }),
-            "text-left outline-none focus-visible:border-beige focus-visible:shadow-[0_0_12px_#CAC3B84D]",
-            open && !error && "border-beige shadow-[0_0_12px_#CAC3B84D]",
+            "text-left outline-none focus-visible:border-beige focus-visible:shadow-focus",
+            open && !error && "border-beige shadow-focus",
           )}
         >
           <span
@@ -340,7 +340,7 @@ export function SelectInput({
             role="listbox"
             aria-label={label}
             className={cn(
-              "absolute inset-x-0 z-40 flex max-h-[280px] flex-col gap-0.5 overflow-y-auto rounded-xl border border-line bg-card p-1.5 shadow-[0_16px_40px_#000000B3]",
+              "absolute inset-x-0 z-40 flex max-h-[280px] flex-col gap-0.5 overflow-y-auto rounded-xl border border-line bg-popover p-1.5 shadow-float",
               above ? "bottom-full mb-1.5" : "top-full mt-1.5",
             )}
           >
@@ -361,8 +361,8 @@ export function SelectInput({
                     "flex shrink-0 cursor-pointer items-center gap-2.5 rounded-lg px-2.5",
                     sm ? "min-h-[34px] py-1.5" : "min-h-[38px] py-2",
                     isSelected
-                      ? "bg-[#CAC3B81F]"
-                      : index === active && "bg-white/5",
+                      ? "bg-beige/12"
+                      : index === active && "bg-tint/5",
                     index === active && "ring-1 ring-line ring-inset",
                     option.disabled && "cursor-default opacity-45",
                   )}

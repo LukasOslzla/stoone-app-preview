@@ -26,7 +26,7 @@ export function AiSuggestButton({
       )}
       {...props}
     >
-      <span className="flex h-[26px] items-center gap-1.5 rounded-full bg-[#201D2E] pr-2.5 pl-2 font-text text-xs leading-none font-semibold whitespace-nowrap text-fg">
+      <span className="flex h-[26px] items-center gap-1.5 rounded-full bg-ai-fill pr-2.5 pl-2 font-text text-xs leading-none font-semibold whitespace-nowrap text-fg">
         {loading ? (
           <SpinnerIcon
             weight="fill"

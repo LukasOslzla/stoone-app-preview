@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { PagesList } from "@/components/pages/PagesList";
 import { getSitePages, getSiteStatus } from "@/lib/pages";
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = { title: "Stránky webu" };
 /** Pages of the project's public web ("Editor obsahu" in the menu). */
 export default function PagesRoute({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

@@ -33,7 +33,7 @@ export function FileCard({
         iconClassName="size-[30px]"
       />
       {actions && (
-        <div className="absolute top-2 right-2 rounded-full bg-[#18181CE6] opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 has-aria-expanded:opacity-100">
+        <div className="absolute top-2 right-2 rounded-full bg-surface/90 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 has-aria-expanded:opacity-100">
           {actions}
         </div>
       )}

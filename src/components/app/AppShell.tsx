@@ -17,7 +17,7 @@ export function AppShell({
     <div className="flex h-dvh bg-bg">
       {sidebar}
 
-      <div className="relative flex min-w-0 flex-1 flex-col">
+      <div className="relative flex min-w-0 flex-1 flex-col bg-panel">
         <main className="min-h-0 flex-1 overflow-y-auto pb-28">{children}</main>
         <Suspense fallback={null}>
           <ShellAiPrompt className="absolute bottom-7 left-1/2 w-[560px] max-w-[calc(100%-2rem)] -translate-x-1/2" />

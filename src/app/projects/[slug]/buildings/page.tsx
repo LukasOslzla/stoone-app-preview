@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import Link from "next/link";
 import { CaretRightIcon } from "@phosphor-icons/react/ssr";
 import { Card, CardHeader } from "@/components/ui/Card";
@@ -23,7 +24,7 @@ export const metadata: Metadata = { title: "Budovy a patra" };
  */
 export default function BuildingsPage({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

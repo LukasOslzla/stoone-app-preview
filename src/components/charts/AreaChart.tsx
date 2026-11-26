@@ -93,7 +93,7 @@ export function AreaChart({
           {[25, 50, 75].map((top) => (
             <span
               key={top}
-              className="absolute inset-x-0 h-px bg-[#FFFFFF0D]"
+              className="absolute inset-x-0 h-px bg-tint/5"
               style={{ top: `${top}%` }}
             />
           ))}
@@ -106,9 +106,21 @@ export function AreaChart({
           >
             <defs>
               <linearGradient id={`${id}-area`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#CA9377" stopOpacity="0.35" />
-                <stop offset="0.55" stopColor="#CAC3B8" stopOpacity="0.15" />
-                <stop offset="1" stopColor="#CAC3B8" stopOpacity="0" />
+                <stop
+                  offset="0"
+                  stopColor="var(--color-chart-area)"
+                  stopOpacity="var(--chart-area-opacity)"
+                />
+                <stop
+                  offset="0.55"
+                  stopColor="var(--color-chart-line-from)"
+                  stopOpacity="0.12"
+                />
+                <stop
+                  offset="1"
+                  stopColor="var(--color-chart-line-from)"
+                  stopOpacity="0"
+                />
               </linearGradient>
               <linearGradient
                 id={`${id}-line`}
@@ -118,9 +130,9 @@ export function AreaChart({
                 x2={WIDTH}
                 y2="0"
               >
-                <stop offset="0" stopColor="#CAC3B8" />
-                <stop offset="0.6" stopColor="#CA9377" />
-                <stop offset="1" stopColor="#A26D55" />
+                <stop offset="0" stopColor="var(--color-chart-line-from)" />
+                <stop offset="0.6" stopColor="var(--color-chart-line-mid)" />
+                <stop offset="1" stopColor="var(--color-chart-line-to)" />
               </linearGradient>
             </defs>
             <path d={area} fill={`url(#${id}-area)`} />
@@ -140,9 +152,9 @@ export function AreaChart({
               className="pointer-events-none absolute inset-y-0"
               style={{ left: `${(activeXY.x / WIDTH) * 100}%` }}
             >
-              <span className="absolute inset-y-0 -left-px w-px bg-[#FFFFFF2E]" />
+              <span className="absolute inset-y-0 -left-px w-px bg-tint/18" />
               <span
-                className="absolute size-[9px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#18181C] bg-copper"
+                className="absolute size-[9px] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-popover bg-[var(--color-chart-line-mid)]"
                 style={{ top: `${(activeXY.y / HEIGHT) * 100}%` }}
               />
               <div

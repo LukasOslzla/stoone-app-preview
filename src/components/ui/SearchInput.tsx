@@ -16,7 +16,7 @@ export function SearchInput({ label, className, ...props }: SearchInputProps) {
   return (
     <label
       className={cn(
-        "flex h-[38px] w-[260px] items-center gap-2.5 rounded-full border border-line-soft bg-inset px-3.5 transition-colors focus-within:border-beige hover:not-focus-within:border-line",
+        "flex h-[38px] w-[260px] items-center gap-2.5 rounded-full border border-line-soft bg-field-inset px-3.5 transition-colors focus-within:border-beige hover:not-focus-within:border-line",
         className,
       )}
     >

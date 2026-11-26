@@ -71,13 +71,13 @@ async function Dashboard({ params }: Props) {
 function DashboardSkeleton() {
   return (
     <div aria-hidden className="flex animate-pulse flex-col gap-4 px-8 pt-7">
-      <div className="h-[72px] rounded-[20px] bg-white/5" />
+      <div className="h-[72px] rounded-[20px] bg-tint/5" />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {[0, 1, 2, 3].map((item) => (
-          <div key={item} className="h-[152px] rounded-[20px] bg-white/5" />
+          <div key={item} className="h-[152px] rounded-[20px] bg-tint/5" />
         ))}
       </div>
-      <div className="h-[449px] rounded-[20px] bg-white/5" />
+      <div className="h-[449px] rounded-[20px] bg-tint/5" />
     </div>
   );
 }

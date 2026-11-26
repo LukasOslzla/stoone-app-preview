@@ -24,7 +24,7 @@ export function AlertsCard({ alerts }: { alerts: UnitAlert[] }) {
         description="Jednotky, které potřebují zásah"
         action={
           alerts.length > 0 && (
-            <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-[#F2C94C1F] px-1.5 font-text text-xs leading-none font-bold text-yellow">
+            <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-yellow/12 px-1.5 font-text text-xs leading-none font-bold text-yellow">
               {alerts.length}
             </span>
           )
@@ -46,8 +46,8 @@ export function AlertsCard({ alerts }: { alerts: UnitAlert[] }) {
                   className={cn(
                     "flex size-9 shrink-0 items-center justify-center rounded-[10px]",
                     critical
-                      ? "bg-[#F0524B1F] text-red"
-                      : "bg-[#F2C94C1F] text-yellow",
+                      ? "bg-red/12 text-red"
+                      : "bg-yellow/12 text-yellow",
                   )}
                 >
                   <IconComponent weight="fill" className="size-4" />

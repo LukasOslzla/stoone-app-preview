@@ -46,7 +46,7 @@ export function AddSectionDialog({
     <div
       role="dialog"
       aria-labelledby={titleId}
-      className="flex w-[620px] max-w-full flex-col gap-[18px] rounded-[20px] border border-line bg-card p-6 shadow-[0_24px_64px_#000000A6]"
+      className="flex w-[620px] max-w-full flex-col gap-[18px] rounded-[20px] border border-line bg-popover p-6 shadow-float"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 flex-col gap-1">
@@ -90,8 +90,8 @@ export function AddSectionDialog({
               className={cn(
                 "flex flex-col gap-2.5 rounded-[14px] border p-2.5 text-left transition-colors focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige",
                 checked
-                  ? "border-beige bg-[#CAC3B814]"
-                  : "border-line-soft bg-card hover:border-line",
+                  ? "border-beige bg-beige/8"
+                  : "border-line-soft bg-popover hover:border-line",
               )}
             >
               <span className="flex h-[84px] items-center justify-center rounded-lg bg-inset">

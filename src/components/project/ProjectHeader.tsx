@@ -45,10 +45,10 @@ export function ProjectHeaderSkeleton() {
       size="compact"
       leading={
         <div aria-hidden className="flex animate-pulse items-center gap-3.5">
-          <div className="size-11 rounded-xl bg-white/5" />
+          <div className="size-11 rounded-xl bg-tint/5" />
           <div className="flex flex-col gap-2">
-            <div className="h-5 w-32 rounded bg-white/5" />
-            <div className="h-3.5 w-48 rounded bg-white/5" />
+            <div className="h-5 w-32 rounded bg-tint/5" />
+            <div className="h-3.5 w-48 rounded bg-tint/5" />
           </div>
         </div>
       }

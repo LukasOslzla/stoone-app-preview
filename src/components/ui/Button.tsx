@@ -15,9 +15,9 @@ export const buttonSizes = {
 } as const;
 
 export const buttonVariants = {
-  primary: "bg-beige text-ink hover:bg-copper active:bg-copper-deep",
+  primary: "bg-beige text-ink hover:bg-primary-hover active:bg-primary-active",
   outline:
-    "border border-line bg-transparent text-fg hover:bg-white/5 active:bg-white/10",
+    "border border-line bg-transparent text-fg hover:bg-tint/5 active:bg-tint/10",
   /** Destructive confirmation ("Smazat soubor"). */
   danger: "bg-red text-white hover:brightness-110 active:brightness-95",
 } as const;

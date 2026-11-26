@@ -7,9 +7,9 @@ export const unitStatuses: Record<
   UnitStatus,
   { label: string; color: string }
 > = {
-  free: { label: "Volné", color: "#6FD13C" },
-  reserved: { label: "Rezervováno", color: "#CA9377" },
-  preReserved: { label: "Předrezervace", color: "#A26D55" },
-  sold: { label: "Prodáno", color: "#F0524B" },
-  notForSale: { label: "Není na prodej", color: "#5A5A62" },
+  free: { label: "Volné", color: "var(--color-green)" },
+  reserved: { label: "Rezervováno", color: "var(--color-copper)" },
+  preReserved: { label: "Předrezervace", color: "var(--color-copper-deep)" },
+  sold: { label: "Prodáno", color: "var(--color-red)" },
+  notForSale: { label: "Není na prodej", color: "var(--color-neutral)" },
 };

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { notFound } from "next/navigation";
 import { NotFoundTab } from "@/components/settings/NotFoundTab";
 import { getProject } from "@/lib/projects";
@@ -11,7 +12,7 @@ export const metadata: Metadata = { title: "Stránka nenalezena (404)" };
 
 export default function SettingsRoute({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

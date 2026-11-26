@@ -39,7 +39,7 @@ export function RealpadSyncPill({
       }
       className={cn(
         "flex items-center gap-2",
-        error && "rounded-full bg-[#F2C94C1A] py-1 pr-1 pl-2.5",
+        error && "rounded-full bg-yellow/10 py-1 pr-1 pl-2.5",
         className,
       )}
     >
@@ -73,7 +73,7 @@ export function RealpadSyncPill({
           error ? "Zkusit synchronizaci znovu" : "Synchronizovat s Realpadem"
         }
         className={cn(
-          "flex size-7 shrink-0 items-center justify-center rounded-full border border-line-soft transition-colors enabled:hover:bg-white/5 focus-visible:outline-[1.5px] focus-visible:outline-beige",
+          "flex size-7 shrink-0 items-center justify-center rounded-full border border-line-soft transition-colors enabled:hover:bg-tint/5 focus-visible:outline-[1.5px] focus-visible:outline-beige",
           error
             ? "text-yellow"
             : syncing

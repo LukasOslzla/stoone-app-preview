@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { MigrationPage } from "@/components/migration/MigrationPage";
 import { getMigrationHistory } from "@/lib/migration";
 import { getProjects } from "@/lib/projects";
@@ -12,7 +13,7 @@ export const metadata: Metadata = { title: "Migrace dat" };
 /** Moving content between projects (admins only). */
 export default function MigrationRoute({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

@@ -53,7 +53,7 @@ export function SalesStatusCard({ status }: { status: SalesStatus }) {
                   className="h-full min-w-[3px]"
                   style={{
                     flex: `${counts[key]} 0 0`,
-                    backgroundImage: `linear-gradient(90deg, ${unitStatuses[key].color}, ${unitStatuses[key].color}CC)`,
+                    backgroundImage: `linear-gradient(90deg, ${unitStatuses[key].color}, color-mix(in srgb, ${unitStatuses[key].color} 80%, transparent))`,
                   }}
                 />
               ) : null,
@@ -64,7 +64,9 @@ export function SalesStatusCard({ status }: { status: SalesStatus }) {
           className="h-full"
           style={{
             flex: `${counts.free} 0 0`,
-            backgroundImage: ticks("#6FD13C59"),
+            backgroundImage: ticks(
+              "color-mix(in srgb, var(--color-green) 35%, transparent)",
+            ),
           }}
         />
         {counts.notForSale > 0 && (
@@ -72,7 +74,9 @@ export function SalesStatusCard({ status }: { status: SalesStatus }) {
             className="h-full min-w-0.5"
             style={{
               flex: `${counts.notForSale} 0 0`,
-              backgroundImage: ticks("#FFFFFF1F"),
+              backgroundImage: ticks(
+                "color-mix(in srgb, var(--color-tint) 12%, transparent)",
+              ),
             }}
           />
         )}

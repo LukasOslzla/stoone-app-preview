@@ -302,7 +302,7 @@ export function ImportUnitsWizard({ projectSlug }: { projectSlug: string }) {
 
       {step === 2 && preview && (
         <Card className="flex w-full max-w-[640px] flex-col items-center gap-5 rounded-3xl p-8 text-center">
-          <span className="flex size-16 items-center justify-center rounded-full border border-[#6FD13C59] bg-[#6FD13C1A]">
+          <span className="flex size-16 items-center justify-center rounded-full border border-green/35 bg-green/10">
             <CheckCircleIcon weight="fill" className="size-7 text-green" />
           </span>
           <h1 className="font-title text-[26px] leading-[1.2] font-medium text-fg">
@@ -333,7 +333,7 @@ export function ImportUnitsWizard({ projectSlug }: { projectSlug: string }) {
                 key={item.label}
                 className={cn(
                   "flex flex-1 flex-col gap-1 rounded-[14px] border bg-inset px-4 py-3.5",
-                  item.warn ? "border-[#CAC3B859]" : "border-line-soft",
+                  item.warn ? "border-beige/35" : "border-line-soft",
                 )}
               >
                 <span

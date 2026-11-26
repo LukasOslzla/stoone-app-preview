@@ -10,7 +10,7 @@ type PaginationProps = {
 };
 
 const buttonClass =
-  "flex size-[34px] items-center justify-center rounded-full border border-line-soft text-fg-2 transition-colors enabled:hover:bg-white/5 enabled:hover:text-fg disabled:opacity-40 focus-visible:outline-[1.5px] focus-visible:outline-beige";
+  "flex size-[34px] items-center justify-center rounded-full border border-line-soft text-fg-2 transition-colors enabled:hover:bg-tint/5 enabled:hover:text-fg disabled:opacity-40 focus-visible:outline-[1.5px] focus-visible:outline-beige";
 
 /** Previous / next pager with a "1 / 20" indicator. */
 export function Pagination({

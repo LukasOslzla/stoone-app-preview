@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { PlusCircleIcon } from "@phosphor-icons/react/ssr";
 import { PageIntro } from "@/components/app/PageIntro";
 import { SectorCard } from "@/components/sectors/SectorCard";
@@ -19,7 +20,7 @@ export const metadata: Metadata = { title: "Sektory" };
 /** Sectors – pick a sector to edit. */
 export default function SectorsPage({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

@@ -37,7 +37,7 @@ export function RoleChip({
       className={cn(
         "inline-flex h-[26px] items-center gap-1.5 rounded-full border px-2.5 font-text text-xs leading-none font-semibold",
         admin
-          ? "border-[#CAC3B859] bg-[#CAC3B81F] text-beige"
+          ? "border-beige/35 bg-beige/12 text-beige"
           : "border-line-soft bg-control text-fg-2",
       )}
     >

@@ -74,7 +74,7 @@ export function SortableList<T extends { id: string }>({
               className={cn(
                 "flex h-10 items-center gap-2.5 rounded-[10px] border pr-2.5 pl-1 transition-colors",
                 selected
-                  ? "border-beige bg-[#CAC3B81F]"
+                  ? "border-beige bg-beige/12"
                   : "border-line-soft bg-card hover:border-line",
                 dragId === item.id && "opacity-40",
                 overId === item.id &&

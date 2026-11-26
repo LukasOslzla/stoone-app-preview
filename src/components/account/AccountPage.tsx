@@ -25,6 +25,7 @@ import { FieldShell, SelectInput, TextInput } from "@/components/ui/form/Field";
 import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { cn } from "@/lib/cn";
 import { formatDate, plural } from "@/lib/format";
+import { setTheme, useTheme } from "@/lib/theme";
 import {
   languageOptions,
   saveAccount,
@@ -37,7 +38,7 @@ import { ChangePasswordDialog } from "./ChangePasswordDialog";
 import { SettingRow } from "./SettingRow";
 
 const smallButton =
-  "flex h-8 shrink-0 items-center rounded-full border border-line px-3.5 font-text text-[13px] leading-none font-semibold text-fg transition-colors hover:bg-white/5 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige";
+  "flex h-8 shrink-0 items-center rounded-full border border-line px-3.5 font-text text-[13px] leading-none font-semibold text-fg transition-colors hover:bg-tint/5 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige";
 
 const themeOptions: { value: Theme; label: string; icon: React.ReactNode }[] = [
   {
@@ -73,6 +74,7 @@ export function AccountPage({ account, projects }: AccountPageProps) {
   });
   const [otherSessions, setOtherSessions] = useState(account.otherSessions);
   const [signingOut, setSigningOut] = useState(false);
+  const { choice: themeChoice } = useTheme();
   const [passwordOpen, setPasswordOpen] = useState(false);
   const [passwordChanged, setPasswordChanged] = useState(
     account.passwordChanged,
@@ -208,13 +210,16 @@ export function AccountPage({ account, projects }: AccountPageProps) {
                 onChange={(value) => update("language", value)}
               />
               <FieldShell label="Motiv" htmlFor="account-theme">
-                {/* Only the dark theme is designed; the choice is just stored. */}
+                {/* Applies right away; saving stores it with the account. */}
                 <SegmentedControl
                   label="Motiv"
                   shape="block"
                   options={themeOptions}
-                  value={values.theme}
-                  onChange={(theme) => update("theme", theme)}
+                  value={themeChoice}
+                  onChange={(theme) => {
+                    setTheme(theme);
+                    update("theme", theme);
+                  }}
                 />
               </FieldShell>
             </Card>

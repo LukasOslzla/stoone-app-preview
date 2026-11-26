@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import {
   GridFourIcon,
   LockIcon,
+  MagnifyingGlassIcon,
   PlusCircleIcon,
   RowsIcon,
   TrashIcon,
@@ -16,6 +17,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Chip } from "@/components/ui/Chip";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { InfoStrip } from "@/components/ui/InfoStrip";
 import {
   DataTable,
@@ -218,6 +220,27 @@ export function FilesLibrary({
 
   const total = category === "all" ? counts.all : counts[category];
 
+  const noMatch = (
+    <EmptyState
+      size="sm"
+      icon={MagnifyingGlassIcon}
+      title="Žádný soubor neodpovídá filtru"
+      text="Zkuste jiný druh souboru nebo upravte hledaný text."
+      action={
+        <Button
+          size="md"
+          variant="outline"
+          onClick={() => {
+            setCategory("all");
+            setQuery("");
+          }}
+        >
+          Zrušit filtry
+        </Button>
+      }
+    />
+  );
+
   return (
     <div className="flex flex-col gap-[18px] px-8 pt-7 pb-8">
       <PageIntro
@@ -336,9 +359,7 @@ export function FilesLibrary({
             ))}
           </ul>
         ) : (
-          <Card className="py-10 text-center font-text text-sm leading-[1.4] text-fg-3">
-            Žádný soubor neodpovídá filtru.
-          </Card>
+          <Card>{noMatch}</Card>
         )
       ) : (
         <Card className="px-6 py-1.5">
@@ -349,7 +370,7 @@ export function FilesLibrary({
             sort={sort}
             onSortChange={setSort}
             minWidth={940}
-            empty="Žádný soubor neodpovídá filtru."
+            empty={noMatch}
           />
         </Card>
       )}

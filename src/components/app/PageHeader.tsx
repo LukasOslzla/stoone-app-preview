@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { MoonIcon, SunIcon } from "@phosphor-icons/react/ssr";
-import { LocaleMenu } from "@/components/app/LocaleMenu";
+import { ThemeSwitcher } from "@/components/app/ThemeSwitcher";
 import { cn } from "@/lib/cn";
 
 type PageHeaderProps = {
@@ -35,38 +34,8 @@ export function PageHeader({
 
       <div className="flex shrink-0 items-center gap-4">
         {actions}
-        <LocaleMenu />
         <ThemeSwitcher />
       </div>
     </header>
-  );
-}
-
-/** Only the dark theme is designed so far; the light option is inert. */
-export function ThemeSwitcher() {
-  return (
-    <div
-      role="group"
-      aria-label="Barevný režim"
-      className="flex h-9 items-center gap-0.5 rounded-full border border-line bg-inset p-[3px]"
-    >
-      <button
-        type="button"
-        aria-label="Světlý režim"
-        aria-pressed={false}
-        title="Světlý režim zatím není k dispozici"
-        className="flex h-7 w-[34px] items-center justify-center rounded-full text-fg-3 focus-visible:outline-[1.5px] focus-visible:outline-beige"
-      >
-        <SunIcon weight="fill" className="size-4" />
-      </button>
-      <button
-        type="button"
-        aria-label="Tmavý režim"
-        aria-pressed
-        className="flex h-7 w-[34px] items-center justify-center rounded-full bg-beige text-ink focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige"
-      >
-        <MoonIcon weight="fill" className="size-4" />
-      </button>
-    </div>
   );
 }

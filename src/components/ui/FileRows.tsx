@@ -51,7 +51,7 @@ function fileKind(name: string) {
 }
 
 const iconButton =
-  "flex size-7 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-white/5 focus-visible:outline-[1.5px] focus-visible:outline-beige";
+  "flex size-7 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-tint/5 focus-visible:outline-[1.5px] focus-visible:outline-beige";
 
 /**
  * File rows with a thumbnail, type and size, a "Z Realpadu" badge for synced

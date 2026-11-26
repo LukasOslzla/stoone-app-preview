@@ -22,23 +22,23 @@ export const saleStatuses: Record<
 > = {
   forSale: {
     label: "Na prodej",
-    pill: { label: "Na prodej", color: "#6FD13C" },
+    pill: { label: "Na prodej", color: "var(--color-green)" },
   },
   forSaleNew: {
     label: "Na prodej – novinka",
-    pill: { label: "Na prodej", color: "#6FD13C" },
+    pill: { label: "Na prodej", color: "var(--color-green)" },
   },
   preparing: {
     label: "Připravujeme",
-    pill: { label: "Připravujeme", color: "#F2C94C" },
+    pill: { label: "Připravujeme", color: "var(--color-yellow)" },
   },
   soldOut: {
     label: "Vyprodáno",
-    pill: { label: "Vyprodáno", color: "#F0524B" },
+    pill: { label: "Vyprodáno", color: "var(--color-red)" },
   },
   hidden: {
     label: "Skryto na webu",
-    pill: { label: "Skryto", color: "#5A5A62" },
+    pill: { label: "Skryto", color: "var(--color-neutral)" },
   },
 };
 

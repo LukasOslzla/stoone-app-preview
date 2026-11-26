@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   ArrowSquareOutIcon,
+  MagnifyingGlassIcon,
   PencilSimpleIcon,
   PlusCircleIcon,
 } from "@phosphor-icons/react";
@@ -18,6 +19,7 @@ import {
   type SortState,
 } from "@/components/ui/DataTable";
 import { DotPill } from "@/components/ui/DotPill";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Modal } from "@/components/ui/Modal";
 import { NumberedSteps } from "@/components/ui/NumberedSteps";
 import { SearchInput } from "@/components/ui/SearchInput";
@@ -30,8 +32,8 @@ import { SiteStatusBar } from "./SiteStatusBar";
 type Filter = "all" | SitePage["status"];
 
 const statuses = {
-  published: { label: "Na webu", color: "#6FD13C" },
-  draft: { label: "Koncept", color: "#F2C94C" },
+  published: { label: "Na webu", color: "var(--color-green)" },
+  draft: { label: "Koncept", color: "var(--color-yellow)" },
 };
 
 type PagesListProps = {
@@ -117,7 +119,7 @@ export function PagesList({
           <Link
             href={`${editorHref}?page=${encodeURIComponent(page.id)}`}
             aria-label={`Upravit stránku ${page.name}`}
-            className="flex h-[30px] items-center gap-1.5 rounded-full border border-line px-3 text-[13px] leading-none font-semibold text-fg transition-colors hover:bg-white/5 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige"
+            className="flex h-[30px] items-center gap-1.5 rounded-full border border-line px-3 text-[13px] leading-none font-semibold text-fg transition-colors hover:bg-tint/5 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige"
           >
             <PencilSimpleIcon weight="fill" className="size-[13px] text-fg-2" />
             Upravit
@@ -128,7 +130,7 @@ export function PagesList({
             rel="noreferrer"
             aria-label={`Otevřít stránku ${page.name} na webu`}
             title="Otevřít na webu"
-            className="flex size-[30px] items-center justify-center rounded-full text-fg-3 transition-colors hover:bg-white/5 hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-beige"
+            className="flex size-[30px] items-center justify-center rounded-full text-fg-3 transition-colors hover:bg-tint/5 hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-beige"
           >
             <ArrowSquareOutIcon weight="fill" className="size-[15px]" />
           </a>
@@ -157,7 +159,7 @@ export function PagesList({
               href={siteUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex h-10 items-center gap-2 rounded-full border border-line px-4 font-text text-sm leading-none font-semibold text-fg transition-colors hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg"
+              className="flex h-10 items-center gap-2 rounded-full border border-line px-4 font-text text-sm leading-none font-semibold text-fg transition-colors hover:bg-tint/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg"
             >
               <ArrowSquareOutIcon
                 weight="fill"
@@ -233,7 +235,26 @@ export function PagesList({
           sort={sort}
           onSortChange={setSort}
           minWidth={980}
-          empty="Žádná stránka neodpovídá filtru."
+          empty={
+            <EmptyState
+              size="sm"
+              icon={MagnifyingGlassIcon}
+              title="Žádná stránka neodpovídá filtru"
+              text="Zkuste jiný stav nebo upravte hledaný text."
+              action={
+                <Button
+                  size="md"
+                  variant="outline"
+                  onClick={() => {
+                    setFilter("all");
+                    setQuery("");
+                  }}
+                >
+                  Zrušit filtry
+                </Button>
+              }
+            />
+          }
         />
       </Card>
 

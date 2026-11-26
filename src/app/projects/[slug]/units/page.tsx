@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { notFound } from "next/navigation";
 import { UnitsList } from "@/components/units/UnitsList";
 import { getProject } from "@/lib/projects";
@@ -12,7 +13,7 @@ export const metadata: Metadata = { title: "Byty" };
 /** List of the project's flats. */
 export default function UnitsPage({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

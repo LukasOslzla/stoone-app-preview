@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { ArrowDownIcon, ArrowUpIcon } from "@phosphor-icons/react";
 import { ChevronsUpDown } from "lucide-react";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { cn } from "@/lib/cn";
 
 export type SortState = { columnId: string; direction: "asc" | "desc" };
@@ -26,8 +27,10 @@ type DataTableProps<T> = {
   rowKey: (row: T) => string;
   sort: SortState | null;
   onSortChange: (sort: SortState) => void;
-  /** Shown instead of the rows when there are none. */
+  /** Shown instead of the rows when there are none (text or an `EmptyState`). */
   empty?: ReactNode;
+  /** Shows placeholder rows instead of the data. */
+  loading?: boolean;
   /** Minimum width before the table scrolls horizontally. */
   minWidth?: number;
   /**
@@ -72,6 +75,7 @@ export function DataTable<T>({
   sort,
   onSortChange,
   empty,
+  loading = false,
   minWidth = 760,
   size = "md",
   firstSortDirection = "asc",
@@ -151,32 +155,58 @@ export function DataTable<T>({
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => (
-            <tr
-              key={rowKey(row)}
-              className="border-line-soft not-last:border-b"
-            >
-              {columns.map((column, index) => (
-                <td
-                  key={column.id}
-                  className={cn(
-                    "font-text leading-[1.4] text-fg-2",
-                    size === "md" ? "py-[13px] text-[13px]" : "py-3 text-sm",
-                    column.align === "right" && "text-right",
-                    size === "md" && index > 0 && "pl-4",
-                    column.className,
-                  )}
-                >
-                  {column.cell(row)}
-                </td>
-              ))}
-            </tr>
-          ))}
-          {rows.length === 0 && (
+          {loading &&
+            Array.from({ length: 5 }, (_, row) => (
+              <tr key={row} className="border-line-soft not-last:border-b">
+                {columns.map((column, index) => (
+                  <td
+                    key={column.id}
+                    className={cn(
+                      size === "md" ? "py-[15px]" : "py-3.5",
+                      size === "md" && index > 0 && "pl-4",
+                    )}
+                  >
+                    <Skeleton
+                      className={cn(
+                        "h-4",
+                        column.align === "right" ? "ml-auto w-1/2" : "w-3/4",
+                      )}
+                    />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          {!loading &&
+            rows.map((row) => (
+              <tr
+                key={rowKey(row)}
+                className="border-line-soft not-last:border-b"
+              >
+                {columns.map((column, index) => (
+                  <td
+                    key={column.id}
+                    className={cn(
+                      "font-text leading-[1.4] text-fg-2",
+                      size === "md" ? "py-[13px] text-[13px]" : "py-3 text-sm",
+                      column.align === "right" && "text-right",
+                      size === "md" && index > 0 && "pl-4",
+                      column.className,
+                    )}
+                  >
+                    {column.cell(row)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          {!loading && rows.length === 0 && (
             <tr>
               <td
                 colSpan={columns.length}
-                className="py-10 text-center font-text text-sm leading-[1.4] text-fg-3"
+                className={cn(
+                  "text-center font-text text-sm leading-[1.4] text-fg-3",
+                  // An `EmptyState` brings its own padding.
+                  typeof empty === "object" ? "py-2" : "py-10",
+                )}
               >
                 {empty ?? "Žádné položky."}
               </td>

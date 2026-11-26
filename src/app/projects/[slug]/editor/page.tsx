@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { notFound } from "next/navigation";
 import { ContentEditor } from "@/components/editor/ContentEditor";
 import { getEditorData } from "@/lib/editor";
@@ -12,7 +13,7 @@ export const metadata: Metadata = { title: "Editor obsahu" };
 /** Content editor of the project's public web. */
 export default function EditorRoute({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

@@ -24,7 +24,7 @@ export function AiAnswerCard({
     <div
       role="status"
       className={cn(
-        "flex flex-col gap-3 rounded-[18px] border border-transparent p-4 shadow-[0_16px_40px_#000000A6] backdrop-blur-lg [background:linear-gradient(#1E1E23F5,#1E1E23F5)_padding-box,linear-gradient(90deg,#F08CB0B3,#5E7CF0B3_55%,#9532FFB3)_border-box]",
+        "flex flex-col gap-3 rounded-[18px] border border-transparent p-4 shadow-float backdrop-blur-lg [background:linear-gradient(var(--color-popover),var(--color-popover))_padding-box,linear-gradient(90deg,#F08CB0B3,#5E7CF0B3_55%,#9532FFB3)_border-box]",
         className,
       )}
     >
@@ -72,7 +72,7 @@ export function AiAnswerCard({
             <button
               type="button"
               onClick={onDiscard}
-              className="flex h-8 items-center rounded-full border border-line px-3.5 font-text text-[13px] leading-none font-semibold text-fg transition-colors hover:bg-white/5 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-ai"
+              className="flex h-8 items-center rounded-full border border-line px-3.5 font-text text-[13px] leading-none font-semibold text-fg transition-colors hover:bg-tint/5 focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-ai"
             >
               Zahodit
             </button>

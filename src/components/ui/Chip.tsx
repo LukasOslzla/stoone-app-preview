@@ -33,12 +33,12 @@ export function Chip({
         "flex h-[34px] shrink-0 items-center gap-2 rounded-full border px-3.5 font-text text-[13px] leading-none font-semibold whitespace-nowrap transition-colors focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige",
         tone === "accent"
           ? cn(
-              "border-[#CAC3B859] text-beige",
-              selected ? "bg-[#CAC3B826]" : "hover:bg-[#CAC3B814]",
+              "border-beige/35 text-beige",
+              selected ? "bg-beige/15" : "hover:bg-beige/8",
             )
           : selected
             ? "border-line-soft bg-control text-fg"
-            : "border-line-soft text-fg-2 hover:bg-white/5 hover:text-fg",
+            : "border-line-soft text-fg-2 hover:bg-tint/5 hover:text-fg",
         className,
       )}
       {...props}

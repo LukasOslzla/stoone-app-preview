@@ -52,6 +52,8 @@ function projectSections(slug: string): NavSection[] {
           icon: SlidersHorizontalIcon,
           trailing: "external",
           smallLabel: true,
+          // The buyers' app; opened from here for the preview.
+          href: "/configurator",
         },
       ],
     },

@@ -42,7 +42,7 @@ export function ForgotPasswordForm() {
       <>
         <AuthHeading
           icon={
-            <div className="flex size-16 items-center justify-center rounded-full border border-[#6FD13C59] bg-[#6FD13C1A]">
+            <div className="flex size-16 items-center justify-center rounded-full border border-green/35 bg-green/10">
               <EnvelopeSimpleOpenIcon
                 weight="fill"
                 className="size-7 text-green"

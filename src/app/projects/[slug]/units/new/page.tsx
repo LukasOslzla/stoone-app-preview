@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PageSkeleton } from "@/components/ui/Skeleton";
 import { NewUnitForm } from "@/components/units/NewUnitForm";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -9,7 +10,7 @@ export const metadata: Metadata = { title: "Nový byt" };
 /** Manual entry of a new flat. */
 export default function NewUnitPage({ params }: Props) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PageSkeleton />}>
       <Content params={params} />
     </Suspense>
   );

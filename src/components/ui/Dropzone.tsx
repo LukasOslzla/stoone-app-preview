@@ -57,8 +57,8 @@ export function Dropzone({
           ? "min-h-[84px] flex-wrap rounded-xl py-3"
           : "min-h-[200px] flex-col rounded-[14px]",
         dragging
-          ? "border-beige bg-[#CAC3B814]"
-          : "border-line hover:border-[#D2D5C566] hover:bg-white/[0.02]",
+          ? "border-beige bg-beige/8"
+          : "border-line hover:border-mist/40 hover:bg-tint/2",
         className,
       )}
     >

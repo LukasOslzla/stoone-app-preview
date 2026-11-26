@@ -217,7 +217,7 @@ export function PlanAreaEditor({
                     title={label}
                     disabled={disabled}
                     onClick={() => setZoomIndex(next)}
-                    className="flex size-[30px] items-center justify-center rounded-full text-fg-2 transition-colors enabled:hover:bg-white/5 enabled:hover:text-fg disabled:opacity-40 focus-visible:outline-[1.5px] focus-visible:outline-beige"
+                    className="flex size-[30px] items-center justify-center rounded-full text-fg-2 transition-colors enabled:hover:bg-tint/5 enabled:hover:text-fg disabled:opacity-40 focus-visible:outline-[1.5px] focus-visible:outline-beige"
                   >
                     <IconComponent weight="fill" className="size-4" />
                   </button>
@@ -267,7 +267,7 @@ export function PlanAreaEditor({
                       key={item.id}
                       points={toSvgPoints(item.area.points)}
                       vectorEffect="non-scaling-stroke"
-                      className="fill-[#CAC3B840] stroke-beige stroke-2"
+                      className="fill-beige/25 stroke-beige stroke-2"
                     />
                   ),
               )}
@@ -279,7 +279,7 @@ export function PlanAreaEditor({
                   ])}
                   vectorEffect="non-scaling-stroke"
                   strokeDasharray="6 4"
-                  className="fill-[#CAC3B81F] stroke-beige stroke-2"
+                  className="fill-beige/12 stroke-beige stroke-2"
                 />
               )}
             </svg>
@@ -333,7 +333,7 @@ export function PlanAreaEditor({
                       "absolute flex h-[26px] -translate-1/2 cursor-pointer items-center rounded-full border px-2.5 font-text text-xs leading-none font-bold whitespace-nowrap transition-colors focus-visible:outline-[1.5px] focus-visible:outline-offset-2 focus-visible:outline-beige",
                       selected
                         ? "border-beige bg-beige text-ink"
-                        : "border-line bg-[#18181CE6] text-fg hover:border-beige",
+                        : "border-line bg-surface/90 text-fg hover:border-beige",
                     )}
                   >
                     {item.name}
@@ -348,8 +348,8 @@ export function PlanAreaEditor({
                   className={cn(
                     "pointer-events-none absolute flex flex-col items-center justify-center gap-0.5 overflow-hidden rounded-[3px] text-center",
                     selected
-                      ? "border-2 border-beige bg-[#CAC3B833]"
-                      : "border border-[#CAC3B866] bg-[#CAC3B814]",
+                      ? "border-2 border-beige bg-beige/20"
+                      : "border border-beige/40 bg-beige/8",
                   )}
                 >
                   <span className="font-text text-sm leading-[1.4] font-bold text-fg">
@@ -367,7 +367,7 @@ export function PlanAreaEditor({
             {drawing && draft && (
               <div
                 style={toStyle(draft)}
-                className="pointer-events-none absolute rounded-[3px] border-2 border-dashed border-beige bg-[#CAC3B81F]"
+                className="pointer-events-none absolute rounded-[3px] border-2 border-dashed border-beige bg-beige/12"
               />
             )}
           </div>
@@ -376,7 +376,7 @@ export function PlanAreaEditor({
         {(draftOutline || hint) && (
           <p
             role="status"
-            className="pointer-events-none absolute bottom-4 left-4 flex min-h-9 max-w-[calc(100%-32px)] items-center gap-2 rounded-full border border-line bg-[#18181CE6] px-3.5 py-1.5 font-text text-xs leading-[1.3] font-medium text-fg"
+            className="pointer-events-none absolute bottom-4 left-4 flex min-h-9 max-w-[calc(100%-32px)] items-center gap-2 rounded-full border border-line bg-surface/90 px-3.5 py-1.5 font-text text-xs leading-[1.3] font-medium text-fg"
           >
             <PencilSimpleIcon
               weight="fill"

@@ -38,7 +38,7 @@ export function ProjectCard({ project }: { project: Project }) {
     <Link
       href={`/projects/${project.slug}`}
       className={cn(
-        "flex flex-col gap-9 rounded-3xl border border-line bg-card p-7 shadow-[inset_0_1px_0_#FFFFFF14] transition-colors hover:border-[#D2D5C566] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-beige",
+        "flex flex-col gap-9 rounded-3xl border border-line bg-card p-7 shadow-[inset_0_1px_0_#FFFFFF14] transition-colors hover:border-mist/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-beige",
         active
           ? "bg-[radial-gradient(ellipse_80%_65%_at_100%_100%,#6FD13C1A_0%,#6FD13C00_100%)]"
           : "bg-[radial-gradient(ellipse_80%_65%_at_100%_100%,#F0524B24_0%,#F0524B00_100%)]",
@@ -81,7 +81,7 @@ export function ProjectCard({ project }: { project: Project }) {
           >
             {units.free}
           </span>
-          <span className="pb-[5px] font-text text-base leading-none font-medium text-[#CAC3B899]">
+          <span className="pb-[5px] font-text text-base leading-none font-medium text-beige/60">
             z {units.total}
           </span>
         </p>
@@ -108,7 +108,7 @@ export function ProjectCard({ project }: { project: Project }) {
             className={cn(
               "h-full min-w-0 flex-1",
               active
-                ? "bg-[repeating-linear-gradient(90deg,#FFFFFF2E_0_2px,transparent_2px_6px)]"
+                ? "bg-[repeating-linear-gradient(90deg,color-mix(in_srgb,var(--color-tint)_18%,transparent)_0_2px,transparent_2px_6px)]"
                 : "bg-[repeating-linear-gradient(90deg,#F0524B4D_0_2px,transparent_2px_6px)]",
             )}
           />
