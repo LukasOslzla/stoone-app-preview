@@ -6,6 +6,8 @@ type SearchPreviewProps = {
   description: string;
   /** Sentence under the preview. */
   caption?: string;
+  /** Small heading above the card. */
+  label?: string;
 };
 
 const clip = (text: string, max: number) =>
@@ -18,11 +20,12 @@ export function SearchPreview({
   title,
   description,
   caption,
+  label = "Náhled ve vyhledávači",
 }: SearchPreviewProps) {
   return (
     <div className="flex flex-col gap-3">
       <p className="font-text text-[11px] leading-[1.4] font-bold tracking-[0.8px] text-fg-3 uppercase">
-        Náhled ve vyhledávači
+        {label}
       </p>
 
       <div className="flex flex-col gap-1.5 rounded-2xl border border-line-soft bg-fg p-5 font-sans">

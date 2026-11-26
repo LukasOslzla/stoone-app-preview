@@ -8,6 +8,7 @@ import type {
   TextareaHTMLAttributes,
 } from "react";
 import { CaretDownIcon, WarningCircleIcon } from "@phosphor-icons/react";
+import { cn } from "@/lib/cn";
 import { controlBox, controlText } from "./control";
 
 type FieldShellProps = {
@@ -16,6 +17,10 @@ type FieldShellProps = {
   error?: string;
   /** Helper text under the control, shown when there is no error. */
   hint?: string;
+  /** `sm` = compact label for narrow side panels. */
+  size?: "md" | "sm";
+  /** Small control at the end of the label row, e.g. an AI button. */
+  action?: ReactNode;
   children: ReactNode;
 };
 
@@ -25,16 +30,37 @@ export function FieldShell({
   htmlFor,
   error,
   hint,
+  size = "md",
+  action,
   children,
 }: FieldShellProps) {
+  const labelElement = (
+    <label
+      htmlFor={htmlFor}
+      className={cn(
+        "font-text leading-[1.4] font-medium text-fg",
+        size === "sm" ? "text-[13px]" : "text-sm",
+      )}
+    >
+      {label}
+    </label>
+  );
+
   return (
-    <div className="flex w-full flex-col gap-2">
-      <label
-        htmlFor={htmlFor}
-        className="font-text text-sm leading-[1.4] font-medium text-fg"
-      >
-        {label}
-      </label>
+    <div
+      className={cn(
+        "flex w-full min-w-0 flex-col",
+        size === "sm" ? "gap-[7px]" : "gap-2",
+      )}
+    >
+      {action ? (
+        <div className="flex min-h-7 items-center justify-between gap-3">
+          {labelElement}
+          {action}
+        </div>
+      ) : (
+        labelElement
+      )}
       {children}
       {error ? (
         <p
@@ -56,10 +82,18 @@ export function FieldShell({
   );
 }
 
-type Common = { label: string; error?: string; hint?: string };
+type Common = {
+  label: string;
+  error?: string;
+  hint?: string;
+  /** `sm` = 42px control with 13px text, for narrow side panels. */
+  size?: "md" | "sm";
+  /** Small control at the end of the label row, e.g. an AI button. */
+  action?: ReactNode;
+};
 
 type TextInputProps = Common &
-  Omit<InputHTMLAttributes<HTMLInputElement>, "className"> & {
+  Omit<InputHTMLAttributes<HTMLInputElement>, "className" | "size"> & {
     /** Unit shown at the end of the input, e.g. "m²" or "Kč". */
     suffix?: string;
   };
@@ -71,20 +105,29 @@ export function TextInput({
   id,
   disabled,
   suffix,
+  size,
+  action,
   ...props
 }: TextInputProps) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
 
   return (
-    <FieldShell label={label} htmlFor={inputId} error={error} hint={hint}>
-      <div className={controlBox({ invalid: Boolean(error), disabled })}>
+    <FieldShell
+      label={label}
+      htmlFor={inputId}
+      error={error}
+      hint={hint}
+      size={size}
+      action={action}
+    >
+      <div className={controlBox({ invalid: Boolean(error), disabled, size })}>
         <input
           id={inputId}
           disabled={disabled}
           aria-invalid={error ? true : undefined}
           aria-describedby={error || hint ? `${inputId}-message` : undefined}
-          className={`${controlText()} h-full`}
+          className={`${controlText(size)} h-full`}
           {...props}
         />
         {suffix && (
@@ -98,7 +141,7 @@ export function TextInput({
 }
 
 type SelectInputProps = Common &
-  Omit<SelectHTMLAttributes<HTMLSelectElement>, "className"> & {
+  Omit<SelectHTMLAttributes<HTMLSelectElement>, "className" | "size"> & {
     options: { value: string; label: string }[];
   };
 
@@ -110,22 +153,37 @@ export function SelectInput({
   id,
   disabled,
   options,
+  size,
+  action,
   ...props
 }: SelectInputProps) {
   const generatedId = useId();
   const selectId = id ?? generatedId;
 
   return (
-    <FieldShell label={label} htmlFor={selectId} error={error} hint={hint}>
+    <FieldShell
+      label={label}
+      htmlFor={selectId}
+      error={error}
+      hint={hint}
+      size={size}
+      action={action}
+    >
       <div
-        className={`${controlBox({ invalid: Boolean(error), disabled })} relative`}
+        className={`${controlBox({ invalid: Boolean(error), disabled, size })} relative`}
       >
         <select
           id={selectId}
           disabled={disabled}
           aria-invalid={error ? true : undefined}
           aria-describedby={error || hint ? `${selectId}-message` : undefined}
-          className={`${controlText()} -mx-4 h-full cursor-pointer appearance-none truncate rounded-xl pr-11 pl-4`}
+          className={cn(
+            controlText(size),
+            "h-full cursor-pointer appearance-none truncate",
+            size === "sm"
+              ? "-mx-3.5 rounded-[10px] pr-9 pl-3.5"
+              : "-mx-4 rounded-xl pr-11 pl-4",
+          )}
           {...props}
         >
           {options.map((option) => (
@@ -140,7 +198,10 @@ export function SelectInput({
         </select>
         <CaretDownIcon
           weight="fill"
-          className="pointer-events-none absolute right-4 size-3.5 text-fg-2"
+          className={cn(
+            "pointer-events-none absolute text-fg-2",
+            size === "sm" ? "right-3.5 size-3" : "right-4 size-3.5",
+          )}
         />
       </div>
     </FieldShell>
@@ -157,18 +218,28 @@ export function TextArea({
   id,
   disabled,
   rows = 3,
+  size,
+  action,
   ...props
 }: TextAreaProps) {
   const generatedId = useId();
   const textareaId = id ?? generatedId;
 
   return (
-    <FieldShell label={label} htmlFor={textareaId} error={error} hint={hint}>
+    <FieldShell
+      label={label}
+      htmlFor={textareaId}
+      error={error}
+      hint={hint}
+      size={size}
+      action={action}
+    >
       <div
         className={controlBox({
           invalid: Boolean(error),
           disabled,
           multiline: true,
+          size,
         })}
       >
         <textarea
@@ -177,7 +248,13 @@ export function TextArea({
           disabled={disabled}
           aria-invalid={error ? true : undefined}
           aria-describedby={error || hint ? `${textareaId}-message` : undefined}
-          className={`${controlText()} min-h-[101px] resize-y py-3.5`}
+          className={cn(
+            controlText(size),
+            "resize-y",
+            size === "sm"
+              ? "min-h-[110px] py-3 leading-[1.5]"
+              : "min-h-[101px] py-3.5",
+          )}
           {...props}
         />
       </div>

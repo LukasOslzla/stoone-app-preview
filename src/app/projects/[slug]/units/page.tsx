@@ -32,7 +32,7 @@ async function Content({ params }: Props) {
       projectSlug={slug}
       units={units}
       counts={counts}
-      realpad={Boolean(project.realpadSync)}
+      realpad={Boolean(project.realpad)}
     />
   );
 }

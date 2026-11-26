@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { AiPrompt } from "@/components/app/AiPrompt";
+import { Suspense } from "react";
+import { ShellAiPrompt } from "@/components/app/ShellAiPrompt";
 
 /**
  * Frame of every signed-in screen: sidebar on the left, scrollable page on
@@ -18,7 +19,9 @@ export function AppShell({
 
       <div className="relative flex min-w-0 flex-1 flex-col">
         <main className="min-h-0 flex-1 overflow-y-auto pb-28">{children}</main>
-        <AiPrompt className="absolute bottom-7 left-1/2 w-[560px] max-w-[calc(100%-2rem)] -translate-x-1/2" />
+        <Suspense fallback={null}>
+          <ShellAiPrompt className="absolute bottom-7 left-1/2 w-[560px] max-w-[calc(100%-2rem)] -translate-x-1/2" />
+        </Suspense>
       </div>
     </div>
   );

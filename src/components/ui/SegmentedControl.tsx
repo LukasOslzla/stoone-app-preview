@@ -5,7 +5,7 @@ import { cn } from "@/lib/cn";
 
 type SegmentedControlProps<T extends string> = {
   /** With `icon` the label is only read by screen readers and shown as a tooltip. */
-  options: { value: T; label: string; icon?: ReactNode }[];
+  options: { value: T; label: string; icon?: ReactNode; count?: number }[];
   value: T;
   onChange: (value: T) => void;
   /** Accessible name of the group. */
@@ -54,7 +54,8 @@ export function SegmentedControl<T extends string>({
             onClick={() => onChange(option.value)}
             className={cn(
               "flex items-center justify-center font-text text-[13px] leading-none font-semibold whitespace-nowrap transition-colors focus-visible:outline-[1.5px] focus-visible:outline-beige",
-              pill && "h-8 w-9 rounded-full",
+              pill && "h-8 rounded-full",
+              pill && (option.icon ? "w-9" : "gap-2 px-3.5"),
               block && "h-10 min-w-0 flex-1 gap-1.5 rounded-[10px] px-1",
               shape === "rounded" && "h-7 rounded-lg px-3",
               block
@@ -76,6 +77,9 @@ export function SegmentedControl<T extends string>({
               </>
             ) : (
               (option.icon ?? option.label)
+            )}
+            {option.count !== undefined && (
+              <span className="text-xs text-fg-3">{option.count}</span>
             )}
           </button>
         );

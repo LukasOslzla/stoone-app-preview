@@ -1,12 +1,9 @@
 import Link from "next/link";
-import {
-  ArrowsClockwiseIcon,
-  CalendarBlankIcon,
-  CaretDownIcon,
-} from "@phosphor-icons/react/ssr";
+import { CalendarBlankIcon, CaretDownIcon } from "@phosphor-icons/react/ssr";
 import { ChevronsUpDown } from "lucide-react";
 import { PageHeader } from "@/components/app/PageHeader";
 import { DashboardOnly } from "@/components/project/DashboardOnly";
+import { RealpadSync } from "@/components/project/RealpadSync";
 import { LogoTile } from "@/components/ui/LogoTile";
 import { cn } from "@/lib/cn";
 import { formatBuildings, formatUnits, type Project } from "@/lib/projects";
@@ -19,7 +16,14 @@ export function ProjectHeader({ project }: { project: Project }) {
       leading={<ProjectSwitcher project={project} />}
       actions={
         <>
-          {project.realpadSync && <RealpadSync label={project.realpadSync} />}
+          {project.realpad && (
+            <RealpadSync
+              // A fresh state for every project.
+              key={project.slug}
+              projectSlug={project.slug}
+              initial={project.realpad}
+            />
+          )}
           {/* The date range only applies to the dashboard. */}
           <DashboardOnly>
             <RangeSelect label="Posledních 30 dní" />
@@ -79,25 +83,6 @@ export function ProjectSwitcher({ project }: { project: Project }) {
         </p>
       </div>
     </Link>
-  );
-}
-
-/** Realpad sync status with a manual refresh button (synced state only so far). */
-export function RealpadSync({ label }: { label: string }) {
-  return (
-    <div className="hidden items-center gap-2 lg:flex">
-      <span className="size-1.5 shrink-0 rounded-full bg-green" />
-      <span className="font-text text-xs leading-none font-medium whitespace-nowrap text-fg-3">
-        Realpad · {label}
-      </span>
-      <button
-        type="button"
-        aria-label="Synchronizovat s Realpadem"
-        className="flex size-7 items-center justify-center rounded-full border border-line-soft text-fg-2 transition-colors hover:bg-white/5 hover:text-fg focus-visible:outline-[1.5px] focus-visible:outline-beige"
-      >
-        <ArrowsClockwiseIcon weight="fill" className="size-[13px]" />
-      </button>
-    </div>
   );
 }
 

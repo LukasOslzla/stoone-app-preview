@@ -28,7 +28,12 @@ function projectSections(slug: string): NavSection[] {
     {
       items: [
         { label: "Přehled", icon: HouseIcon, href: base, exact: true },
-        { label: "Editor obsahu", icon: PencilSimpleIcon },
+        {
+          label: "Editor obsahu",
+          icon: PencilSimpleIcon,
+          href: `${base}/pages`,
+          alsoActiveFor: [`${base}/editor`],
+        },
       ],
     },
     {
@@ -61,7 +66,7 @@ function projectSections(slug: string): NavSection[] {
           trailing: "locked",
           href: `${base}/migration`,
         },
-        { label: "Nastavení", icon: GearIcon },
+        { label: "Nastavení", icon: GearIcon, href: `${base}/settings` },
       ],
     },
   ];

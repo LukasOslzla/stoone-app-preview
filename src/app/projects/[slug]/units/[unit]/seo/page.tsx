@@ -35,7 +35,7 @@ async function Content({ params }: Props) {
       key={unit.id}
       projectSlug={slug}
       unit={unit}
-      realpad={Boolean(project.realpadSync)}
+      realpad={Boolean(project.realpad)}
     />
   );
 }

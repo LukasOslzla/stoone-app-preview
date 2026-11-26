@@ -31,7 +31,7 @@ async function Content({ params }: Props) {
     <FilesLibrary
       projectSlug={slug}
       projectName={project.name}
-      realpad={Boolean(project.realpadSync)}
+      realpad={Boolean(project.realpad)}
       files={files}
       counts={counts}
     />

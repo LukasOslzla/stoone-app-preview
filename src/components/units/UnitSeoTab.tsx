@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ImageIcon } from "@phosphor-icons/react";
 import { useSaveForm } from "@/components/buildings/useSaveForm";
 import { DetailScaffold } from "@/components/detail/DetailScaffold";
 import { SaveButton } from "@/components/detail/SaveButton";
 import { SearchPreview } from "@/components/seo/SearchPreview";
 import { SeoTextField } from "@/components/seo/SeoTextField";
+import { ShareImageField } from "@/components/seo/ShareImageField";
 import { Card, CardHeader } from "@/components/ui/Card";
 import { PrevNext } from "@/components/ui/PrevNext";
 import { unitStatuses } from "@/lib/unit-status";
@@ -91,30 +91,11 @@ export function UnitSeoTab({ projectSlug, unit, realpad }: UnitSeoTabProps) {
               onChange={(value) => update("description", value)}
             />
 
-            <div className="flex flex-col gap-2">
-              <p className="font-text text-sm leading-[1.4] font-medium text-fg">
-                Obrázek při sdílení
-              </p>
-              <div className="flex items-center gap-3 rounded-xl border border-line-soft bg-inset px-3.5 py-3">
-                <span className="flex h-10 w-14 shrink-0 items-center justify-center rounded-lg bg-control">
-                  <ImageIcon weight="fill" className="size-4 text-fg-3" />
-                </span>
-                <span className="flex min-w-0 flex-1 flex-col gap-px">
-                  <span className="truncate font-text text-sm leading-[1.4] font-semibold text-fg">
-                    {seo.shareImage.title}
-                  </span>
-                  <span className="font-text text-xs leading-[1.4] text-fg-3">
-                    {seo.shareImage.note}
-                  </span>
-                </span>
-                <button
-                  type="button"
-                  className="rounded-md font-text text-[13px] leading-[1.4] font-semibold text-fg-2 transition-colors hover:text-beige focus-visible:outline-[1.5px] focus-visible:outline-offset-4 focus-visible:outline-beige"
-                >
-                  Změnit
-                </button>
-              </div>
-            </div>
+            <ShareImageField
+              title={seo.shareImage.title}
+              note={seo.shareImage.note}
+              actionLabel="Změnit"
+            />
           </Card>
 
           <div className="w-full xl:w-[400px] xl:shrink-0">
